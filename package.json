@@ -2,7 +2,7 @@
   "name": "@ambasdat/sijarta",
   "version": "0.0.0",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx watch --include templates src/index.ts"
   },
   "keywords": [],
   "author": "",
