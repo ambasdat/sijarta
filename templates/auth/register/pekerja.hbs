@@ -1,1 +1,93 @@
-<h1>Register Pekerja</h1>
+<main class="card shadow-xl max-w-screen-md mx-auto mt-24 bg-neutral text-neutral-content">
+  <form class="card-body form-control flex gap-2" onsubmit="console.log">
+    <h1 class="text-3xl">Registrasi Pekerja</h1>
+
+    <label class="form-control">
+      <div class="label">
+        <span class="label-text">Nama</span>
+      </div>
+      <input name="nama" type="text" class="input input-bordered bg-neutral" />
+    </label>
+
+    <label class="form-control">
+      <div class="label">
+        <span class="label-text">Password</span>
+      </div>
+      <input name="password" type="password" class="input input-bordered bg-neutral" />
+    </label>
+    
+    <label class="form-control">
+      <div class="label">
+        <span class="label-text">Jenis Kelamin</span>
+      </div>
+      <div>
+        <input type="radio" name="jenisKelamin" id="l" />
+        <label for="l">Laki-laki</label>
+      </div>
+      <div>
+        <input type="radio" name="jenisKelamin" id="p" />
+        <label for="p">Perempuan</label>
+      </div>
+    </label>
+
+    <label class="form-control">
+      <div class="label">
+        <span class="label-text">No HP</span>
+      </div>
+      <input name="phone" type="text" class="input input-bordered bg-neutral" />
+    </label>
+
+    <label class="form-control">
+      <div class="label">
+        <span class="label-text">Tanggal Lahir</span>
+      </div>
+      <input name="dob" type="text" class="input input-bordered bg-neutral" />
+    </label>
+
+    <label class="form-control">
+      <div class="label">
+        <span class="label-text">Alamat</span>
+      </div>
+      <input name="address" type="text" class="input input-bordered bg-neutral" />
+    </label>
+
+    <label class="form-control">
+      <div class="label">
+        <span class="label-text">Nama Bank</span>
+      </div>
+      <select name="bank" class="select select-bordered bg-neutral">
+        <option disabled selected>-- Pilih Bank --</option>
+        <option>GoPay</option>
+        <option>OVO</option>
+        <option>Virtual Account BCA</option>
+        <option>Virtual Account BNI</option>
+        <option>Virtual Account Mandiri</option>
+      </select>
+    </label>
+
+    <label class="form-control">
+      <div class="label">
+        <span class="label-text">No Rekening</span>
+      </div>
+      <input name="norek" type="text" class="input input-bordered bg-neutral" />
+    </label>
+
+    <label class="form-control">
+      <div class="label">
+        <span class="label-text">NPWP</span>
+      </div>
+      <input name="npwp" type="text" class="input input-bordered bg-neutral" />
+    </label>
+
+    <label class="form-control">
+      <div class="label">
+        <span class="label-text">URL Foto</span>
+      </div>
+      <input name="url" type="text" class="input input-bordered bg-neutral" />
+    </label>
+
+    <div class="card-actions justify-end">
+      <button class="btn btn-primary">Registrasi</button>
+    </div>
+  </form>
+</main>
