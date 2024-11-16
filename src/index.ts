@@ -23,3 +23,4 @@ app.use('/diskon', diskon);
 app.get('/', (_req, res) => res.render('main', { name: 'World' }));
 
 app.listen(3000, () => console.log('http://localhost:3000'));
+
