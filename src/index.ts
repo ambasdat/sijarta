@@ -4,6 +4,7 @@ import { engine } from 'express-handlebars';
 
 import auth from './auth';
 import mypay from './mypay';
+import home from './home';
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.set('views', path.resolve(process.cwd(), 'templates'));
 
 app.use('/auth', auth);
 app.use('/mypay', mypay);
+app.use('/home', home);
 
 app.get('/', (_req, res) => res.render('main', { name: 'World' }));
 
