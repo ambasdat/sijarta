@@ -4,6 +4,7 @@ import { engine } from 'express-handlebars';
 
 import auth from './auth';
 import mypay from './mypay';
+import home from './home';
 import testimoni from './testimoni';
 import diskon from './diskon'
 
@@ -15,6 +16,7 @@ app.set('views', path.resolve(process.cwd(), 'templates'));
 
 app.use('/auth', auth);
 app.use('/mypay', mypay);
+app.use('/home', home);
 app.use('/testimoni', testimoni);
 app.use('/diskon', diskon);
 
