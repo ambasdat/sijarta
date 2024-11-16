@@ -10,4 +10,5 @@ app.get('/transaction', (req, res) => {
 	res.render('mypay/transaction');
 });
 
+
 export default app;

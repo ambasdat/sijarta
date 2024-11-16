@@ -1,0 +1,54 @@
+<main class="card shadow-xl max-w-screen-xl mx-auto my-24 bg-neutral text-neutral-content">
+    <div class="p-4 space-y-4">
+        <div class="flex justify-between items-center">
+            <div class="flex space-x-4">
+            <div class="dropdown">
+                <label tabindex="0" class="btn m-1">Subkategori</label>
+                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a>Subkategori 1</a></li>
+                <li><a>Subkategori 2</a></li>
+                <li><a>Subkategori 3</a></li>
+                </ul>
+            </div>
+            
+            <div class="dropdown">
+                <label tabindex="0" class="btn m-1">Status Pesanan</label>
+                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a>Selesai</a></li>
+                <li><a>Dibatalkan</a></li>
+                <li><a>Diproses</a></li>
+                </ul>
+            </div>
+            </div>
+            
+            <button class="btn btn-primary">Search</button>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="table w-full">
+              <!-- Header Tabel -->
+              <thead>
+                <tr>
+                  <th>Subkategori</th>
+                  <th>Sesi Layanan</th>
+                  <th>Harga</th>
+                  <th>Nama Pekerja</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <!-- Isi Tabel -->
+              <tbody>
+                {{#each dummyData.jasa}}
+                <tr>
+                  <td>{{this.subkategori}}</td>
+                  <td>{{this.sesi}}</td>
+                  <td>{{this.harga}}</td>
+                  <td>{{this.namaPekerja}}</td>
+                  <td>{{this.status}}</td>
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>
+        </div>
+    </div>
+</main>
