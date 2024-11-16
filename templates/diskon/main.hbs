@@ -1,0 +1,78 @@
+<main class="max-w-screen-xl mx-auto p-6 space-y-8">
+    {{!-- Voucher Section --}}
+    <section>
+      <h2 class="text-2xl font-bold mb-4">Voucher</h2>
+      <div class="overflow-x-auto h-[300px]">
+        <table class="table table-zebra">
+          <thead class="sticky top-0 bg-base-200">
+            <tr>
+              <th>Kode</th>
+              <th>Potongan</th>
+              <th>Min. Transaksi</th>
+              <th>Berlaku</th>
+              <th>Kuota</th>
+              <th>Harga</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each vouchers}}
+              <tr>
+                <td class="font-medium">{{kode}}</td>
+                <td>Rp {{potongan}}</td>
+                <td>Rp {{minTransaksi}}</td>
+                <td>{{jumlahHari}} hari</td>
+                <td>{{kuotaPenggunaan}}x</td>
+                <td>Rp {{harga}}</td>
+                <td>
+                    <button 
+                      class="btn btn-primary btn-sm"
+                      onclick="document.getElementById('modal_{{kode}}').showModal()"
+                    >
+                      Beli
+                    </button>
+    
+                    <dialog id="modal_{{kode}}" class="modal modal-bottom sm:modal-middle">
+                      <div class="modal-box text-center">
+                        <h3 class="font-bold text-2xl mb-4">SUKSES</h3>
+                        <p>
+                          Voucher ini akan berlaku hingga tanggal {{jumlahHari}} dengan kuota penggunaan sebanyak {{kuotaPenggunaan}} kali.
+                        </p>
+                        <div class="modal-action justify-center">
+                          <form method="dialog">
+                            <button class="btn btn-primary">Tutup</button>
+                          </form>
+                        </div>
+                      </div>
+                    </dialog>
+                  </td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  
+    {{!-- Promo Section --}}
+    <section>
+      <h2 class="text-2xl font-bold mb-4">Promo</h2>
+      <div class="overflow-x-auto h-[250px]">
+        <table class="table table-zebra">
+          <thead class="sticky top-0 bg-base-200">
+            <tr>
+              <th>Kode</th>
+              <th>Berlaku Sampai</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each promos}}
+              <tr>
+                <td class="font-medium">{{kode}}</td>
+                <td>{{tanggalAkhir}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>

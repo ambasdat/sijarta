@@ -6,6 +6,8 @@ import auth from './auth';
 import mypay from './mypay';
 import home from './home';
 import order from './order';
+import testimoni from './testimoni';
+import diskon from './diskon'
 
 const app = express();
 
@@ -17,7 +19,10 @@ app.use('/auth', auth);
 app.use('/mypay', mypay);
 app.use('/order', order)
 app.use('/home', home);
+app.use('/testimoni', testimoni);
+app.use('/diskon', diskon);
 
 app.get('/', (_req, res) => res.render('main', { name: 'World' }));
 
 app.listen(3000, () => console.log('http://localhost:3000'));
+
