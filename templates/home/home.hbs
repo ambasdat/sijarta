@@ -38,6 +38,7 @@
 
                 <select id="category" name="category" class="select select-secondary w-full max-w-xs" required>
                     <option value="-" disabled selected>Pilih Kategori</option>
+                    <option value="-1">Semua Kategori</option>
                     {{#each han.category}}
                     <option value="{{@index}}">{{this.name}}</option>
                     {{/each}}
@@ -75,6 +76,24 @@
         }
 
         renderCategory(data.category);
+
+        document.getElementById("searchButton").addEventListener("click", () => {
+            const searchBar = document.getElementById("searchBar").value;
+            const categorySelect = document.getElementById("category");
+            const selectedCategory = categorySelect.value;
+
+            const filteredCategories = data.category.filter(category => {
+                // If nothing is selected or "Semua Status" is selected, show all categories
+                if (selectedCategory === "-1" || selectedCategory === "-") {
+                    return true;
+                }
+
+                // Otherwise, filter by selected category
+                return category.name === data.category[selectedCategory].name;
+            });
+
+            renderCategory(filteredCategories);
+        });
     </script>
 </main>
 
