@@ -78,19 +78,20 @@
         renderCategory(data.category);
 
         document.getElementById("searchButton").addEventListener("click", () => {
-            const searchBar = document.getElementById("searchBar").value;
+            const searchBar = document.getElementById("searchBar").value.toLowerCase();
             const categorySelect = document.getElementById("category");
             const selectedCategory = categorySelect.value;
 
             const filteredCategories = data.category.filter(category => {
-                // If nothing is selected or "Semua Status" is selected, show all categories
                 if (selectedCategory === "-1" || selectedCategory === "-") {
                     return true;
                 }
 
-                // Otherwise, filter by selected category
                 return category.name === data.category[selectedCategory].name;
-            });
+            }).map(category => ({
+                name: category.name,
+                subcategory: category.subcategory.filter(subcategory => subcategory.toLowerCase().includes(searchBar))
+            })).filter(category => category.subcategory.length > 0);
 
             renderCategory(filteredCategories);
         });
