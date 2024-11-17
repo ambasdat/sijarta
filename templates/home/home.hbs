@@ -68,12 +68,13 @@
                 <details class="card shadow-xl bg-base-100 p-4 rounded shadow-md">
                     <summary class="font-semibold">${category.name}</summary>
                     <ul class="list-inside list-disc">
-                        ${category.subcategory.map(subcategory => `<li>${subcategory}</li>`).join('')}
+                        ${category.subcategory.map(subcategory => `<li><a href="/home/user">${subcategory}</a></li>`).join('')}
                     </ul>
                 </details>
                 `;
             });
         }
+
 
         renderCategory(data.category);
 

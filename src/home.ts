@@ -46,4 +46,8 @@ app.get('/', (req, res) => {
     res.render('home/home.hbs', { data: JSON.stringify(dataForHome), han : dataForHome });
 });
 
+app.get('/user', (req, res) => {
+    res.render('subcategories/user.hbs')
+});
+
 export default app;
