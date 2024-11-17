@@ -49,5 +49,8 @@ app.get('/', (req, res) => {
 app.get('/user', (req, res) => {
     res.render('subcategories/user.hbs')
 });
+app.get('/worker', (req, res) => {
+    res.render('subcategories/worker.hbs')
+});
 
 export default app;
