@@ -7,7 +7,8 @@ import mypay from './mypay';
 import home from './home';
 import order from './order';
 import testimoni from './testimoni';
-import diskon from './diskon'
+import diskon from './diskon';
+import profile from './profile';
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use('/order', order)
 app.use('/home', home);
 app.use('/testimoni', testimoni);
 app.use('/diskon', diskon);
+app.use('/profile', profile);
 
 app.get('/', (_req, res) => res.render('main', { name: 'World' }));
 
