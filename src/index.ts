@@ -15,6 +15,11 @@ app.engine('.hbs', engine({ extname: '.hbs' }));
 app.set('view engine', '.hbs');
 app.set('views', path.resolve(process.cwd(), 'templates'));
 
+app.use((_, res, next) => {
+  res.locals.layout = 'pekerja';
+  next();
+});
+
 app.use('/auth', auth);
 app.use('/mypay', mypay);
 app.use('/order', order)

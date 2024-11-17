@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html data-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <title>SIJARTA - AMBASDAT</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <nav class="navbar bg-neutral">
+      <div class="flex-1">
+        <a class="btn btn-ghost text-xl">SIJARTA</a>
+        <p>Selamat datang pengguna, {{ nama }}</p>
+      </div>
+      <div class="flex-none">
+        <ul class="menu menu-horizontal px-1">
+          <li><a href="/home">Home</a></li>
+          <li><a href="#">Kelola Pekerjaan Saya</a></li>
+          <li><a href="#">Kelola Status Pekerjaan</a></li>
+          <li><a href="/mypay">MyPay</a></li>
+          <li><a href="/profile">Profile</a></li>
+          <li><a href="/auth/logout">Logout</a></li>
+        </ul>
+      </div>
+    </nav>
+    {{{body}}}
+  </body>
+</html>
