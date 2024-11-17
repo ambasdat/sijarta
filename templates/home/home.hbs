@@ -16,7 +16,7 @@
                     <span class="label-text">Search</span>
                 </div>
                 <label class="input input-primary flex items-center gap-2">
-                    <input id="searchBar" type="text" class="grow" placeholder="Search by name (e.g. Home Cleaning)" />
+                    <input id="searchBar" type="text" class="grow" placeholder="Cari Sub Kategori (Contoh: Daily Cleaning)" />
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 16 16"
@@ -65,11 +65,15 @@
             categoryContainer.innerHTML = ""; // Clear previous results
             data.forEach((category) => {
                 categoryContainer.innerHTML += `
-                <details class="card shadow-xl bg-base-100 p-4 rounded shadow-md">
+                <details class="card shadow-xl bg-base-100 p-4 rounded shadow-md border-b-2 border-b-neutral">
                     <summary class="font-semibold">${category.name}</summary>
-                    <ul class="list-inside list-disc">
-                        ${category.subcategory.map(subcategory => `<li><a href="/home/user">${subcategory}</a></li>`).join('')}
-                    </ul>
+                    <div class="grid gap-2">
+                        ${category.subcategory.map(subcategory => `
+                        <div class="card bg-base-100 p-2 rounded shadow-sm border">
+                            <a href="/home/user" class="block font-medium">${subcategory}</a>
+                        </div>
+                        `).join('')}
+                    </div>
                 </details>
                 `;
             });
