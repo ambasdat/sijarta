@@ -5,7 +5,7 @@ import { engine } from "express-handlebars";
 import auth from "./auth";
 import mypay from "./mypay";
 import home from "./home";
-import order from "./order";
+import pekerjaan from "./pekerjaan";
 import testimoni from "./testimoni";
 import diskon from "./diskon";
 import profile from "./profile";
@@ -19,13 +19,13 @@ app.set("views", path.resolve(process.cwd(), "templates"));
 app.use(urlencoded({ extended: true }));
 
 app.use((_, res, next) => {
-  res.locals.layout = "pengguna";
+  res.locals.layout = "pekerja";
   next();
 });
 
 app.use("/auth", auth);
 app.use("/mypay", mypay);
-app.use("/order", order);
+app.use("/pekerjaan", pekerjaan);
 app.use("/home", home);
 app.use("/testimoni", testimoni);
 app.use("/diskon", diskon);

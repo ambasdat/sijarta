@@ -38,11 +38,11 @@ const jobs = [
 ];
 
 app.get("/", (req, res) => {
-  res.render("order/orders", { jobs: JSON.stringify(jobs) });
+  res.render("pekerjaan/main", { jobs: JSON.stringify(jobs) });
 });
 
-app.get("/jobs", (req, res) => {
-  res.render("order/jobs", { jobs: JSON.stringify(jobs) });
+app.get("/status", (req, res) => {
+  res.render("pekerjaan/status", { jobs: JSON.stringify(jobs) });
 });
 
 export default app;
