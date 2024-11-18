@@ -2,9 +2,22 @@ import express from "express";
 
 const app = express.Router();
 
-app.get("/:userId", (req, res) => {
-  if (req.params.userId === "pekerja") res.render("profile/pekerja");
-  else res.render("profile/pengguna");
+app.get("/pekerja", (req, res) => {
+  res.render("profile/pekerja");
+});
+
+app.post("/pekerja", (req, res) => {
+  console.log(req.body);
+  res.redirect("/profile/pekerja");
+});
+
+app.get("/pengguna", (req, res) => {
+  res.render("profile/pengguna");
+});
+
+app.post("/pengguna", (req, res) => {
+  console.log(req.body);
+  res.redirect("/profile/pengguna");
 });
 
 export default app;

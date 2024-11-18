@@ -27,7 +27,7 @@
           >✕</button>
         </form>
 
-        <form>
+        <form method="POST">
           <h3 class="text-xl font-bold">Update Data</h3>
 
           <label class="form-control">
@@ -35,6 +35,7 @@
               <span class="label-text">Nama</span>
             </div>
             <input
+              value="John Doe"
               name="nama"
               type="text"
               class="input input-bordered bg-neutral"
@@ -46,11 +47,11 @@
               <span class="label-text">Jenis Kelamin</span>
             </div>
             <div>
-              <input type="radio" name="jenisKelamin" id="l" />
+              <input checked type="radio" name="jenisKelamin" id="l" value="L" />
               <label for="l">Laki-laki</label>
             </div>
             <div>
-              <input type="radio" name="jenisKelamin" id="p" />
+              <input type="radio" name="jenisKelamin" id="p" value="P" />
               <label for="p">Perempuan</label>
             </div>
           </label>
@@ -63,6 +64,7 @@
               name="phone"
               type="text"
               class="input input-bordered bg-neutral"
+              value="081234567890"
             />
           </label>
 
@@ -74,6 +76,7 @@
               name="dob"
               type="text"
               class="input input-bordered bg-neutral"
+              value="20/02/2020"
             />
           </label>
 
@@ -85,6 +88,7 @@
               name="address"
               type="text"
               class="input input-bordered bg-neutral"
+              value="Depok"
             />
           </label>
 

@@ -26,6 +26,7 @@ app.get("/register/pekerja", (req, res) => {
 });
 
 app.post("/register/pekerja", (req, res) => {
+  console.log(req.body);
   const phoneExists = req.body.phone === "123";
   const bankExists = req.body.bank === "OVO" && req.body.norek === "123";
   const npwpExists = req.body.npwp === "123";
@@ -41,6 +42,7 @@ app.get("/register/pengguna", (req, res) => {
 });
 
 app.post("/register/pengguna", (req, res) => {
+  console.log(req.body);
   if (req.body.phone === "123")
     res.render("auth/register/pengguna", { phoneExists: true })
   else
