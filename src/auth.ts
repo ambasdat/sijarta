@@ -10,6 +10,13 @@ app.get("/login", (req, res) => {
   res.render("auth/login");
 });
 
+app.post("/login", (req, res) => {
+  if (req.body.phone == "123" && req.body.password == "123")
+    res.redirect("/home")
+  else
+    res.render("auth/login", { error: true });
+});
+
 app.get("/register", (req, res) => {
   res.render("auth/register/main");
 });
