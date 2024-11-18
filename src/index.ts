@@ -20,7 +20,7 @@ app.set("views", path.resolve(process.cwd(), "templates"));
 app.use(urlencoded({ extended: true }));
 
 app.use((_, res, next) => {
-  res.locals.layout = "pekerja";
+  res.locals.layout = "pengguna";
   next();
 });
 
