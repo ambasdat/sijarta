@@ -1,221 +1,130 @@
-<main class="card shadow-xl max-w-screen-xl mx-auto my-24 bg-neutral text-neutral-content">
+<main
+  class="card shadow-xl max-w-screen-xl mx-auto my-24 bg-neutral text-neutral-content"
+>
   <div class="flex w-full flex-col">
-      <div class="stats mx-2 my-2 shadow-xl">
+    <div class="stats mx-2 my-2 shadow-xl">
 
-          <div class="stat">
-            <div class="stat-title">Account balance</div>
-            <div class="stat-value">Rp. 89.900,400</div>
-            <div class="stat-title pt-5">
-              <strong>08123456789</strong>
+      <div class="stat">
+        <div class="stat-title">Account balance</div>
+        <div class="stat-value">Rp. 89.900,400</div>
+        <div class="stat-title pt-5">
+          <strong>08123456789</strong>
+        </div>
+      </div>
+
+      <div class="stat items-end">
+        <div class="stat-figure text-secondary">
+          <div class="avatar online">
+            <div class="w-16 rounded-full">
+              <img
+                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+              />
             </div>
           </div>
-
-          <div class="stat items-end">
-            <div class="stat-figure text-secondary">
-              <div class="avatar online">
-                <div class="w-16 rounded-full">
-                  <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                </div>
-              </div>
-            </div>
-            <div class="items-end">
-              <div class="stat-value text-wrap">
-                Andi Muhammad Adlyn 
-              </div>
-              <div class="stat-title">Fakhreyza Khairi Putra</div>
-            </div>
-            <div class="stat-desc text-secondary text-base">15 November 2024</div>
+        </div>
+        <div class="items-end">
+          <div class="stat-value text-wrap">
+            Andi Muhammad Adlyn
           </div>
-
+          <div class="stat-title">Fakhreyza Khairi Putra</div>
+        </div>
+        <div class="stat-desc text-secondary text-base">15 November 2024</div>
       </div>
 
-      <div class="divider"></div>
+    </div>
 
-      <div class="flex justify-center my-3">
-        <select class="select select-bordered w-full max-w-xs bg-base-100" id="transactionType">
-          <option disabled selected>-- Kategori Transaksi --</option>
-          <option value="topup">TopUp Mypay</option>
-          <option id="paymentOption" value="payment">Payment</option>
-          <option value="transfer">Transfer</option>
-          <option value="withdrawal">Withdrawal</option>
-        </select>
-      </div>
+    <div class="divider"></div>
 
-      <!-- Placeholder untuk form -->
-      <div id="dynamicFormContainer">
-      
-      </div>
+    <div class="flex justify-center my-3">
+      <select
+        class="select select-bordered w-full max-w-xs bg-base-100"
+        id="transactionType"
+      >
+        <option disabled selected>-- Kategori Transaksi --</option>
+        <option value="topup">TopUp Mypay</option>
+        <option id="paymentOption" value="payment">Payment</option>
+        <option value="transfer">Transfer</option>
+        <option value="withdrawal">Withdrawal</option>
+      </select>
+    </div>
+
+    <!-- Placeholder untuk form -->
+    <div id="dynamicFormContainer">
+
+    </div>
 
   </div>
 </main>
 
 <script>
-  // Asumsi role user pekerja
-  const role = 'user'; // Replace dengan role sesungguhnya
-
-  if (role === 'pekerja') {
-    // Hide opsi "Pembayaran" jika role user Pekerja
-    const paymentOption = document.getElementById('paymentOption');
-    if (paymentOption) {
-      paymentOption.style.display = 'none'; // Hide opsi
-    }
-  }
-
-  document.getElementById("transactionType").addEventListener("change", function(event) {
-    const formContainer = document.getElementById("dynamicFormContainer");
-    const selectedOption = event.target.value;
-    
-    // Clear form sebelumnya
-    formContainer.innerHTML = '';
-  
-    // Load form berdasarkan opsi yang dipilih
-    switch (selectedOption) {
-      case "topup":
-        loadTopUpForm();
-        break;
-  
-      case "payment":
-        loadPaymentForm();
-        break;
-  
-      case "transfer":
-        loadTransferForm();
-        break;
-  
-      case "withdrawal":
-        loadWithdrawalForm();
-        break;
-  
-      default:
-        formContainer.innerHTML = ''; // Clear form jika tidak opsi yang dipilih
-        break;
-    }
-  });
-  
-  // Fungsi untuk load TopUpForm
-  function loadTopUpForm() {
-    const formContainer = document.getElementById("dynamicFormContainer");
-    formContainer.innerHTML = `
-    <form class="card-body form-control flex gap-2" action="/topup" method="POST">
-      <h1 class="stat-value">TopUp Mypay</h1>
-
-      <label class="form-control">
-        <div class="label">
-          <span class="label-text">Nominal TopUp</span>
-        </div>
-        <input type="number" name="amount" placeholder="e.g. 100000" class="input input-bordered bg-base-100" required />
-      </label>
-
-      <button type="submit" class="btn btn-outline">TopUp</button>
-    </form>
-    `;
-  }
-  
-  // Fungsi untuk load PaymentForm
-  function loadPaymentForm() {
-    const formContainer = document.getElementById("dynamicFormContainer");
-    formContainer.innerHTML = `
-    <form class="card-body form-control flex gap-2" action="/pay" method="POST">
-      <h1 class="stat-value">Payment</h1>
-      
-      <label class="form-control">
-        <div class="label">
-          <span class="label-text">Pesanan Jasa</span>
-        </div>
-        <select class="select select-secondary w-full" id="serviceSelect" onchange="updatePrice()">
-          <option disabled selected value="">Pilih Pesanan Jasa</option>
-          <option value="500000">Home Cleaning Service</option>
-          <option value="2000000">Home Cleaning Service</option>
-          <option value="300000">Home Cleaning Service</option>
-          <option value="1000000">Home Cleaning Service</option>
-          <option value="1500000">Home Cleaning Service</option>
-        </select>
-      </label>
-
-      <label class="form-control">
-        <div class="label">
-          <span class="label-text">Nominal Tagihan</span>
-        </div>
-
-        <h2 class="stat-value text-md" id="priceDisplay">-</h2>
-      </label>
-
-      <button type="submit" class="btn btn-outline">Pay</button>
-    </form>
-    `;
-  }
-  
-  // Fungsi untuk loadTransferFor
-  function loadTransferForm() {
-    const formContainer = document.getElementById("dynamicFormContainer");
-    formContainer.innerHTML = `
-    <form class="card-body form-control flex gap-2" action="/transfer" method="POST">
-      <h1 class="stat-value">Transfer</h1>
-
-      <label class="form-control">
-        <div class="label">
-          <span class="label-text">No Hp</span>
-        </div>
-        <input type="tel" name="nohp" placeholder="e.g. 0812345678" class="input input-bordered bg-base-100" required />
-      </label>
-
-      <label class="form-control">
-        <div class="label">
-          <span class="label-text">Nominal Transfer</span>
-        </div>
-        <input type="number" name="tf_amount" placeholder="e.g. 100000" class="input input-bordered bg-base-100" required />
-      </label>
-
-      <button type="submit" class="btn btn-outline btn-secondary">Transfer</button>
-    </form>
-    `;
-  }
-  
-  // Fungsi untuk load Withdrawal
-  function loadWithdrawalForm() {
-    const formContainer = document.getElementById("dynamicFormContainer");
-    formContainer.innerHTML = `
-    <form class="card-body form-control flex gap-2" action="/withdraw" method="POST">
-      <h1 class="stat-value">Withdrawal</h1>
-
-      <label class="form-control">
-        <div class="label">
-          <span class="label-text">Pilihan Bank</span>
-        </div>
-        <select class="select select-accent w-full max-w-xs bg-base-100">
-          <option disabled selected>-- Pilih Bank --</option>
-          <option>GoPay</option>
-          <option>OVO mode</option>
-          <option>Virtual Account BCA</option>
-          <option>Virtual Account BNI</option>
-          <option>Virtual Account Mandiri</option>
-        </select>
-      </label>
-
-      <label class="form-control">
-        <div class="label">
-          <span class="label-text">No Rekening</span>
-        </div>
-        <input type="tel" name="norek" placeholder="e.g. 2671090807" class="input input-bordered bg-base-100" required />
-      </label>
-
-      <label class="form-control">
-        <div class="label">
-          <span class="label-text">Nominal Withdraw</span>
-        </div>
-        <input type="number" name="wd_amount" placeholder="e.g. 100000" class="input input-bordered bg-base-100" required />
-      </label>
-
-      <button type="submit" class="btn btn-outline btn-accent">Withdraw</button>
-    </form>
-    `;
-  }
-
-  // Fungsi update price untuk Payment
-  window.updatePrice = function () {
-    const serviceSelect = document.getElementById("serviceSelect");
-    const priceDisplay = document.getElementById("priceDisplay");
-    const selectedValue = serviceSelect.value;
-    priceDisplay.textContent = selectedValue ? `Rp. ${parseInt(selectedValue).toLocaleString()}` : "-";
-  };
+  // Asumsi role user pekerja const role = 'user'; // Replace dengan role
+  sesungguhnya if (role === 'pekerja') { // Hide opsi "Pembayaran" jika role
+  user Pekerja const paymentOption = document.getElementById('paymentOption');
+  if (paymentOption) { paymentOption.style.display = 'none'; // Hide opsi } }
+  document.getElementById("transactionType").addEventListener("change",
+  function(event) { const formContainer =
+  document.getElementById("dynamicFormContainer"); const selectedOption =
+  event.target.value; // Clear form sebelumnya formContainer.innerHTML = ''; //
+  Load form berdasarkan opsi yang dipilih switch (selectedOption) { case
+  "topup": loadTopUpForm(); break; case "payment": loadPaymentForm(); break;
+  case "transfer": loadTransferForm(); break; case "withdrawal":
+  loadWithdrawalForm(); break; default: formContainer.innerHTML = ''; // Clear
+  form jika tidak opsi yang dipilih break; } }); // Fungsi untuk load TopUpForm
+  function loadTopUpForm() { const formContainer =
+  document.getElementById("dynamicFormContainer"); formContainer.innerHTML = `
+  <form class="card-body form-control flex gap-2" action="/topup" method="POST">
+  <h1 class="stat-value">TopUp Mypay</h1> <label class="form-control"> <div
+  class="label"> <span class="label-text">Nominal TopUp</span> </div> <input
+  type="number" name="amount" placeholder="e.g. 100000" class="input
+  input-bordered bg-base-100" required /> </label> <button type="submit"
+  class="btn btn-outline">TopUp</button> </form> `; } // Fungsi untuk load
+  PaymentForm function loadPaymentForm() { const formContainer =
+  document.getElementById("dynamicFormContainer"); formContainer.innerHTML = `
+  <form class="card-body form-control flex gap-2" action="/pay" method="POST">
+  <h1 class="stat-value">Payment</h1> <label class="form-control"> <div
+  class="label"> <span class="label-text">Pesanan Jasa</span> </div> <select
+  class="select select-secondary w-full" id="serviceSelect"
+  onchange="updatePrice()"> <option disabled selected value="">Pilih Pesanan
+  Jasa</option> <option value="500000">Home Cleaning Service</option> <option
+  value="2000000">Home Cleaning Service</option> <option value="300000">Home
+  Cleaning Service</option> <option value="1000000">Home Cleaning
+  Service</option> <option value="1500000">Home Cleaning Service</option>
+  </select> </label> <label class="form-control"> <div class="label"> <span
+  class="label-text">Nominal Tagihan</span> </div> <h2 class="stat-value
+  text-md" id="priceDisplay">-</h2> </label> <button type="submit" class="btn
+  btn-outline">Pay</button> </form> `; } // Fungsi untuk loadTransferFor
+  function loadTransferForm() { const formContainer =
+  document.getElementById("dynamicFormContainer"); formContainer.innerHTML = `
+  <form class="card-body form-control flex gap-2" action="/transfer"
+  method="POST"> <h1 class="stat-value">Transfer</h1> <label
+  class="form-control"> <div class="label"> <span class="label-text">No
+  Hp</span> </div> <input type="tel" name="nohp" placeholder="e.g. 0812345678"
+  class="input input-bordered bg-base-100" required /> </label> <label
+  class="form-control"> <div class="label"> <span class="label-text">Nominal
+  Transfer</span> </div> <input type="number" name="tf_amount" placeholder="e.g.
+  100000" class="input input-bordered bg-base-100" required /> </label> <button
+  type="submit" class="btn btn-outline btn-secondary">Transfer</button> </form>
+  `; } // Fungsi untuk load Withdrawal function loadWithdrawalForm() { const
+  formContainer = document.getElementById("dynamicFormContainer");
+  formContainer.innerHTML = ` <form class="card-body form-control flex gap-2"
+  action="/withdraw" method="POST"> <h1 class="stat-value">Withdrawal</h1>
+  <label class="form-control"> <div class="label"> <span
+  class="label-text">Pilihan Bank</span> </div> <select class="select
+  select-accent w-full max-w-xs bg-base-100"> <option disabled selected>-- Pilih
+  Bank --</option> <option>GoPay</option> <option>OVO mode</option>
+  <option>Virtual Account BCA</option> <option>Virtual Account BNI</option>
+  <option>Virtual Account Mandiri</option> </select> </label> <label
+  class="form-control"> <div class="label"> <span class="label-text">No
+  Rekening</span> </div> <input type="tel" name="norek" placeholder="e.g.
+  2671090807" class="input input-bordered bg-base-100" required /> </label>
+  <label class="form-control"> <div class="label"> <span
+  class="label-text">Nominal Withdraw</span> </div> <input type="number"
+  name="wd_amount" placeholder="e.g. 100000" class="input input-bordered
+  bg-base-100" required /> </label> <button type="submit" class="btn btn-outline
+  btn-accent">Withdraw</button> </form> `; } // Fungsi update price untuk
+  Payment window.updatePrice = function () { const serviceSelect =
+  document.getElementById("serviceSelect"); const priceDisplay =
+  document.getElementById("priceDisplay"); const selectedValue =
+  serviceSelect.value; priceDisplay.textContent = selectedValue ? `Rp.
+  ${parseInt(selectedValue).toLocaleString()}` : "-"; };
 </script>

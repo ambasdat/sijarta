@@ -1,10 +1,12 @@
-<main class="card shadow-xl max-w-screen-md mx-auto mt-24 bg-neutral text-neutral-content">
+<main
+  class="card shadow-xl max-w-screen-md mx-auto mt-24 bg-neutral text-neutral-content"
+>
   <div class="card-body">
     <h2 class="card-title text-3xl font-bold">Okarun</h2>
     <div class="mt-4 grid grid-cols-3">
-      <img 
-        src="https://i.kym-cdn.com/photos/images/newsfeed/002/925/412/9d1.jpeg" 
-        alt="Profile Picture" 
+      <img
+        src="https://i.kym-cdn.com/photos/images/newsfeed/002/925/412/9d1.jpeg"
+        alt="Profile Picture"
         class="rounded-full m-6 w-32 h-32 border-4 border-primary"
       />
 
@@ -30,13 +32,18 @@
     </div>
 
     <div class="card-actions justify-end mt-4">
-      <button class="btn btn-primary" onclick="updateModal.showModal()">Update</button>
+      <button
+        class="btn btn-primary"
+        onclick="updateModal.showModal()"
+      >Update</button>
     </div>
 
     <dialog id="updateModal" class="modal">
       <div class="modal-box" method="POST" onsubmit="console.log('update!')">
         <form method="dialog">
-          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+          <button
+            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          >✕</button>
         </form>
 
         <form>
@@ -46,9 +53,13 @@
             <div class="label">
               <span class="label-text">Nama</span>
             </div>
-            <input name="nama" type="text" class="input input-bordered bg-neutral" />
+            <input
+              name="nama"
+              type="text"
+              class="input input-bordered bg-neutral"
+            />
           </label>
-          
+
           <label class="form-control">
             <div class="label">
               <span class="label-text">Jenis Kelamin</span>
@@ -67,21 +78,33 @@
             <div class="label">
               <span class="label-text">No HP</span>
             </div>
-            <input name="phone" type="text" class="input input-bordered bg-neutral" />
+            <input
+              name="phone"
+              type="text"
+              class="input input-bordered bg-neutral"
+            />
           </label>
 
           <label class="form-control">
             <div class="label">
               <span class="label-text">Tanggal Lahir</span>
             </div>
-            <input name="dob" type="text" class="input input-bordered bg-neutral" />
+            <input
+              name="dob"
+              type="text"
+              class="input input-bordered bg-neutral"
+            />
           </label>
 
           <label class="form-control">
             <div class="label">
               <span class="label-text">Alamat</span>
             </div>
-            <input name="address" type="text" class="input input-bordered bg-neutral" />
+            <input
+              name="address"
+              type="text"
+              class="input input-bordered bg-neutral"
+            />
           </label>
 
           <label class="form-control">
@@ -102,21 +125,33 @@
             <div class="label">
               <span class="label-text">No Rekening</span>
             </div>
-            <input name="norek" type="text" class="input input-bordered bg-neutral" />
+            <input
+              name="norek"
+              type="text"
+              class="input input-bordered bg-neutral"
+            />
           </label>
 
           <label class="form-control">
             <div class="label">
               <span class="label-text">NPWP</span>
             </div>
-            <input name="npwp" type="text" class="input input-bordered bg-neutral" />
+            <input
+              name="npwp"
+              type="text"
+              class="input input-bordered bg-neutral"
+            />
           </label>
 
           <label class="form-control">
             <div class="label">
               <span class="label-text">URL Foto</span>
             </div>
-            <input name="url" type="text" class="input input-bordered bg-neutral" />
+            <input
+              name="url"
+              type="text"
+              class="input input-bordered bg-neutral"
+            />
           </label>
 
           <div class="modal-action">
