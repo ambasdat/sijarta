@@ -1,0 +1,73 @@
+<main class="card shadow-xl max-w-screen-xl mx-auto mt-24 bg-neutral text-neutral-content p-6 space-y-8">
+    <div class="flex justify-center">
+        <div class="grid grid-cols-3 items-end gap-4 w-full max-w-2xl">
+            <!-- Dropdown for "Sub Kategori" -->
+            <label for="subkategori" class="form-control">
+                <div class="label">
+                    <span class="label-text">Sub Kategori</span>
+                </div>
+                <select id="subkategori" name="subkategori" class="select select-primary w-full max-w-xs" required>
+                    <option value="-" disabled selected>Pilih Sub Kategori</option>
+                    <option value="1">Daily Cleaning</option>
+                    <option value="2">Deep Cleaning</option>
+                    <option value="3">Service AC</option>
+                    <option value="4">Massage</option>
+                    <option value="5">Hair Care</option>
+                </select>
+            </label>
+
+            <!-- Dropdown for "Status Pesanan" -->
+            <label for="status" class="form-control">
+                <div class="label">
+                    <span class="label-text">Status</span>
+                </div>
+                <select id="status" name="status" class="select select-secondary w-full max-w-xs" required>
+                    <option value="-" disabled selected>Pilih Status</option>
+                    <option value="1">Menunggu Pembayaran</option>
+                    <option value="2">Mencari Pekerja Terdekat</option>
+                    <option value="3">Pekerja Tiba Di Lokasi</option>
+                    <option value="4">Pelayanan Jasa Sedang Dilakukan</option>
+                    <option value="5">Pesanan Dibatalkan</option>
+                    <option value="6">Pesanan Selesai</option>
+                </select>
+            </label>
+
+            <!-- Search Button -->
+            <button id="searchButton" class="btn btn-warning">Search</button>
+        </div>
+    </div>
+
+    <!-- List of cards -->
+    <div class="grid grid-cols-1 gap-4 w-full my-6">
+        <div class="card shadow-xl bg-base-100 p-4 rounded">
+            <div class="grid grid-cols-2 items-center gap-4">
+                <div>
+                    <p class="font-semibold">Daily Cleaning</p>
+                    <p class="text-sm stat-title p-1">Sesi Layanan: 2 Jam</p>
+                    <p class="text-sm stat-title p-1">Harga: Rp 150,000</p>
+                    <p class="text-sm stat-title p-1">Pekerja: Tia</p>
+                    <p class="text-sm stat-title p-1">Status: Menunggu Pembayaran</p>
+                </div>
+                <div class="flex justify-end">
+                    <button class="btn btn-error text min-w-56">Batalkan</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-xl bg-base-100 p-4 rounded">
+            <div class="grid grid-cols-2 items-center gap-4">
+                <div>
+                    <p class="font-semibold">Deep Cleaning</p>
+                    <p class="text-sm stat-title p-1">Sesi Layanan: 4 Jam</p>
+                    <p class="text-sm stat-title p-1">Harga: Rp 300,000</p>
+                    <p class="text-sm stat-title p-1">Pekerja: Eko</p>
+                    <p class="text-sm stat-title p-1">Status: Pesanan Selesai</p>
+                </div>
+                <div class="flex justify-end">
+                    <button class="btn btn-success min-w-56">Buat Testimoni</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
