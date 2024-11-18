@@ -2,22 +2,22 @@ import express from "express";
 
 const app = express.Router();
 
-app.get("/pekerja", (req, res) => {
+app.get("/pekerja/:pekerjaId", (req, res) => {
   res.render("profile/pekerja");
 });
 
-app.post("/pekerja", (req, res) => {
+app.post("/pekerja/:pekerjaId", (req, res) => {
   console.log(req.body);
-  res.redirect("/profile/pekerja");
+  res.redirect(`/profile/pekerja/${req.query.pekerjaId}`);
 });
 
-app.get("/pengguna", (req, res) => {
+app.get("/pengguna/:penggunaId", (req, res) => {
   res.render("profile/pengguna");
 });
 
-app.post("/pengguna", (req, res) => {
+app.post("/pengguna/:penggunaId", (req, res) => {
   console.log(req.body);
-  res.redirect("/profile/pengguna");
+  res.redirect(`/profile/pengguna/${req.query.penggunaId}`);
 });
 
 export default app;
