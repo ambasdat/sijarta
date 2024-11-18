@@ -8,7 +8,7 @@ app.get("/pekerja/:pekerjaId", (req, res) => {
 
 app.post("/pekerja/:pekerjaId", (req, res) => {
   console.log(req.body);
-  res.redirect(`/profile/pekerja/${req.query.pekerjaId}`);
+  res.redirect(`/profile/pekerja/${req.params.pekerjaId}`);
 });
 
 app.get("/pengguna/:penggunaId", (req, res) => {
@@ -17,7 +17,7 @@ app.get("/pengguna/:penggunaId", (req, res) => {
 
 app.post("/pengguna/:penggunaId", (req, res) => {
   console.log(req.body);
-  res.redirect(`/profile/pengguna/${req.query.penggunaId}`);
+  res.redirect(`/profile/pengguna/${req.params.penggunaId}`);
 });
 
 export default app;
