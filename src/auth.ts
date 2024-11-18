@@ -22,4 +22,8 @@ app.get("/register/pengguna", (req, res) => {
   res.render("auth/register/pengguna");
 });
 
+app.post("/logout", (req, res) => {
+  res.redirect("/auth");
+})
+
 export default app;

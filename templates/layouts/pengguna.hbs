@@ -10,21 +10,23 @@
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
-    <nav class="navbar bg-neutral">
+    <nav class="navbar bg-neutral text-neutral-content shadow-md">
       <div class="flex-1">
-        <a class="btn btn-ghost text-xl">SIJARTA</a>
+        <a href="/" class="btn btn-ghost normal-case text-xl font-bold">SIJARTA</a>
         <p>Selamat datang pengguna, {{nama}}</p>
       </div>
       <div class="flex-none">
-        <ul class="menu menu-horizontal px-1">
+        <ul class="menu menu-horizontal px-1 space-x-2">
           <li><a href="/home">Home</a></li>
           <li><a href="/order">Kelola Pesanan Saya</a></li>
           <li><a href="/diskon">Diskon</a></li>
           <li><a href="/mypay">MyPay</a></li>
           <li><a href="/profile">Profile</a></li>
-          <li><a href="/auth/logout">Logout</a></li>
         </ul>
       </div>
+      <form method="POST" action="/auth/logout" class="m-0">
+        <button class="btn btn-error">Logout</button>
+      </form>
     </nav>
     {{{body}}}
   </body>
