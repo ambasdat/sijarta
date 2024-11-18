@@ -1,99 +1,105 @@
-<main
-  class="card shadow-xl max-w-screen-xl mx-auto my-24 bg-neutral text-neutral-content"
->
-  <div class="flex w-full flex-col">
-    <div class="card-body">
-      <h1 class="stat-value text-center">
-        Homepage
-      </h1>
-    </div>
-
-    <div class="divider"></div>
-
-    <div
-      class="card-body form-control grid grid-cols-[2fr_1fr_1fr] items-end gap-4 w-full"
-    >
-
-      <!-- Search Bar -->
-      <label for="searchBar" class="form-control">
-        <div class="label">
-          <span class="label-text">Search</span>
-        </div>
-        <label class="input input-primary flex items-center gap-2">
-          <input
-            id="searchBar"
-            type="text"
-            class="grow"
-            placeholder="Cari Sub Kategori (Contoh: Daily Cleaning)"
-          />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 16 16"
-            fill="currentColor"
-            class="h-4 w-4 opacity-70"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-              clip-rule="evenodd"
-            />
-          </svg>
-        </label>
-      </label>
-
-      <!-- Dropdown for "Status" -->
-      <label for="status" class="form-control">
-        <div class="label">
-          <span class="label-text">Kategori</span>
+<main class="card shadow-xl max-w-screen-xl mx-auto my-24 bg-neutral text-neutral-content">
+    <div class="flex w-full flex-col">
+        <div class="card-body">
+            <h1 class="stat-value text-center">
+                Homepage
+            </h1>
         </div>
 
-        <select
-          id="category"
-          name="category"
-          class="select select-secondary w-full max-w-xs"
-          required
-        >
-          <option value="-" disabled selected>Pilih Kategori</option>
-          <option value="-1">Semua Kategori</option>
-          {{#each han.category}}
-            <option value="{{@index}}">{{this.name}}</option>
-          {{/each}}
-        </select>
-      </label>
+        <div class="divider"></div>
+        
+        <div class="card-body form-control grid grid-cols-[2fr_1fr_1fr] items-end gap-4 w-full">
 
-      <!-- Search Button -->
-      <button id="searchButton" class="btn btn-warning">Search</button>
+            <!-- Search Bar -->
+            <label for="searchBar" class="form-control">
+                <div class="label">
+                    <span class="label-text">Search</span>
+                </div>
+                <label class="input input-primary flex items-center gap-2">
+                    <input id="searchBar" type="text" class="grow" placeholder="Cari Sub Kategori (Contoh: Daily Cleaning)" />
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 16 16"
+                        fill="currentColor"
+                        class="h-4 w-4 opacity-70">
+                        <path
+                        fill-rule="evenodd"
+                        d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                        clip-rule="evenodd" />
+                    </svg>
+                </label>
+            </label>
+
+            <!-- Dropdown for "Status" -->
+            <label for="status" class="form-control">
+                <div class="label">
+                    <span class="label-text">Kategori</span>
+                </div>
+
+                <select id="category" name="category" class="select select-secondary w-full max-w-xs" required>
+                    <option value="-" disabled selected>Pilih Kategori</option>
+                    <option value="-1">Semua Kategori</option>
+                    {{#each han.category}}
+                    <option value="{{@index}}">{{this.name}}</option>
+                    {{/each}}
+                </select>
+            </label>
+
+            <!-- Search Button -->
+            <button id="searchButton" class="btn btn-warning">Search</button>
+        </div>
+
+        <div class="divider divider-warning px-5">Result</div>
+
+        <!-- Categories Section -->
+        <div id="categoryContainer" class="grid gap-4 p-5">
+            <!-- Dummy data rows will appear here -->
+        </div>
+
     </div>
 
-    <div class="divider divider-warning px-5">Result</div>
+    <script>
+        const data = {{{data}}};
 
-    <!-- Categories Section -->
-    <div id="categoryContainer" class="grid gap-4 p-5">
-      <!-- Dummy data rows will appear here -->
-    </div>
+        function renderCategory(data) {
+            categoryContainer.innerHTML = ""; // Clear previous results
+            data.forEach((category) => {
+                categoryContainer.innerHTML += `
+                <details class="card shadow-xl bg-base-100 p-4 rounded shadow-md border-b-2 border-b-neutral">
+                    <summary class="font-semibold">${category.name}</summary>
+                    <div class="grid gap-2">
+                        ${category.subcategory.map(subcategory => `
+                        <div class="card bg-base-100 p-2 rounded shadow-sm border">
+                            <a href="/home/user" class="block font-medium">${subcategory}</a>
+                        </div>
+                        `).join('')}
+                    </div>
+                </details>
+                `;
+            });
+        }
 
-  </div>
 
-  <script>
-    const data =
-    {{{data}}}; function renderCategory(data) { categoryContainer.innerHTML =
-    ""; // Clear previous results data.forEach((category) => {
-    categoryContainer.innerHTML += ` <details class="card shadow-xl bg-base-100
-    p-4 rounded shadow-md border-b-2 border-b-neutral"> <summary
-    class="font-semibold">${category.name}</summary> <div class="grid gap-2">
-    ${category.subcategory.map(subcategory => ` <div class="card bg-base-100 p-2
-    rounded shadow-sm border"> <a href="/home/user" class="block
-    font-medium">${subcategory}</a> </div> `).join('')} </div> </details> `; });
-    } renderCategory(data.category);
-    document.getElementById("searchButton").addEventListener("click", () => {
-    const searchBar = document.getElementById("searchBar").value.toLowerCase();
-    const categorySelect = document.getElementById("category"); const
-    selectedCategory = categorySelect.value; const filteredCategories =
-    data.category.filter(category => { if (selectedCategory === "-1" ||
-    selectedCategory === "-") { return true; } return category.name ===
-    data.category[selectedCategory].name; }).map(category => ({ name:
-    category.name, subcategory: category.subcategory.filter(subcategory =>
-    subcategory.toLowerCase().includes(searchBar)) })).filter(category =>
-    category.subcategory.length > 0); renderCategory(filteredCategories); });
-  </script>
+        renderCategory(data.category);
+
+        document.getElementById("searchButton").addEventListener("click", () => {
+            const searchBar = document.getElementById("searchBar").value.toLowerCase();
+            const categorySelect = document.getElementById("category");
+            const selectedCategory = categorySelect.value;
+
+            const filteredCategories = data.category.filter(category => {
+                if (selectedCategory === "-1" || selectedCategory === "-") {
+                    return true;
+                }
+
+                return category.name === data.category[selectedCategory].name;
+            }).map(category => ({
+                name: category.name,
+                subcategory: category.subcategory.filter(subcategory => subcategory.toLowerCase().includes(searchBar))
+            })).filter(category => category.subcategory.length > 0);
+
+            renderCategory(filteredCategories);
+        });
+    </script>
 </main>
+

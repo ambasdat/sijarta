@@ -1,106 +1,125 @@
-<main
-  class="card shadow-xl max-w-screen-xl mx-auto my-24 bg-neutral text-neutral-content"
->
-  <div class="flex w-full flex-col">
-    <div class="card-body">
-      <h1 class="stat-value text-center">
-        Pekerjaan Jasa
-      </h1>
-    </div>
-
-    <div class="divider"></div>
-
-    <div
-      class="card-body form-control grid grid-cols-[2fr_1fr_1fr] items-end gap-4 w-full"
-    >
-
-      <!-- Search Bar -->
-      <label for="searchBar" class="form-control">
-        <div class="label">
-          <span class="label-text">Search</span>
-        </div>
-        <label class="input input-primary flex items-center gap-2">
-          <input
-            id="searchBar"
-            type="text"
-            class="grow"
-            placeholder="Search by name, date, etc. (e.g. Daily Cleaning)"
-          />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 16 16"
-            fill="currentColor"
-            class="h-4 w-4 opacity-70"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-              clip-rule="evenodd"
-            />
-          </svg>
-        </label>
-      </label>
-
-      <!-- Dropdown for "Status" -->
-      <label for="status" class="form-control">
-        <div class="label">
-          <span class="label-text">Status</span>
+<main class="card shadow-xl max-w-screen-xl mx-auto my-24 bg-neutral text-neutral-content">
+    <div class="flex w-full flex-col">
+        <div class="card-body">
+            <h1 class="stat-value text-center">
+                Pekerjaan Jasa
+            </h1>
         </div>
 
-        <select
-          id="status"
-          name="status"
-          class="select select-secondary w-full max-w-xs"
-          required
-        >
-          <option value="-" disabled selected>Pilih Status</option>
-          <option value="0">Semua Status</option>
-          <option value="1">Pekerja Tiba Di Lokasi</option>
-          <option value="2">Menunggu Pekerja Berangkat</option>
-          <option value="3">Pelayanan Jasa Sedang Dilakukan</option>
-          <option value="4">Pesanan Dibatalkan</option>
-          <option value="5">Pesanan Selesai</option>
-        </select>
-      </label>
+        <div class="divider"></div>
+        
+        <div class="card-body form-control grid grid-cols-[2fr_1fr_1fr] items-end gap-4 w-full">
 
-      <!-- Search Button -->
-      <button id="searchButton" class="btn btn-warning">Search</button>
+            <!-- Search Bar -->
+            <label for="searchBar" class="form-control">
+                <div class="label">
+                    <span class="label-text">Search</span>
+                </div>
+                <label class="input input-primary flex items-center gap-2">
+                    <input id="searchBar" type="text" class="grow" placeholder="Search by name, date, etc. (e.g. Daily Cleaning)" />
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 16 16"
+                        fill="currentColor"
+                        class="h-4 w-4 opacity-70">
+                        <path
+                        fill-rule="evenodd"
+                        d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                        clip-rule="evenodd" />
+                    </svg>
+                </label>
+            </label>
+
+
+            <!-- Dropdown for "Status" -->
+            <label for="status" class="form-control">
+                <div class="label">
+                    <span class="label-text">Status</span>
+                </div>
+
+                <select id="status" name="status" class="select select-secondary w-full max-w-xs" required>
+                    <option value="-" disabled selected>Pilih Status</option>
+                    <option value="0">Semua Status</option>
+                    <option value="1">Pekerja Tiba Di Lokasi</option>
+                    <option value="2">Menunggu Pekerja Berangkat</option>
+                    <option value="3">Pelayanan Jasa Sedang Dilakukan</option>
+                    <option value="4">Pesanan Dibatalkan</option>
+                    <option value="5">Pesanan Selesai</option>
+                </select>
+            </label>
+        
+            <!-- Search Button -->
+            <button id="searchButton" class="btn btn-warning">Search</button>
+        </div>
+
+        <div class="divider divider-warning px-5">Result</div>
+
+        <!-- Jobs Section -->
+        <div id="jobsContainer" class="grid gap-4 p-5">
+            <!-- Dummy data rows will appear here -->
+        </div>
+
     </div>
-
-    <div class="divider divider-warning px-5">Result</div>
-
-    <!-- Jobs Section -->
-    <div id="jobsContainer" class="grid gap-4 p-5">
-      <!-- Dummy data rows will appear here -->
-    </div>
-
-  </div>
 </main>
 
 <script>
-  // Dummy data const jobs =
-  {{{jobs}}}; // Render jobs dynamically function renderJobs(data) {
-  jobsContainer.innerHTML = ""; // Clear previous results data.forEach((job) =>
-  { jobsContainer.innerHTML += ` <div class="card shadow-xl bg-base-100 p-4
-  rounded shadow-md grid grid-cols-3 items-center gap-1"> <div> <p
-  class="font-semibold">${job.subkategori}</p> <p class="text-sm stat-title
-  p-1">Tgl pemesanan: ${job.tanggalPemesanan}</p> <p class="text-sm stat-title
-  p-1">Tgl pekerjaan: ${job.tanggalPekerjaan}</p> </div> <div> <p
-  class="font-semibold">${job.namaPelanggan}</p> </div> <div class="grid
-  grid-cols-2 items-center justify-between gap-4"> <p
-  class="font-bold">${job.totalBiaya}</p> <div class="flex flex-col"> <p
-  class="font-semibold text-center">${job.statusPesanan}</p> <button class="btn
-  btn-warning">Update Status</button> </div> </div> </div> `; }); } // Initial
-  render (display all jobs initially) renderJobs(jobs); // Status code mapping
-  const statusMapping = { 1: "Pekerja Tiba Di Lokasi", 2: "Menunggu Pekerja
-  Berangkat", 3: "Pelayanan Jasa Sedang Dilakukan", 4: "Pesanan Dibatalkan", 5:
-  "Pesanan Selesai" }; // Search functionality
-  document.getElementById("searchButton").addEventListener("click", () => {
-  const statusSelect = document.getElementById("status"); const selectedStatus =
-  statusSelect.value; // If nothing is selected or "Semua Status" is selected,
-  show all jobs const filteredJobs = jobs.filter((job) => { // Show all jobs if
-  no selection or "Semua Status" is selected if (selectedStatus === "0" ||
-  selectedStatus === "-") { return true; } // Otherwise, filter by selected
-  status return job.statusPesanan === statusMapping[selectedStatus]; });
-  renderJobs(filteredJobs); });
+    // Dummy data
+    const jobs = {{{jobs}}};
+
+    // Render jobs dynamically
+    function renderJobs(data) {
+        jobsContainer.innerHTML = ""; // Clear previous results
+        data.forEach((job) => {
+            jobsContainer.innerHTML += `
+            <div class="card shadow-xl bg-base-100 p-4 rounded shadow-md grid grid-cols-3 items-center gap-1">
+                <div>
+                    <p class="font-semibold">${job.subkategori}</p>
+                    <p class="text-sm stat-title p-1">Tgl pemesanan: ${job.tanggalPemesanan}</p>
+                    <p class="text-sm stat-title p-1">Tgl pekerjaan: ${job.tanggalPekerjaan}</p>
+                </div>
+                <div>
+                    <p class="font-semibold">${job.namaPelanggan}</p>
+                </div>
+                <div class="grid grid-cols-2 items-center justify-between gap-4">
+                    <p class="font-bold">${job.totalBiaya}</p>
+                    <div class="flex flex-col">
+                        <p class="font-semibold text-center">${job.statusPesanan}</p>
+                        <button class="btn btn-warning">Update Status</button>
+                    </div>
+                </div>
+            </div>
+            `;
+        });
+    }
+
+    // Initial render (display all jobs initially)
+    renderJobs(jobs);
+
+    // Status code mapping
+    const statusMapping = {
+        1: "Pekerja Tiba Di Lokasi",
+        2: "Menunggu Pekerja Berangkat",
+        3: "Pelayanan Jasa Sedang Dilakukan",
+        4: "Pesanan Dibatalkan",
+        5: "Pesanan Selesai"
+    };
+
+    // Search functionality
+    document.getElementById("searchButton").addEventListener("click", () => {
+        const statusSelect = document.getElementById("status");
+        const selectedStatus = statusSelect.value;
+
+        // If nothing is selected or "Semua Status" is selected, show all jobs
+        const filteredJobs = jobs.filter((job) => {
+            // Show all jobs if no selection or "Semua Status" is selected
+            if (selectedStatus === "0" || selectedStatus === "-") {
+                return true;
+            }
+
+            // Otherwise, filter by selected status
+            return job.statusPesanan === statusMapping[selectedStatus];
+        });
+
+        renderJobs(filteredJobs);
+    });
 </script>
