@@ -9,6 +9,7 @@ import order from "./order";
 import testimoni from "./testimoni";
 import diskon from "./diskon";
 import profile from "./profile";
+import pemesanan from "./pemesanan";
 
 const app = express();
 
@@ -18,7 +19,7 @@ app.set("views", path.resolve(process.cwd(), "templates"));
 app.use(urlencoded({ extended: true }));
 
 app.use((_, res, next) => {
-  res.locals.layout = "pekerja";
+  res.locals.layout = "pengguna";
   next();
 });
 
@@ -29,6 +30,7 @@ app.use("/home", home);
 app.use("/testimoni", testimoni);
 app.use("/diskon", diskon);
 app.use("/profile", profile);
+app.use("/pemesanan", pemesanan);
 
 app.get("/", (_req, res) => {
   const isLoggedIn = false; // ubah dengan logic
