@@ -10,6 +10,7 @@ import testimoni from "./testimoni";
 import diskon from "./diskon";
 import profile from "./profile";
 import pemesanan from "./pemesanan";
+import subkategori from "./subkategori";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use("/testimoni", testimoni);
 app.use("/diskon", diskon);
 app.use("/profile", profile);
 app.use("/pemesanan", pemesanan);
+app.use("/subkategori", subkategori);
 
 app.get("/", (_req, res) => {
   const isLoggedIn = false; // ubah dengan logic
