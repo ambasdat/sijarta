@@ -43,11 +43,7 @@ Follow these steps to set up and run the SIJARTA application locally:
 
 5. **Prepare the Database**
 
-   Before starting the application, you need to set up the database schema and dummy data. Run the following command:
-
-   > [!WARNING]
-   > 
-   > Ensure the target database is correct as this process overwrites the entire database.
+   Before starting the application, you need to set up the database schema and dummy data. **Ensure the target database is correct as this process overwrites the entire database**. Run the following command:
 
    ```
    npm run prepare
