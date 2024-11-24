@@ -1,0 +1,202 @@
+DROP TABLE IF EXISTS "USER" CASCADE;
+DROP TABLE IF EXISTS "PELANGGAN" CASCADE;
+DROP TABLE IF EXISTS "PEKERJA" CASCADE;
+DROP TABLE IF EXISTS "KATEGORI_TR_MYPAY" CASCADE;
+DROP TABLE IF EXISTS "TR_MYPAY" CASCADE;
+DROP TABLE IF EXISTS "KATEGORI_JASA" CASCADE;
+DROP TABLE IF EXISTS "PEKERJA_KATEGORI_JASA" CASCADE;
+DROP TABLE IF EXISTS "SUBKATEGORI_JASA" CASCADE;
+DROP TABLE IF EXISTS "SESI_LAYANAN" CASCADE;
+DROP TABLE IF EXISTS "DISKON" CASCADE;
+DROP TABLE IF EXISTS "VOUCHER" CASCADE;
+DROP TABLE IF EXISTS "PROMO" CASCADE;
+DROP TABLE IF EXISTS "METODE_BAYAR" CASCADE;
+DROP TABLE IF EXISTS "TR_PEMBELIAN_VOUCHER" CASCADE;
+DROP TABLE IF EXISTS "TR_PEMESANAN_JASA" CASCADE;
+DROP TABLE IF EXISTS "STATUS_PESANAN" CASCADE;
+DROP TABLE IF EXISTS "TR_PEMESANAN_STATUS" CASCADE;
+DROP TABLE IF EXISTS "TESTIMONI" CASCADE;
+
+-- 1
+CREATE TABLE "USER" (
+  "Id" UUID DEFAULT GEN_RANDOM_UUID(), 
+  "Nama" VARCHAR, 
+  "JenisKelamin" CHAR(1) CHECK (
+    "JenisKelamin" = 'L' 
+    OR "JenisKelamin" = 'P'
+  ), 
+  "NoHP" VARCHAR, 
+  "Pwd" VARCHAR, 
+  "TglLahir" DATE, 
+  "Alamat" VARCHAR, 
+  "SaldoMyPay" DECIMAL, 
+  PRIMARY KEY ("Id")
+);
+
+-- 2
+CREATE TABLE "PELANGGAN" (
+  "Id" UUID UNIQUE, 
+  "Level" VARCHAR, 
+  FOREIGN KEY ("Id") REFERENCES "USER" ("Id")
+);
+
+-- 3
+CREATE TABLE "PEKERJA" (
+  "Id" UUID UNIQUE, 
+  "NamaBank" VARCHAR, 
+  "NomorRekening" VARCHAR, 
+  "NPWP" VARCHAR UNIQUE, 
+  "LinkFoto" VARCHAR, 
+  "Rating" FLOAT, 
+  "JmlPesananSelesai" INT, 
+  FOREIGN KEY ("Id") REFERENCES "USER" ("Id")
+);
+
+-- 5
+CREATE TABLE "KATEGORI_TR_MYPAY" (
+  "Id" UUID DEFAULT GEN_RANDOM_UUID(), 
+  "Nama" VARCHAR, 
+  PRIMARY KEY ("Id")
+);
+
+-- 4
+CREATE TABLE "TR_MYPAY" (
+  "Id" UUID DEFAULT GEN_RANDOM_UUID(), 
+  "UserId" UUID, 
+  "Tgl" DATE, 
+  "Nominal" DECIMAL, 
+  "KategoriId" UUID, 
+  PRIMARY KEY ("Id"), 
+  FOREIGN KEY ("UserId") REFERENCES "USER" ("Id"), 
+  FOREIGN KEY ("KategoriId") REFERENCES "KATEGORI_TR_MYPAY" ("Id")
+);
+
+-- 6
+CREATE TABLE "KATEGORI_JASA" (
+  "Id" UUID DEFAULT GEN_RANDOM_UUID(), 
+  "NamaKategori" VARCHAR, 
+  PRIMARY KEY("Id")
+);
+
+-- 7
+CREATE TABLE "PEKERJA_KATEGORI_JASA" (
+  "PekerjaId" UUID, 
+  "KategoriJasaId" UUID, 
+  FOREIGN KEY ("PekerjaId") REFERENCES "PEKERJA" ("Id"), 
+  FOREIGN KEY ("KategoriJasaId") REFERENCES "KATEGORI_JASA" ("Id")
+);
+
+-- 8
+CREATE TABLE "SUBKATEGORI_JASA" (
+  "Id" UUID, 
+  "NamaSubkategori" VARCHAR, 
+  "Deskripsi" TEXT, 
+  "KategoriJasaId" UUID, 
+  PRIMARY KEY ("Id"), 
+  FOREIGN KEY ("KategoriJasaId") REFERENCES "KATEGORI_JASA" ("Id")
+);
+
+-- 9
+CREATE TABLE "SESI_LAYANAN" (
+  "SubkategoriId" UUID, 
+  "Sesi" INT, 
+  "Harga" DECIMAL, 
+  PRIMARY KEY ("SubkategoriId", "Sesi"), 
+  FOREIGN KEY ("SubkategoriId") REFERENCES "SUBKATEGORI_JASA" ("Id")
+);
+
+-- 10
+CREATE TABLE "DISKON" (
+  "Kode" VARCHAR(50), 
+  "Potongan" DECIMAL NOT NULL CHECK ("Potongan" >= 0), 
+  "MinTrPemesanan" INT NOT NULL CHECK ("MinTrPemesanan" >= 0), 
+  PRIMARY KEY ("Kode")
+);
+
+-- 11
+CREATE TABLE "VOUCHER" (
+  "Kode" VARCHAR, 
+  "JmlHariBerlaku" INT NOT NULL CHECK ("JmlHariBerlaku" >= 0), 
+  "KuotaPenggunaan" INT, 
+  "Harga" DECIMAL NOT NULL CHECK ("Harga" >= 0), 
+  PRIMARY KEY ("Kode"), 
+  FOREIGN KEY ("Kode") REFERENCES "DISKON" ("Kode")
+);
+
+-- 12
+CREATE TABLE "PROMO" (
+  "Kode" VARCHAR, 
+  "TglAkhirBerlaku" DATE NOT NULL, 
+  PRIMARY KEY ("Kode"), 
+  FOREIGN KEY ("Kode") REFERENCES "DISKON" ("Kode")
+);
+
+-- 15
+CREATE TABLE "METODE_BAYAR" (
+  "Id" UUID DEFAULT GEN_RANDOM_UUID(), 
+  "Nama" VARCHAR NOT NULL, 
+  PRIMARY KEY("Id")
+);
+
+-- 13
+CREATE TABLE "TR_PEMBELIAN_VOUCHER" (
+  "Id" UUID DEFAULT GEN_RANDOM_UUID(), 
+  "TglAwal" DATE NOT NULL, 
+  "TglAkhir" DATE NOT NULL, 
+  "TelahDigunakan" INT NOT NULL CHECK ("TelahDigunakan" >= 0), 
+  "IdPelanggan" UUID, 
+  "IdVoucher" VARCHAR, 
+  "IdMetodeBayar" UUID, 
+  PRIMARY KEY ("Id"), 
+  FOREIGN KEY ("IdPelanggan") REFERENCES "PELANGGAN" ("Id"), 
+  FOREIGN KEY ("IdVoucher") REFERENCES "VOUCHER" ("Kode"), 
+  FOREIGN KEY ("IdMetodeBayar") REFERENCES "METODE_BAYAR" ("Id")
+);
+
+-- 14
+CREATE TABLE "TR_PEMESANAN_JASA" (
+  "Id" UUID DEFAULT GEN_RANDOM_UUID(), 
+  "TglPemesanan" DATE NOT NULL, 
+  "TglPekerjaan" DATE NOT NULL, 
+  "WaktuPekerjaan" TIMESTAMP NOT NULL, 
+  "TotalBiaya" DECIMAL CHECK ("TotalBiaya" >= 0) NOT NULL, 
+  "IdPelanggan" UUID, 
+  "IdPekerja" UUID, 
+  "IdKategoriJasa" UUID, 
+  "Sesi" INT, 
+  "IdDiskon" VARCHAR(50), 
+  "IdMetodeBayar" UUID, 
+  PRIMARY KEY("Id"), 
+  FOREIGN KEY("IdPelanggan") REFERENCES "PELANGGAN"("Id"), 
+  FOREIGN KEY("IdPekerja") REFERENCES "PEKERJA"("Id"), 
+  FOREIGN KEY("Sesi", "IdKategoriJasa") REFERENCES "SESI_LAYANAN"("Sesi", "SubkategoriId"), 
+  FOREIGN KEY("IdDiskon") REFERENCES "DISKON"("Kode"), 
+  FOREIGN KEY("IdMetodeBayar") REFERENCES "METODE_BAYAR"("Id")
+);
+
+-- 16
+CREATE TABLE "STATUS_PESANAN" (
+  "Id" UUID DEFAULT GEN_RANDOM_UUID(), 
+  "Status" VARCHAR(50) NOT NULL, 
+  PRIMARY KEY ("Id")
+);
+
+-- 17
+CREATE TABLE "TR_PEMESANAN_STATUS" (
+  "IdTrPemesanan" UUID, 
+  "IdStatus" UUID, 
+  "TglWaktu" TIMESTAMP NOT NULL, 
+  PRIMARY KEY ("IdTrPemesanan", "IdStatus"), 
+  FOREIGN KEY ("IdTrPemesanan") REFERENCES "TR_PEMESANAN_JASA" ("Id"), 
+  FOREIGN KEY ("IdStatus") REFERENCES "STATUS_PESANAN" ("Id")
+);
+
+-- 18
+CREATE TABLE "TESTIMONI" (
+  "IdTrPemesanan" UUID, 
+  "Tgl" DATE, 
+  "Teks" TEXT, 
+  "Rating" INT NOT NULL DEFAULT 0, 
+  PRIMARY KEY ("IdTrPemesanan", "Tgl"), 
+  FOREIGN KEY ("IdTrPemesanan") REFERENCES "TR_PEMESANAN_JASA" ("Id")
+);
