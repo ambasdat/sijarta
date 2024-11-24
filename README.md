@@ -35,7 +35,25 @@ Follow these steps to set up and run the SIJARTA application locally:
    npm install
    ```
 
-4. **Start the Development Server**
+4. **Set Up Environment Variables**
+
+   - Locate the .env.example file in the root directory.
+   - Create a new file named .env and copy the contents of .env.example into it.
+   - Update the file with your specific configuration values.
+
+5. **Prepare the Database**
+
+   Before starting the application, you need to set up the database schema and dummy data. Run the following command:
+
+   > [!WARNING]
+   > 
+   > Ensure the target database is correct as this process overwrites the entire database.
+
+   ```
+   npm run prepare
+   ```
+
+6. **Start the Development Server**
 
    Run the following command to launch the development server:
 
@@ -43,6 +61,6 @@ Follow these steps to set up and run the SIJARTA application locally:
    npm run dev
    ```
 
-5. **Open the Application**
+7. **Open the Application**
 
    Once the server is running, open your browser and navigate to the URL displayed in the terminal (http://localhost:3000) to view the application. 🎉
