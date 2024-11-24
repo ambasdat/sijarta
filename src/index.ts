@@ -1,6 +1,7 @@
 import express, { urlencoded }  from "express";
 import path from "path";
 import { engine } from "express-handlebars";
+import client from "./db";
 
 import auth from "./auth";
 import mypay from "./mypay";
@@ -39,4 +40,7 @@ app.get("/", (_req, res) => {
   res.redirect(isLoggedIn ? "/home" : "/auth")
 });
 
-app.listen(3000, () => console.log("http://localhost:3000"));
+(async () => {
+  await client.connect();
+  app.listen(3000, () => console.log("http://localhost:3000"));
+})()

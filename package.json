@@ -2,7 +2,7 @@
   "name": "@ambasdat/sijarta",
   "version": "0.0.0",
   "scripts": {
-    "dev": "tsx watch --include templates src/index.ts"
+    "dev": "tsx watch --env-file=.env --include=templates src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -11,12 +11,14 @@
   "dependencies": {
     "express": "^4.21.1",
     "express-handlebars": "^8.0.1",
-    "handlebars": "^4.7.8"
+    "handlebars": "^4.7.8",
+    "pg": "^8.13.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
     "@types/express-handlebars": "^6.0.2",
     "@types/node": "^22.9.0",
+    "@types/pg": "^8.11.10",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"
   }
