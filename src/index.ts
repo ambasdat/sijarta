@@ -1,4 +1,4 @@
-import express, { urlencoded }  from "express";
+import express, { json, urlencoded }  from "express";
 import path from "path";
 import { engine } from "express-handlebars";
 import client from "./db";
@@ -18,6 +18,7 @@ const app = express();
 app.engine(".hbs", engine({ extname: ".hbs" }));
 app.set("view engine", ".hbs");
 app.set("views", path.resolve(process.cwd(), "templates"));
+app.use(json());
 app.use(urlencoded({ extended: true }));
 
 app.use((_, res, next) => {
