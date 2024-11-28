@@ -1,4 +1,5 @@
 import express from "express";
+import client from "./db";
 
 const app = express.Router();
 
@@ -10,11 +11,25 @@ app.get("/login", (req, res) => {
   res.render("auth/login");
 });
 
-app.post("/login", (req, res) => {
-  if (req.body.phone == "123" && req.body.password == "123")
-    res.redirect("/home")
-  else
-    res.render("auth/login", { error: true });
+app.post("/login", async (req, res) => {
+  const query = await client.query(
+    'SELECT * FROM "USER" WHERE "NoHP" = $1',
+    [req.body.phone]
+  );
+
+  if (query.rowCount == 0) {
+    return res.render("auth/login", { error: true });
+  }
+
+  const row = query.rows[0];
+
+  if (row.Pwd != req.body.password) {
+    return res.render("auth/login", { error: true });
+  }
+
+  res.cookie("userid", row.Id);
+
+  res.redirect("/home");
 });
 
 app.get("/register", (req, res) => {
@@ -50,6 +65,7 @@ app.post("/register/pengguna", (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
+  res.clearCookie("userid");
   res.redirect("/auth");
 })
 
