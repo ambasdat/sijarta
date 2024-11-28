@@ -40,16 +40,21 @@ app.get("/register/pekerja", (req, res) => {
   res.render("auth/register/pekerja");
 });
 
-app.post("/register/pekerja", (req, res) => {
-  console.log(req.body);
-  const phoneExists = req.body.phone === "123";
-  const bankExists = req.body.bank === "OVO" && req.body.norek === "123";
-  const npwpExists = req.body.npwp === "123";
+app.post("/register/pekerja", async (req, res) => {
+  const rows = await client.query(
+    `INSERT INTO "USER" ("Nama", "JenisKelamin", "NoHP", "Pwd", "TglLahir", "Alamat", "SaldoMyPay")
+     VALUES ($1, $2, $3, $4, $5, $6, 0)
+     RETURNING "Id"`,
+    [req.body.nama, req.body.jenisKelamin, req.body.phone, req.body.password, req.body.dob, req.body.address]
+  );
 
-  if (phoneExists || bankExists || npwpExists)
-    res.render("auth/register/pekerja", { phoneExists, bankExists, npwpExists })
-  else
-    res.redirect("/auth/login");
+  await client.query(
+    `INSERT INTO "PEKERJA" ("Id", "NamaBank", "NomorRekening", "NPWP", "LinkFoto")
+     VALUES ($1, $2, $3, $4, $5)`,
+    [rows.rows[0].Id, req.body.bank, req.body.norek, req.body.npwp, req.body.url]
+  );
+
+  res.redirect("/auth/login");
 })
 
 app.get("/register/pengguna", (req, res) => {
