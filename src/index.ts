@@ -15,7 +15,18 @@ import subkategori from "./subkategori";
 
 const app = express();
 
-app.engine(".hbs", engine({ extname: ".hbs" }));
+const hbsHelpers = {
+  range: function (start: number, end: number) {
+    const rangeArray = [];
+    for (let i = start; i < end; i++) {
+      rangeArray.push(i);
+    }
+    return rangeArray;
+  },
+  gt: (a: number, b: number) => a > b, 
+};
+
+app.engine(".hbs", engine({ extname: ".hbs", helpers: hbsHelpers,}));
 app.set("view engine", ".hbs");
 app.set("views", path.resolve(process.cwd(), "templates"));
 app.use(urlencoded({ extended: true }));

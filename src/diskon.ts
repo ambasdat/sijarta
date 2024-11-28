@@ -1,63 +1,38 @@
 import express from "express";
+import client from "./db";
 
 const app = express.Router();
 
-app.get("/", (req, res) => {
-  const vouchers = [
-    {
-      kode: "VOUCHER01",
-      potongan: 50000,
-      minTransaksi: 100000,
-      jumlahHari: 30,
-      kuotaPenggunaan: 100,
-      harga: 150000,
-    },
-    {
-      kode: "VOUCHER02",
-      potongan: 30000,
-      minTransaksi: 50000,
-      jumlahHari: 15,
-      kuotaPenggunaan: 200,
-      harga: 100000,
-    },
-    {
-      kode: "VOUCHER03",
-      potongan: 25000,
-      minTransaksi: 70000,
-      jumlahHari: 60,
-      kuotaPenggunaan: 50,
-      harga: 120000,
-    },
-    {
-      kode: "VOUCHER04",
-      potongan: 100000,
-      minTransaksi: 500000,
-      jumlahHari: 90,
-      kuotaPenggunaan: 20,
-      harga: 500000,
-    },
-  ];
+app.get("/", async (req, res): Promise<void> => {
+  try {
+    const promosQuery = `
+      SELECT P."Kode", P."TglAkhirBerlaku"
+      FROM "PROMO" P
+      JOIN "DISKON" D ON P."Kode" = D."Kode"
+    `;
+    const promosResult = await client.query(promosQuery);
 
-  const promos = [
-    {
-      kode: "PROMO01",
-      tanggalAkhir: "2024-12-31",
-    },
-    {
-      kode: "PROMO02",
-      tanggalAkhir: "2024-11-30",
-    },
-    {
-      kode: "PROMO03",
-      tanggalAkhir: "2024-10-15",
-    },
-    {
-      kode: "PROMO04",
-      tanggalAkhir: "2024-09-25",
-    },
-  ];
+    const vouchersQuery = `
+      SELECT 
+        V."Kode",
+        D."Potongan",
+        D."MinTrPemesanan",
+        V."JmlHariBerlaku",
+        V."KuotaPenggunaan",
+        V."Harga"
+      FROM "VOUCHER" V
+      JOIN "DISKON" D ON V."Kode" = D."Kode"
+    `;
+    const vouchersResult = await client.query(vouchersQuery);
 
-  res.render("diskon/main", { vouchers, promos });
+    const promos = promosResult.rows;
+    const vouchers = vouchersResult.rows;
+
+    res.render("diskon/main", { promos, vouchers });
+  } catch (error) {
+    console.error("Error fetching promos and vouchers:", error);
+    res.status(500).send("An error occurred while fetching discounts.");
+  }
 });
 
 export default app;

@@ -1,9 +1,8 @@
-<main
-  class="card shadow-xl max-w-screen-xl mx-auto my-24 bg-neutral text-neutral-content"
->
-  <form class="card-body form-control flex gap-2">
-    <h1 class="text-3xl">Testimoni</h1>
-
+<main class="card shadow-xl max-w-screen-xl mx-auto mt-24 bg-neutral text-neutral-content p-6 space-y-8">
+  {{#if isCreate}}
+  <!-- CREATE -->
+  <h1 class="text-2xl font-bold mb-4">Buat Testimoni</h1>
+  <form action="/testimoni/{{IdTrPemesanan}}" method="POST" class="space-y-4">
     <label class="form-control">
       <div class="label">
         <span class="label-text text-neutral-content">Rating</span>
@@ -14,6 +13,7 @@
           name="rating"
           value="1"
           class="mask mask-star-2 bg-orange-400"
+          checked
         />
         <input
           type="radio"
@@ -71,21 +71,43 @@
         />
       </div>
     </label>
-
-    <label class="form-control">
-      <div class="label">
-        <span class="label-text text-neutral-content">Komentar</span>
-      </div>
+    <div class="form-control">
+      <label class="label">
+        <span class="label-text">Komentar</span>
+      </label>
       <textarea
-        class="textarea textarea-bordered h-24 bg-neutral-focus text-neutral-content"
-        name="comment"
-        placeholder="Tulis komentar Anda di sini..."
+        name="teks"
+        class="textarea textarea-primary w-full"
+        rows="5"
         required
       ></textarea>
-    </label>
-
-    <div class="card-actions justify-end mt-4">
-      <button class="btn btn-primary">Submit</button>
     </div>
+    <button type="submit" class="btn btn-success">Kirim Testimoni</button>
   </form>
+  {{else}}
+  <!-- READ -->
+  <h1 class="text-2xl font-bold mb-4">Testimoni</h1>
+  <div class="grid grid-cols-1 gap-4">
+    {{#each testimoni}}
+    <div class="card shadow-xl bg-base-100 p-4 rounded">
+      <p class="font-semibold">
+        Tanggal: 
+        {{this.Tgl}}
+      </p>
+      
+      <strong class="text-sm pt-3">
+        Rating:
+      </strong>
+      <div class="rating rating-lg gap-1">
+        {{#each (range 0 this.Rating)}} 
+        <div class="mask mask-star-2 bg-orange-400 size-10">&nbsp;</div>
+        {{/each}}
+      </div>
+      <p class="text-sm pt-6"><strong>Komentar:</strong></p>
+      <p>{{this.Teks}}</p>
+    </div>
+    {{/each}}
+  </div>
+
+  {{/if}}
 </main>

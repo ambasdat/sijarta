@@ -18,31 +18,31 @@
         <tbody>
           {{#each vouchers}}
             <tr>
-              <td class="font-medium">{{kode}}</td>
-              <td>Rp {{potongan}}</td>
-              <td>Rp {{minTransaksi}}</td>
-              <td>{{jumlahHari}} hari</td>
-              <td>{{kuotaPenggunaan}}x</td>
-              <td>Rp {{harga}}</td>
+              <td class="font-medium">{{this.Kode}}</td>
+              <td>Rp {{this.Potongan}}</td>
+              <td>Rp {{this.MinTrPemesanan}}</td>
+              <td>{{this.JmlHariBerlaku}} hari</td>
+              <td>{{this.KuotaPenggunaan}}x</td>
+              <td>Rp {{this.Harga}}</td>
               <td>
                 <button
                   class="btn btn-primary btn-sm"
-                  onclick="document.getElementById('modal_{{kode}}').showModal()"
+                  onclick="document.getElementById('modal_{{this.Kode}}').showModal()"
                 >
                   Beli
                 </button>
 
                 {{!-- <dialog --}}
-                {{!--   id="modal_{{kode}}" --}}
+                {{!--   id="modal_{{this.Kode}}" --}}
                 {{!--   class="modal modal-bottom sm:modal-middle" --}}
                 {{!-- > --}}
                 {{!--   <div class="modal-box text-center"> --}}
                 {{!--     <h3 class="font-bold text-2xl mb-4">SUKSES</h3> --}}
                 {{!--     <p> --}}
                 {{!--       Voucher ini akan berlaku hingga tanggal --}}
-                {{!--       {{jumlahHari}} --}}
+                {{!--       {{this.JmlHariBerlaku}} --}}
                 {{!--       dengan kuota penggunaan sebanyak --}}
-                {{!--       {{kuotaPenggunaan}} --}}
+                {{!--       {{this.KuotaPenggunaan}} --}}
                 {{!--       kali. --}}
                 {{!--     </p> --}}
                 {{!--     <div class="modal-action justify-center"> --}}
@@ -54,7 +54,7 @@
                 {{!-- </dialog> --}}
 
                 <dialog
-                  id="modal_{{kode}}"
+                  id="modal_{{this.Kode}}"
                   class="modal modal-bottom sm:modal-middle"
                 >
                   <div class="modal-box text-center">
@@ -91,8 +91,8 @@
         <tbody>
           {{#each promos}}
             <tr>
-              <td class="font-medium">{{kode}}</td>
-              <td>{{tanggalAkhir}}</td>
+              <td class="font-medium">{{this.Kode}}</td>
+              <td>{{this.TglAkhirBerlaku}}</td>
             </tr>
           {{/each}}
         </tbody>
