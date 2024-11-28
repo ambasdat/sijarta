@@ -61,12 +61,20 @@ app.get("/register/pengguna", (req, res) => {
   res.render("auth/register/pengguna");
 });
 
-app.post("/register/pengguna", (req, res) => {
-  console.log(req.body);
-  if (req.body.phone === "123")
-    res.render("auth/register/pengguna", { phoneExists: true })
-  else
-    res.redirect("/auth/login")
+app.post("/register/pengguna", async (req, res) => {
+  const rows = await client.query(
+    `INSERT INTO "USER" ("Nama", "JenisKelamin", "NoHP", "Pwd", "TglLahir", "Alamat", "SaldoMyPay")
+     VALUES ($1, $2, $3, $4, $5, $6, 0)
+     RETURNING "Id"`,
+    [req.body.nama, req.body.jenisKelamin, req.body.phone, req.body.password, req.body.dob, req.body.address]
+  );
+
+  await client.query(
+    `INSERT INTO "PELANGGAN" ("Id", "Level") VALUES ($1, 0)`,
+    [rows.rows[0].Id]
+  );
+
+  res.redirect("/auth/login")
 });
 
 app.post("/logout", (req, res) => {
