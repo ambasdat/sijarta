@@ -35,17 +35,17 @@ import { createInterface } from "readline/promises"
 
   console.log("[i] Executing DDL Schema");
 
-  const ddl = readFileSync(join(__dirname, "table.sql")).toString();
+  const ddl = readFileSync(join(__dirname, "..", "sql", "00-table.sql")).toString();
   await client.query(ddl);
 
   console.log("[i] Inserting Dummy Data");
 
-  const dummy = readFileSync(join(__dirname, "dummy.sql")).toString();
+  const dummy = readFileSync(join(__dirname, "..", "sql", "01-dummy.sql")).toString();
   await client.query(dummy);
 
   console.log("[i] Creating Triggers")
 
-  const triggers = readFileSync(join(__dirname, "triggers.sql")).toString();
+  const triggers = readFileSync(join(__dirname, "..", "sql", "02-triggers.sql")).toString();
   await client.query(triggers);
 
   console.log("[i] Success")
