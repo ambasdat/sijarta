@@ -12,24 +12,20 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  const query = await client.query(
-    'SELECT * FROM "USER" WHERE "NoHP" = $1',
-    [req.body.phone]
-  );
+  try {
+    const query = await client.query(
+      'SELECT login($1::VARCHAR, $2::VARCHAR)',
+      [req.body.phone, req.body.password]
+    );
 
-  if (query.rowCount == 0) {
-    return res.render("auth/login", { error: true });
+    res.cookie("userid", query.rows[0].login);
+    res.redirect("/home");
+  } catch (err: any) {
+    res.render("auth/login", {
+      error: true,
+      message: err.message,
+    });
   }
-
-  const row = query.rows[0];
-
-  if (row.Pwd != req.body.password) {
-    return res.render("auth/login", { error: true });
-  }
-
-  res.cookie("userid", row.Id);
-
-  res.redirect("/home");
 });
 
 app.get("/register", (_, res) => {

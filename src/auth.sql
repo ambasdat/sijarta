@@ -66,3 +66,28 @@ $$ LANGUAGE plpgsql;
 --   $5::DATE,    -- tglLahir 
 --   $6::VARCHAR  -- alamat 
 -- );
+
+CREATE OR REPLACE FUNCTION login(nohp VARCHAR, pwd VARCHAR)
+RETURNS UUID AS $$
+DECLARE
+  id UUID;
+  storedPwd VARCHAR;
+BEGIN
+  SELECT "Id", "Pwd" INTO id, storedPwd FROM "USER" WHERE "NoHP" = nohp;
+
+  IF storedPwd IS NULL THEN
+    RAISE EXCEPTION 'User with phone number % not found.', nohp;
+  END IF;
+
+  IF storedPwd <> pwd THEN
+    RAISE EXCEPTION 'Incorrect password!';
+  END IF;
+
+  RETURN id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- SELECT login(
+--   $1::VARCHAR, -- no hp
+--   $2::VARCHAR  -- password
+-- );
