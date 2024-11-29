@@ -43,6 +43,11 @@ import { createInterface } from "readline/promises"
   const dummy = readFileSync(join(__dirname, "dummy.sql")).toString();
   await client.query(dummy);
 
+  console.log("[i] Creating Triggers")
+
+  const triggers = readFileSync(join(__dirname, "triggers.sql")).toString();
+  await client.query(triggers);
+
   console.log("[i] Success")
 
   process.exit();
