@@ -32,35 +32,49 @@
                   Beli
                 </button>
 
-                {{!-- <dialog --}}
-                {{!--   id="modal_{{this.Kode}}" --}}
-                {{!--   class="modal modal-bottom sm:modal-middle" --}}
-                {{!-- > --}}
-                {{!--   <div class="modal-box text-center"> --}}
-                {{!--     <h3 class="font-bold text-2xl mb-4">SUKSES</h3> --}}
-                {{!--     <p> --}}
-                {{!--       Voucher ini akan berlaku hingga tanggal --}}
-                {{!--       {{this.JmlHariBerlaku}} --}}
-                {{!--       dengan kuota penggunaan sebanyak --}}
-                {{!--       {{this.KuotaPenggunaan}} --}}
-                {{!--       kali. --}}
-                {{!--     </p> --}}
-                {{!--     <div class="modal-action justify-center"> --}}
-                {{!--       <form method="dialog"> --}}
-                {{!--         <button class="btn btn-primary">Tutup</button> --}}
-                {{!--       </form> --}}
-                {{!--     </div> --}}
-                {{!--   </div> --}}
-                {{!-- </dialog> --}}
+                <!-- First Modal (Select Payment Method) -->
+                <dialog 
+                  id="modal_{{this.Kode}}" 
+                  class="modal modal-bottom sm:modal-middle" 
+                >
+                  <div class="modal-box text-center">
+                    <h3 class="font-bold text-2xl mb-4">Beli Voucher</h3>
+                    <label for="paymentMethod" class="block text-left font-medium mb-4">Metode Pembayaran</label>
+                    <select id="paymentMethod_{{this.Kode}}" class="select select-bordered w-full mb-4">
+                      <option value="MyPay">MyPay</option>
+                      <option value="GoPay">GoPay</option>
+                      <option value="OVO">OVO</option>
+                      <option value="Virtual Account BCA">Virtual Account BCA</option>
+                      <option value="Virtual Account BNI">Virtual Account BNI</option>
+                      <option value="Virtual Account Mandiri">Virtual Account Mandiri</option>
+                    </select>
+                    <button
+                      class="btn btn-primary"
+                      onclick="openSuccessModal('{{this.Kode}}')"
+                    >
+                      Beli
+                    </button>
+                    <div class="modal-action justify-center">
+                      <form method="dialog">
+                        <button class="btn btn-secondary">Tutup</button>
+                      </form>
+                    </div>
+                  </div>
+                </dialog>
 
+                <!-- Second Modal (Success Confirmation) -->
                 <dialog
-                  id="modal_{{this.Kode}}"
+                  id="successModal_{{this.Kode}}"
                   class="modal modal-bottom sm:modal-middle"
                 >
                   <div class="modal-box text-center">
-                    <h3 class="font-bold text-2xl mb-4">GAGAL</h3>
+                    <h3 class="font-bold text-2xl mb-4">SUKSES</h3>
                     <p>
-                      Maaf, saldo Anda tidak cukup untuk membeli voucher ini.
+                      Voucher ini akan berlaku hingga tanggal 
+                      {{this.JmlHariBerlaku}} 
+                      dengan kuota penggunaan sebanyak 
+                      {{this.KuotaPenggunaan}} 
+                      kali.
                     </p>
                     <div class="modal-action justify-center">
                       <form method="dialog">
@@ -100,3 +114,13 @@
     </div>
   </section>
 </main>
+
+<script>
+  function openSuccessModal(voucherCode) {
+    // Hide the payment method modal
+    document.getElementById('modal_' + voucherCode).close();
+    
+    // Open the success modal
+    document.getElementById('successModal_' + voucherCode).showModal();
+  }
+</script>
