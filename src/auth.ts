@@ -83,19 +83,33 @@ app.get("/register/pengguna", (_, res) => {
 });
 
 app.post("/register/pengguna", async (req, res) => {
-  const rows = await client.query(
-    `INSERT INTO "USER" ("Nama", "JenisKelamin", "NoHP", "Pwd", "TglLahir", "Alamat", "SaldoMyPay")
-     VALUES ($1, $2, $3, $4, $5, $6, 0)
-     RETURNING "Id"`,
-    [req.body.nama, req.body.jenisKelamin, req.body.phone, req.body.password, req.body.dob, req.body.address]
-  );
+  try {
+    await client.query(
+      `SELECT insert_pelanggan(
+         $1::VARCHAR, -- nama 
+         $2::CHAR(1), -- jk 
+         $3::VARCHAR, -- nohp 
+         $4::VARCHAR, -- pwd 
+         $5::DATE,    -- tglLahir 
+         $6::VARCHAR  -- alamat 
+       );`,
+      [
+        req.body.nama,
+        req.body.jenisKelamin,
+        req.body.phone,
+        req.body.password,
+        req.body.dob,
+        req.body.address,
+      ]
+    );
 
-  await client.query(
-    `INSERT INTO "PELANGGAN" ("Id", "Level") VALUES ($1, 0)`,
-    [rows.rows[0].Id]
-  );
-
-  res.redirect("/auth/login")
+    res.redirect("/auth/login")
+  } catch (err: any) {
+    res.render("auth/register/pengguna", {
+      error: true,
+      message: err.message,
+    });
+  }
 });
 
 app.post("/logout", (req, res) => {

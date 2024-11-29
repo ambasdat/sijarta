@@ -36,3 +36,33 @@ $$ LANGUAGE plpgsql;
 --   $9::VARCHAR, -- npwp
 --   $10::VARCHAR -- link foto
 -- );
+
+CREATE OR REPLACE FUNCTION insert_pelanggan (
+  nama VARCHAR,
+  jk CHAR(1),
+  nohp VARCHAR,
+  pwd VARCHAR,
+  tglLahir DATE,
+  alamat VARCHAR
+) RETURNS UUID AS $$
+DECLARE
+  id UUID;
+BEGIN
+  INSERT INTO "USER" ("Nama", "JenisKelamin", "NoHP", "Pwd", "TglLahir", "Alamat", "SaldoMyPay")
+  VALUES (nama, jk, nohp, pwd, tglLahir, alamat, 0)
+  RETURNING "Id" INTO id;
+
+  INSERT INTO "PELANGGAN" ("Id", "Level") VALUES (id, 0);
+
+  RETURN id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- SELECT insert_pelanggan(
+--   $1::VARCHAR, -- nama 
+--   $2::CHAR(1), -- jk 
+--   $3::VARCHAR, -- nohp 
+--   $4::VARCHAR, -- pwd 
+--   $5::DATE,    -- tglLahir 
+--   $6::VARCHAR  -- alamat 
+-- );
