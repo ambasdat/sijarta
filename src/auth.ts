@@ -42,17 +42,31 @@ app.get("/register/pekerja", (_, res) => {
 
 app.post("/register/pekerja", async (req, res) => {
   try {
-    const rows = await client.query(
-      `INSERT INTO "USER" ("Nama", "JenisKelamin", "NoHP", "Pwd", "TglLahir", "Alamat", "SaldoMyPay")
-       VALUES ($1, $2, $3, $4, $5, $6, 0)
-       RETURNING "Id"`,
-      [req.body.nama, req.body.jenisKelamin, req.body.phone, req.body.password, req.body.dob, req.body.address]
-    );
-
     await client.query(
-      `INSERT INTO "PEKERJA" ("Id", "NamaBank", "NomorRekening", "NPWP", "LinkFoto")
-       VALUES ($1, $2, $3, $4, $5)`,
-      [rows.rows[0].Id, req.body.bank, req.body.norek, req.body.npwp, req.body.url]
+      `SELECT insert_pekerja(
+         $1::VARCHAR, -- nama
+         $2::CHAR(1), -- jenis kelamin
+         $3::VARCHAR, -- nomor hp
+         $4::VARCHAR, -- password
+         $5::DATE,    -- tanggal lahir
+         $6::VARCHAR, -- alamat
+         $7::VARCHAR, -- nama bank
+         $8::VARCHAR, -- nomor rekening
+         $9::VARCHAR, -- npwp
+         $10::VARCHAR -- link foto
+       );`,
+      [
+        req.body.nama,
+        req.body.jenisKelamin,
+        req.body.phone,
+        req.body.password,
+        req.body.dob,
+        req.body.address,
+        req.body.bank,
+        req.body.norek,
+        req.body.npwp,
+        req.body.url,
+      ]
     );
 
     res.redirect("/auth/login");
