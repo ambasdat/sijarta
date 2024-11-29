@@ -93,31 +93,31 @@ INSERT INTO "PEKERJA" (
 VALUES 
   (
     'f864622f-e148-4d45-8253-e31fe71754bd', 
-    'Bank Mandiri', '1234567890', 'NPWP123456', 
+    'GoPay', '1234567890', 'NPWP123456', 
     'http://example.com/foto1.jpg', 
     4.5, 15
   ), 
   (
     '196b292e-d564-4508-94ce-f049e07e8688', 
-    'Bank BRI', '0987654321', 'NPWP654321', 
+    'OVO', '0987654321', 'NPWP654321', 
     'http://example.com/foto2.jpg', 
     4.8, 22
   ), 
   (
     'feb41656-f881-46c4-9e0f-370e6473ebfa', 
-    'Bank BCA', '1122334455', 'NPWP998877', 
+    'Virtual Account BCA', '1122334455', 'NPWP998877', 
     'http://example.com/foto3.jpg', 
     4.2, 10
   ), 
   (
     '3b930fcd-bda9-4c36-90b7-c02525984abe', 
-    'Bank Danamon', '5566778899', 'NPWP445566', 
+    'Virtual Account BNI', '5566778899', 'NPWP445566', 
     'http://example.com/foto4.jpg', 
     4.9, 30
   ), 
   (
     'a050fd67-53a0-4659-b7ef-f510566a0f7e', 
-    'CIMB Niaga', '6677889900', 'NPWP223344', 
+    'Virtual Account Mandiri', '6677889900', 'NPWP223344', 
     'http://example.com/foto5.jpg', 
     4.7, 18
   );
