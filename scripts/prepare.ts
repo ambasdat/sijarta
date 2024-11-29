@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { readdirSync, readFileSync } from "fs";
 import { join } from "path";
 import { Client } from "pg";
 import { createInterface } from "readline/promises"
@@ -48,7 +48,16 @@ import { createInterface } from "readline/promises"
   const triggers = readFileSync(join(__dirname, "..", "sql", "02-triggers.sql")).toString();
   await client.query(triggers);
 
-  console.log("[i] Success")
+  console.log("[i] Running SQL Files");
+
+  const srcDir = readdirSync(join(__dirname, "..", "src"));
+  const sqlFiles = srcDir.filter((file) => file.match(/.*\.sql/ig));
+  for (const sqlFile of sqlFiles) {
+    const sql = readFileSync(join(__dirname, "..", "src", sqlFile)).toString();
+    await client.query(sql);
+  }
+
+  console.log("[i] Success");
 
   process.exit();
-})()
+})();
