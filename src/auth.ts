@@ -32,32 +32,39 @@ app.post("/login", async (req, res) => {
   res.redirect("/home");
 });
 
-app.get("/register", (req, res) => {
+app.get("/register", (_, res) => {
   res.render("auth/register/main");
 });
 
-app.get("/register/pekerja", (req, res) => {
+app.get("/register/pekerja", (_, res) => {
   res.render("auth/register/pekerja");
 });
 
 app.post("/register/pekerja", async (req, res) => {
-  const rows = await client.query(
-    `INSERT INTO "USER" ("Nama", "JenisKelamin", "NoHP", "Pwd", "TglLahir", "Alamat", "SaldoMyPay")
-     VALUES ($1, $2, $3, $4, $5, $6, 0)
-     RETURNING "Id"`,
-    [req.body.nama, req.body.jenisKelamin, req.body.phone, req.body.password, req.body.dob, req.body.address]
-  );
+  try {
+    const rows = await client.query(
+      `INSERT INTO "USER" ("Nama", "JenisKelamin", "NoHP", "Pwd", "TglLahir", "Alamat", "SaldoMyPay")
+       VALUES ($1, $2, $3, $4, $5, $6, 0)
+       RETURNING "Id"`,
+      [req.body.nama, req.body.jenisKelamin, req.body.phone, req.body.password, req.body.dob, req.body.address]
+    );
 
-  await client.query(
-    `INSERT INTO "PEKERJA" ("Id", "NamaBank", "NomorRekening", "NPWP", "LinkFoto")
-     VALUES ($1, $2, $3, $4, $5)`,
-    [rows.rows[0].Id, req.body.bank, req.body.norek, req.body.npwp, req.body.url]
-  );
+    await client.query(
+      `INSERT INTO "PEKERJA" ("Id", "NamaBank", "NomorRekening", "NPWP", "LinkFoto")
+       VALUES ($1, $2, $3, $4, $5)`,
+      [rows.rows[0].Id, req.body.bank, req.body.norek, req.body.npwp, req.body.url]
+    );
 
-  res.redirect("/auth/login");
+    res.redirect("/auth/login");
+  } catch (err: any) {
+    res.render("auth/register/pekerja", {
+      error: true,
+      message: err.message,
+    });
+  }
 })
 
-app.get("/register/pengguna", (req, res) => {
+app.get("/register/pengguna", (_, res) => {
   res.render("auth/register/pengguna");
 });
 

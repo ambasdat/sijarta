@@ -4,6 +4,23 @@
   <form class="card-body form-control flex gap-2" method="POST">
     <h1 class="text-3xl">Registrasi Pekerja</h1>
 
+    {{#if error}}
+    <div role="alert" class="alert alert-error rounded-lg">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6 shrink-0 stroke-current"
+        fill="none"
+        viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>{{message}}</span>
+    </div>
+    {{/if}}
+
     <label class="form-control">
       <div class="label">
         <span class="label-text">Nama</span>
@@ -44,26 +61,6 @@
       <input required name="phone" type="text" class="input input-bordered bg-neutral" />
     </label>
 
-    {{#if phoneExists}}
-    <div role="alert" class="alert alert-error rounded-lg">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-6 w-6 shrink-0 stroke-current"
-        fill="none"
-        viewBox="0 0 24 24">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-      <span>No HP sudah terdaftar!</span>
-      <div>
-        <a class="btn btn-sm btn-ghost" href="/auth/login">Login</a>
-      </div>
-    </div>
-    {{/if}}
-
     <label class="form-control">
       <div class="label">
         <span class="label-text">Tanggal Lahir</span>
@@ -103,46 +100,12 @@
       <input required name="norek" type="text" class="input input-bordered bg-neutral" />
     </label>
 
-    {{#if bankExists}}
-    <div role="alert" class="alert alert-error rounded-lg">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-6 w-6 shrink-0 stroke-current"
-        fill="none"
-        viewBox="0 0 24 24">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-      <span>Informasi bank telah digunakan!</span>
-    </div>
-    {{/if}}
-
     <label class="form-control">
       <div class="label">
         <span class="label-text">NPWP</span>
       </div>
       <input required name="npwp" type="text" class="input input-bordered bg-neutral" />
     </label>
-
-    {{#if npwpExists}}
-    <div role="alert" class="alert alert-error rounded-lg">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-6 w-6 shrink-0 stroke-current"
-        fill="none"
-        viewBox="0 0 24 24">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-      <span>NPWP telah digunakan!</span>
-    </div>
-    {{/if}}
 
     <label class="form-control">
       <div class="label">
