@@ -9,7 +9,7 @@ app.get("/:userId", async (req, res) => {
   const pekerja = await client.query(`SELECT * FROM "PEKERJA" WHERE "Id" = $1`, [userId]);
 
   if (pekerja.rowCount != null && pekerja.rowCount > 0) {
-    return res.render("profile/pekerja");
+    return res.render("profile/pekerja", { pekerja: pekerja.rows[0] });
   }
 
   const pelanggan = await client.query(`SELECT * FROM "PELANGGAN" WHERE "Id" = $1`, [userId]);
@@ -22,8 +22,36 @@ app.get("/:userId", async (req, res) => {
 })
 
 app.post("/pekerja/:pekerjaId", (req, res) => {
-  console.log(req.body);
-  res.redirect(`/profile/pekerja/${req.params.pekerjaId}`);
+  const pekerjaId = req.params.pekerjaId;
+
+  client.query(
+    `SELECT update_profile_pekerja(
+       $1::UUID,    -- pekerjaId
+       $2::VARCHAR, -- nama
+       $3::CHAR(1), -- jenis kelamin
+       $4::VARCHAR, -- nomor hp
+       $5::DATE,    -- tanggal lahir
+       $6::VARCHAR, -- alamat
+       $7::VARCHAR, -- nama bank
+       $8::VARCHAR, -- nomor rekening
+       $9::VARCHAR, -- npwp
+       $10::VARCHAR -- link foto
+     );`,
+    [
+      pekerjaId,
+      req.body.nama,
+      req.body.jenisKelamin,
+      req.body.phone,
+      req.body.dob,
+      req.body.address,
+      req.body.bank,
+      req.body.norek,
+      req.body.npwp,
+      req.body.url,
+    ]
+  );
+
+  res.redirect(`/profile/${pekerjaId}`);
 });
 
 app.post("/pengguna/:penggunaId", (req, res) => {
