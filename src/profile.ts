@@ -21,7 +21,6 @@ app.get("/:userId", async (req, res) => {
   );
 
   if (pelanggan.rowCount != null && pelanggan.rowCount > 0) {
-    console.log(pelanggan.rows[0]);
     return res.render("profile/pengguna", { pelanggan: pelanggan.rows[0] });
   }
 
@@ -62,8 +61,28 @@ app.post("/pekerja/:pekerjaId", (req, res) => {
 });
 
 app.post("/pengguna/:penggunaId", (req, res) => {
-  console.log(req.body);
-  res.redirect(`/profile/pengguna/${req.params.penggunaId}`);
+  const penggunaId = req.params.penggunaId;
+
+  client.query(
+    `SELECT update_profile_pelanggan(
+       $1::UUID,    -- pekerjaId
+       $2::VARCHAR, -- nama
+       $3::CHAR(1), -- jenis kelamin
+       $4::VARCHAR, -- nomor hp
+       $5::DATE,    -- tanggal lahir
+       $6::VARCHAR  -- alamat
+     );`,
+    [
+      penggunaId,
+      req.body.nama,
+      req.body.jenisKelamin,
+      req.body.phone,
+      req.body.dob,
+      req.body.address,
+    ]
+  );
+
+  res.redirect(`/profile/${penggunaId}`);
 });
 
 export default app;
