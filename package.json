@@ -15,11 +15,13 @@
     "express": "^4.21.1",
     "express-handlebars": "^8.0.1",
     "handlebars": "^4.7.8",
+    "morgan": "^1.10.0",
     "pg": "^8.13.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
     "@types/express-handlebars": "^6.0.2",
+    "@types/morgan": "^1.9.9",
     "@types/node": "^22.9.0",
     "@types/pg": "^8.11.10",
     "tsx": "^4.19.2",

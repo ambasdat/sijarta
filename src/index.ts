@@ -1,4 +1,5 @@
 import express, { json, urlencoded }  from "express";
+import morgan from "morgan";
 import path from "path";
 import { engine } from "express-handlebars";
 import client from "./db";
@@ -29,6 +30,8 @@ const hbsHelpers = {
 app.engine(".hbs", engine({ extname: ".hbs", helpers: hbsHelpers,}));
 app.set("view engine", ".hbs");
 app.set("views", path.resolve(process.cwd(), "templates"));
+
+app.use(morgan("tiny"));
 app.use(json());
 app.use(urlencoded({ extended: true }));
 
