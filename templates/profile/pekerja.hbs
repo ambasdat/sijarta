@@ -2,27 +2,27 @@
   class="card shadow-xl max-w-screen-md mx-auto mt-24 bg-neutral text-neutral-content"
 >
   <div class="card-body">
-    <h2 class="card-title text-3xl font-bold">Okarun</h2>
+    <h2 class="card-title text-3xl font-bold">{{ pekerja.Nama }}</h2>
     <div class="mt-4 grid grid-cols-3">
       <img
-        src="https://i.kym-cdn.com/photos/images/newsfeed/002/925/412/9d1.jpeg"
+        src="{{ pekerja.LinkFoto }}"
         alt="Profile Picture"
         class="rounded-full m-6 w-32 h-32 border-4 border-primary"
       />
 
       <div>
-        <p><strong>Jenis Kelamin:</strong> Laki-laki</p>
-        <p><strong>No HP:</strong> 081234567890</p>
-        <p><strong>Tanggal Lahir:</strong> 20/02/2020</p>
-        <p><strong>Alamat:</strong> Depok</p>
-        <p><strong>Saldo MyPay:</strong> Rp120000</p>
-        <p><strong>Nama Bank:</strong> BECEA</p>
-        <p><strong>No Rekening:</strong> 123</p>
+        <p><strong>Jenis Kelamin:</strong> {{ pekerja.JenisKelamin }}</p>
+        <p><strong>No HP:</strong> {{ pekerja.NoHP }}</p>
+        <p><strong>Tanggal Lahir:</strong> {{ pekerja.TglLahir }}</p>
+        <p><strong>Alamat:</strong> {{ pekerja.Alamat }}</p>
+        <p><strong>Saldo MyPay:</strong> Rp{{ pekerja.SaldoMyPay }}</p>
+        <p><strong>Nama Bank:</strong> {{ pekerja.NamaBank }}</p>
+        <p><strong>No Rekening:</strong> {{ pekerja.NomorRekening }}</p>
       </div>
 
       <div>
-        <p><strong>NPWP:</strong> 5</p>
-        <p><strong>Rating:</strong> 5</p>
+        <p><strong>NPWP:</strong> {{ pekerja.NPWP }}</p>
+        <p><strong>Rating:</strong> {{ pekerja.Rating }}</p>
         <p><strong>Kategori Pekerjaan:</strong></p>
         <ol class="list-decimal ml-4">
           <li>Kategori Jasa 1</li>
@@ -54,7 +54,7 @@
               <span class="label-text">Nama</span>
             </div>
             <input
-              value="Okarun"
+              value="{{ pekerja.Nama }}"
               name="nama"
               type="text"
               class="input input-bordered bg-neutral"
@@ -66,11 +66,23 @@
               <span class="label-text">Jenis Kelamin</span>
             </div>
             <div>
-              <input checked type="radio" name="jenisKelamin" id="l" value="L" />
+              <input
+                {{#if (eq pekerja.JenisKelamin "L")}}checked{{/if}}
+                type="radio"
+                name="jenisKelamin"
+                id="l"
+                value="L"
+              />
               <label for="l">Laki-laki</label>
             </div>
             <div>
-              <input type="radio" name="jenisKelamin" id="p" value="P" />
+              <input
+                {{#if (eq pekerja.JenisKelamin "P")}}checked{{/if}}
+                type="radio"
+                name="jenisKelamin"
+                id="p"
+                value="P"
+              />
               <label for="p">Perempuan</label>
             </div>
           </label>
@@ -80,7 +92,7 @@
               <span class="label-text">No HP</span>
             </div>
             <input
-              value="081234567890"
+              value="{{ pekerja.NoHP }}"
               name="phone"
               type="text"
               class="input input-bordered bg-neutral"
@@ -92,7 +104,7 @@
               <span class="label-text">Tanggal Lahir</span>
             </div>
             <input
-              value="20/02/2020"
+              value="{{ pekerja.TglLahir }}"
               name="dob"
               type="text"
               class="input input-bordered bg-neutral"
@@ -104,7 +116,7 @@
               <span class="label-text">Alamat</span>
             </div>
             <input
-              value="Depok"
+              value="{{ pekerja.Alamat }}"
               name="address"
               type="text"
               class="input input-bordered bg-neutral"
@@ -116,11 +128,11 @@
               <span class="label-text">Nama Bank</span>
             </div>
             <select name="bank" class="select select-bordered bg-neutral" required>
-              <option>GoPay</option>
-              <option>OVO</option>
-              <option selected>Virtual Account BCA</option>
-              <option>Virtual Account BNI</option>
-              <option>Virtual Account Mandiri</option>
+              <option {{#if (eq pekerja.NamaBank "GoPay")}}selected{{/if}}>GoPay</option>
+              <option {{#if (eq pekerja.NamaBank "OVO")}}selected{{/if}}>OVO</option>
+              <option {{#if (eq pekerja.NamaBank "Virtual Account BCA")}}selected{{/if}}>Virtual Account BCA</option>
+              <option {{#if (eq pekerja.NamaBank "Virtual Account BNI")}}selected{{/if}}>Virtual Account BNI</option>
+              <option {{#if (eq pekerja.NamaBank "Virtual Account Mandiri")}}selected{{/if}}>Virtual Account Mandiri</option>
             </select>
           </label>
 
@@ -129,7 +141,7 @@
               <span class="label-text">No Rekening</span>
             </div>
             <input
-              value="123"
+              value="{{ pekerja.NomorRekening }}"
               name="norek"
               type="text"
               class="input input-bordered bg-neutral"
@@ -141,7 +153,7 @@
               <span class="label-text">NPWP</span>
             </div>
             <input
-              value="5"
+              value="{{ pekerja.NPWP }}"
               name="npwp"
               type="text"
               class="input input-bordered bg-neutral"
@@ -153,7 +165,7 @@
               <span class="label-text">URL Foto</span>
             </div>
             <input
-              value="adsf"
+              value="{{ pekerja.LinkFoto }}"
               name="url"
               type="text"
               class="input input-bordered bg-neutral"

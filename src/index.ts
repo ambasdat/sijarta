@@ -25,6 +25,7 @@ const hbsHelpers = {
     return rangeArray;
   },
   gt: (a: number, b: number) => a > b, 
+  eq: (a: any, b: any) => a === b,
 };
 
 app.engine(".hbs", engine({ extname: ".hbs", helpers: hbsHelpers,}));

@@ -6,16 +6,23 @@ const app = express.Router();
 app.get("/:userId", async (req, res) => {
   const userId = req.params.userId;
 
-  const pekerja = await client.query(`SELECT * FROM "PEKERJA" WHERE "Id" = $1`, [userId]);
+  const pekerja = await client.query(
+    `SELECT * FROM "USER" u JOIN "PEKERJA" p ON p."Id" = u."Id" WHERE u."Id" = $1`,
+    [userId]
+  );
 
   if (pekerja.rowCount != null && pekerja.rowCount > 0) {
+    console.log(pekerja.rows[0]);
     return res.render("profile/pekerja", { pekerja: pekerja.rows[0] });
   }
 
-  const pelanggan = await client.query(`SELECT * FROM "PELANGGAN" WHERE "Id" = $1`, [userId]);
+  const pelanggan = await client.query(
+    `SELECT * FROM "USER" u JOIN "PELANGGAN" p ON p."Id" = u."Id" WHERE u."Id" = $1`,
+    [userId]
+  );
 
   if (pelanggan.rowCount != null && pelanggan.rowCount > 0) {
-    return res.render("profile/pengguna");
+    return res.render("profile/pengguna", { pelanggan: pelanggan.rows[0] });
   }
 
   return res.render("404");
