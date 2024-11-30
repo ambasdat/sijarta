@@ -37,10 +37,10 @@
                 </div>
 
                 <select id="category" name="category" class="select select-secondary w-full max-w-xs" required>
-                    <option value="-" disabled selected>Pilih Kategori</option>
-                    <option value="-1">Semua Kategori</option>
-                    {{#each han.category}}
-                    <option value="{{@index}}">{{this.name}}</option>
+                    <option value="" disabled selected>Pilih Kategori</option>
+                    <option value="">Semua Kategori</option>
+                    {{#each data}}
+                    <option value="{{this.Kat}}">{{this.Kat}}</option>
                     {{/each}}
                 </select>
             </label>
@@ -53,53 +53,46 @@
 
         <!-- Categories Section -->
         <div id="categoryContainer" class="grid gap-4 p-5">
-            <!-- Dummy data rows will appear here -->
+            {{#each data}}
+            <details class="card shadow-xl bg-base-100 p-4 rounded shadow-md border-b-2 border-b-neutral">
+                <summary class="font-semibold">{{this.Kat}}</summary>
+                <div class="grid gap-2">
+                    {{#each this.Sub}}
+                    <div class="card bg-base-100 p-2 rounded shadow-sm border">
+                        {{#if ../../guest}}
+                            <a href="/auth" class="block font-medium">{{this}}</a>
+                        {{else}}
+                            <a href="/subkategori/pengguna" class="block font-medium">{{this}}</a>
+                        {{/if}}
+                    </div>
+                    {{/each}}
+                </div>
+            </details>
+            {{/each}}
         </div>
 
     </div>
 
     <script>
-        const data = {{{data}}};
-
-        function renderCategory(data) {
-            categoryContainer.innerHTML = ""; // Clear previous results
-            data.forEach((category) => {
-                categoryContainer.innerHTML += `
-                <details class="card shadow-xl bg-base-100 p-4 rounded shadow-md border-b-2 border-b-neutral">
-                    <summary class="font-semibold">${category.name}</summary>
-                    <div class="grid gap-2">
-                        ${category.subcategory.map(subcategory => `
-                        <div class="card bg-base-100 p-2 rounded shadow-sm border">
-                            <a href="/subkategori/pengguna" class="block font-medium">${subcategory}</a>
-                        </div>
-                        `).join('')}
-                    </div>
-                </details>
-                `;
-            });
-        }
-
-
-        renderCategory(data.category);
-
         document.getElementById("searchButton").addEventListener("click", () => {
-            const searchBar = document.getElementById("searchBar").value.toLowerCase();
-            const categorySelect = document.getElementById("category");
-            const selectedCategory = categorySelect.value;
+            const searchBarValue = document.getElementById("searchBar").value;
+            const categoryValue = document.getElementById("category").value;
 
-            const filteredCategories = data.category.filter(category => {
-                if (selectedCategory === "-1" || selectedCategory === "-") {
-                    return true;
-                }
+            if (searchBarValue === "" && categoryValue === "") {
+                window.location.href = "/home";
+                return;
+            }
 
-                return category.name === data.category[selectedCategory].name;
-            }).map(category => ({
-                name: category.name,
-                subcategory: category.subcategory.filter(subcategory => subcategory.toLowerCase().includes(searchBar))
-            })).filter(category => category.subcategory.length > 0);
+            const params = new URLSearchParams();
+            params.set("s", searchBarValue);
+            params.set("k", categoryValue);
 
-            renderCategory(filteredCategories);
+            const queryString = params.toString();
+            const url = `/home/?${queryString}`;
+
+            window.location.href = url;
         });
+
     </script>
 </main>
 
