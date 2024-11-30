@@ -12,7 +12,6 @@ app.get("/:userId", async (req, res) => {
   );
 
   if (pekerja.rowCount != null && pekerja.rowCount > 0) {
-    console.log(pekerja.rows[0]);
     return res.render("profile/pekerja", { pekerja: pekerja.rows[0] });
   }
 
@@ -22,6 +21,7 @@ app.get("/:userId", async (req, res) => {
   );
 
   if (pelanggan.rowCount != null && pelanggan.rowCount > 0) {
+    console.log(pelanggan.rows[0]);
     return res.render("profile/pengguna", { pelanggan: pelanggan.rows[0] });
   }
 
