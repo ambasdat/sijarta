@@ -1,18 +1,29 @@
 import express from "express";
+import client from "./db";
 
 const app = express.Router();
 
-app.get("/pekerja/:pekerjaId", (req, res) => {
-  res.render("profile/pekerja");
-});
+app.get("/:userId", async (req, res) => {
+  const userId = req.params.userId;
+
+  const pekerja = await client.query(`SELECT * FROM "PEKERJA" WHERE "Id" = $1`, [userId]);
+
+  if (pekerja.rowCount != null && pekerja.rowCount > 0) {
+    return res.render("profile/pekerja");
+  }
+
+  const pelanggan = await client.query(`SELECT * FROM "PELANGGAN" WHERE "Id" = $1`, [userId]);
+
+  if (pelanggan.rowCount != null && pelanggan.rowCount > 0) {
+    return res.render("profile/pengguna");
+  }
+
+  return res.render("404");
+})
 
 app.post("/pekerja/:pekerjaId", (req, res) => {
   console.log(req.body);
   res.redirect(`/profile/pekerja/${req.params.pekerjaId}`);
-});
-
-app.get("/pengguna/:penggunaId", (req, res) => {
-  res.render("profile/pengguna");
 });
 
 app.post("/pengguna/:penggunaId", (req, res) => {

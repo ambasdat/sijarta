@@ -3,11 +3,11 @@ import client from "./db";
 
 const app = express.Router();
 
-app.get("/", (req, res) => {
+app.get("/", (_, res) => {
   res.render("auth/main");
 });
 
-app.get("/login", (req, res) => {
+app.get("/login", (_, res) => {
   res.render("auth/login");
 });
 
@@ -108,7 +108,7 @@ app.post("/register/pengguna", async (req, res) => {
   }
 });
 
-app.post("/logout", (req, res) => {
+app.post("/logout", (_, res) => {
   res.clearCookie("userid");
   res.redirect("/auth");
 })
