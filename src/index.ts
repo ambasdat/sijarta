@@ -15,8 +15,10 @@ import profile from "./profile";
 import pemesanan from "./pemesanan";
 import subkategori from "./subkategori";
 
+// -------------------- [ INITIALIZATION   ] -------------------- 
 const app = express();
 
+// -------------------- [ HANDLEBARS SETUP ] --------------------
 const hbsHelpers = {
   range: function (start: number, end: number) {
     const rangeArray = [];
@@ -33,6 +35,7 @@ app.engine(".hbs", engine({ extname: ".hbs", helpers: hbsHelpers,}));
 app.set("view engine", ".hbs");
 app.set("views", path.resolve(process.cwd(), "templates"));
 
+// -------------------- [ MIDDLEWARES      ] --------------------
 app.use(morgan("tiny"));
 app.use(json());
 app.use(urlencoded({ extended: true }));
@@ -43,10 +46,15 @@ app.use(async (req, res, next) => {
   console.log
 
   const query = await client.query('SELECT get_user_type($1::UUID) as user_type', [userId]);
-  res.locals.layout = query.rows[0].user_type;
+  const userType = query.rows[0].user_type;
+
+  res.locals.layout = userType;
+  req.userType = userType;
+
   next();
 });
 
+// -------------------- [ ROUTES           ] --------------------
 app.use("/auth", auth);
 app.use("/mypay", mypay);
 app.use("/pekerjaan", pekerjaan);
@@ -62,6 +70,7 @@ app.get("/", (_req, res) => {
   res.redirect(isLoggedIn ? "/home" : "/auth")
 });
 
+// -------------------- [ SERVER STARTUP   ] --------------------
 (async () => {
   await client.connect();
   app.listen(3000, () => console.log("http://localhost:3000"));
