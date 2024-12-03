@@ -51,6 +51,10 @@ app.use(async (req, res, next) => {
   res.locals.layout = userType;
   req.userType = userType;
 
+  if (req.userType === 'guest') {
+    res.clearCookie('userid');
+  }
+
   next();
 });
 
