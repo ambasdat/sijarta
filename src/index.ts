@@ -1,4 +1,5 @@
 import express, { json, urlencoded }  from "express";
+import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import path from "path";
 import { engine } from "express-handlebars";
@@ -35,9 +36,14 @@ app.set("views", path.resolve(process.cwd(), "templates"));
 app.use(morgan("tiny"));
 app.use(json());
 app.use(urlencoded({ extended: true }));
+app.use(cookieParser());
 
-app.use((_, res, next) => {
-  res.locals.layout = "pengguna";
+app.use(async (req, res, next) => {
+  const userId = req.cookies.userid;
+  console.log
+
+  const query = await client.query('SELECT get_user_type($1::UUID) as user_type', [userId]);
+  res.locals.layout = query.rows[0].user_type;
   next();
 });
 
