@@ -4,9 +4,9 @@
 
           <div class="stat">
             <div class="stat-title">Account balance</div>
-            <div class="stat-value">Rp. 89.900,400</div>
+            <div class="stat-value">Rp. {{ userDetails.SaldoMyPay }}</div>
             <div class="stat-title pt-5">
-              <strong>08123456789</strong>
+              <strong>{{ userDetails.NoHP }}</strong>
             </div>
           </div>
 
@@ -15,16 +15,16 @@
               <div class="avatar online">
                 <div class="w-16 rounded-full">
                   <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                </div>
+                </div> 
               </div>
             </div>
             <div class="items-end">
               <div class="stat-value text-wrap">
-                Andi Muhammad Adlyn 
+                {{ userDetails.firstName }}
               </div>
-              <div class="stat-title">Fakhreyza Khairi Putra</div>
+              <div class="stat-title">{{ userDetails.lastName }}</div>
             </div>
-            <div class="stat-desc text-secondary text-base">15 November 2024</div>
+            <div class="stat-desc text-secondary text-base">{{ currentDate }}</div>
           </div>
 
       </div>
