@@ -1,5 +1,17 @@
-import express from "express";
+import express, { RequestHandler } from "express";
 import client from "./db";
+
+type Role = 'pengguna' | 'pekerja' | 'guest'
+
+export function allowRoles(roles: Role[]): RequestHandler {
+  return (req, res, next) => {
+    if (!roles.includes(req.userType)) {
+      return res.redirect('/auth');
+    }
+
+    next();
+  };
+}
 
 const app = express.Router();
 

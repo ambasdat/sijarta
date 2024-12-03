@@ -43,7 +43,6 @@ app.use(cookieParser());
 
 app.use(async (req, res, next) => {
   const userId = req.cookies.userid;
-  console.log
 
   const query = await client.query('SELECT get_user_type($1::UUID) as user_type', [userId]);
   const userType = query.rows[0].user_type;
@@ -53,6 +52,8 @@ app.use(async (req, res, next) => {
 
   if (req.userType === 'guest') {
     res.clearCookie('userid');
+  } else {
+    req.userId = userId;
   }
 
   next();
