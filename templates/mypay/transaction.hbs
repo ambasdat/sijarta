@@ -45,15 +45,23 @@
       <div id="dynamicFormContainer">
       
       </div>
-
   </div>
 </main>
 
 <script>
-  // Asumsi role user pekerja
-  const role = 'user'; // Replace dengan role sesungguhnya
+  const message = "{{ message }}";
+  setTimeout(function() {
+    window.history.replaceState(null, null, window.location.pathname);
+  }, 0);
+  
+  if (message) {
+    setTimeout(() => {
+      alert(message);
+    }, 0);
 
-  if (role === 'pekerja') {
+  }
+  
+  if ({{ isPekerja }}) {
     // Hide opsi "Pembayaran" jika role user Pekerja
     const paymentOption = document.getElementById('paymentOption');
     if (paymentOption) {
@@ -122,13 +130,11 @@
         <div class="label">
           <span class="label-text">Pesanan Jasa</span>
         </div>
-        <select class="select select-secondary w-full" id="serviceSelect" onchange="updatePrice()">
+        <select name="serviceOrder" class="select select-secondary w-full" id="serviceSelect" onchange="updatePrice()" required>
           <option disabled selected value="">Pilih Pesanan Jasa</option>
-          <option value="500000">Home Cleaning Service</option>
-          <option value="2000000">Home Cleaning Service</option>
-          <option value="300000">Home Cleaning Service</option>
-          <option value="1000000">Home Cleaning Service</option>
-          <option value="1500000">Home Cleaning Service</option>
+          {{#each userOrder}}
+          <option value="{{ this.idtrpemesanan }},{{ this.totalbiaya }}">{{ this.namasubkategorijasa }}</option>
+          {{/each}}
         </select>
       </label>
 
@@ -182,8 +188,8 @@
         <div class="label">
           <span class="label-text">Pilihan Bank</span>
         </div>
-        <select name="bank" class="select select-accent w-full max-w-xs bg-base-100">
-          <option disabled selected>-- Pilih Bank --</option>
+        <select name="bank" class="select select-accent w-full max-w-xs bg-base-100" required>
+          <option disabled selected value="">-- Pilih Bank --</option>
           <option>GoPay</option>
           <option>OVO mode</option>
           <option>Virtual Account BCA</option>
@@ -215,7 +221,7 @@
   window.updatePrice = function () {
     const serviceSelect = document.getElementById("serviceSelect");
     const priceDisplay = document.getElementById("priceDisplay");
-    const selectedValue = serviceSelect.value;
+    const selectedValue = serviceSelect.value.split(',')[1];
     priceDisplay.textContent = selectedValue ? `Rp. ${parseInt(selectedValue).toLocaleString()}` : "-";
   };
 </script>
