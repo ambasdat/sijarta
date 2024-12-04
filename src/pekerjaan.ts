@@ -3,23 +3,23 @@ import client from "./db";
 
 const app = express.Router();
 
-// Function to transform pekerja category data
-const transformCategoryData = (data: any[]) => {
+// Fungsi untuk reshape data kategori ke dalam bentuk map
+const transformKategoriData = (data: any[]) => {
   return data.reduce((result: any[], item: { kid: any; kname: any; sname: string | number; sid: any; }) => {
-    let existingCategory = result.find((category) => category.kid === item.kid);
+    let existingKategori = result.find((category) => category.kid === item.kid);
 
-    if (!existingCategory) {
-      // If the category does not exist, create a new entry
-      existingCategory = {
+    if (!existingKategori) {
+      // Jika kategorinya belum ada buat entri baru
+      existingKategori = {
         kid: item.kid,
         kname: item.kname,
-        subcategories: {}, // Initialize subcategories as an empty object
+        subkategori: {}, // Initialize subkategori
       };
-      result.push(existingCategory);
+      result.push(existingKategori);
     }
 
-    // Add the subcategory to the existing category
-    existingCategory.subcategories[item.sname] = item.sid;
+    // tambah subkategori ke kategori yang sudah ada
+    existingKategori.subkategori[item.sname] = item.sid;
 
     return result;
   }, []);
@@ -27,55 +27,57 @@ const transformCategoryData = (data: any[]) => {
 
 
 app.get("/", async (req, res) => {
-  var kategori = req.query.kategori || null; // Get category from query, or null if not provided
-  var subkategori = req.query.subkategori || null; // Get subcategory from query, or null if not provided
+  const pekerjaId = '196b292e-d564-4508-94ce-f049e07e8688';
+  var kategori = req.query.kategori || null; // Get kategori dari query, null jika tidak ada
+  var subkategori = req.query.subkategori || null; // Get subkategori dari query, null jika tidak ada
   const selectedKategori = kategori
   const selectedSubkategori = subkategori
 
-  // If category or subcategory is '0', set them to null
+  // If kategori = '0' set to semua
   if (kategori === '0'){kategori = null};
   if (subkategori === '0'){subkategori = null};
 
-  const pekerjaId = '196b292e-d564-4508-94ce-f049e07e8688';
-
-  const { rows: pekerja_kategori } = await client.query(
-    "SELECT * FROM get_pekerja_category($1)",
-    [pekerjaId]
-  );
   
-  // Transform data using the separate function
-  const pekerja_kategori_dict = transformCategoryData(pekerja_kategori);
-
-  const { rows: order_result } = await client.query(
-    "SELECT * FROM filter_pemesanan($1, $2, $3)",
-    [pekerjaId, kategori, subkategori]
-  );
-
-  console.log(pekerja_kategori_dict);
-  console.log(order_result)
-
-  res.render("pekerjaan/main", {
-    pekerja_kategori_dict,
-    pekerja_kategori_dict_json: JSON.stringify(pekerja_kategori_dict),
-    order_result,
-    selectedKategori,
-    selectedSubkategori,
-  });
+  try {
+    const { rows: pekerjaKategori } = await client.query(
+      "SELECT * FROM get_pekerja_category($1)",
+      [pekerjaId]
+    );
+    
+    const pekerjaKategoriDict = transformKategoriData(pekerjaKategori);
+  
+    const { rows: orderResult } = await client.query(
+      "SELECT * FROM filter_pemesanan($1, $2, $3)",
+      [pekerjaId, kategori, subkategori]
+    );
+    res.render("pekerjaan/main", {
+      pekerjaKategoriDict,
+      pekerjaKategoriDictJson: JSON.stringify(pekerjaKategoriDict),
+      orderResult,
+      selectedKategori,
+      selectedSubkategori,
+    });
+  } catch(error) {
+    console.error("Error fetching data:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 app.post("/kerjakan", async (req, res) => {
-  const { idtrpemesanan } = req.body;  // The id of the order to be processed
-
-  // Perform the necessary query to process the order
   const pekerjaId = '196b292e-d564-4508-94ce-f049e07e8688';
-  
-  // Here you could perform any necessary updates or actions for the order
-  await client.query(
-    "SELECT update_pesanan_dikerjakan($1, $2)",
-    [idtrpemesanan, pekerjaId]
-  )
-    // Redirect to the same page after processing the order
+  const { idtrpemesanan: idTrPemesanan } = req.body;
+  try {
+    await client.query(
+      "SELECT update_pesanan_dikerjakan($1, $2)",
+      [idTrPemesanan, pekerjaId]
+    )
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    res.status(500).send("Internal Server Error");
     res.redirect("/pekerjaan");
+  }
+
+
 });
 
 app.get("/status", (req, res) => {

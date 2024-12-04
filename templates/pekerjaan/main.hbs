@@ -19,8 +19,8 @@
                 <select id="kategori" name="kategori" class="select select-primary w-full max-w-xs" required>
                 <option value="" disabled selected>Pilih Kategori</option>
                 <option value="0" {{#if (eq "0" ../selectedKategori)}}selected{{/if}}>Semua</option>
-                {{#each pekerja_kategori_dict}}
-                    <option value="{{this.kid}}" {{#if (eq this.kid ../selectedKategori)}}selected{{/if}}>{{this.kname}}</option>
+                {{#each pekerjaKategoriDict}}
+                    <option value="{{ this.kid }}" {{#if (eq this.kid ../selectedKategori)}}selected{{/if}}>{{ this.kname }}</option>
                 {{/each}}
                 </select>
             </label>
@@ -45,21 +45,21 @@
 
       <!-- Orders Section -->
       <div id="ordersContainer" class="grid gap-4 p-5">
-          {{#each order_result}}
+          {{#each orderResult}}
           <!-- Dummy data rows will appear here -->
           <div class="card shadow-xl bg-base-100 p-4 rounded shadow-md grid grid-cols-3 items-center gap-1">
             <div>
-                <p class="font-semibold">{{this.namasubkategorijasa}}</p>
-                <p class="text-sm stat-title p-1">Tgl pemesanan: {{this.tglpemesanan}}</p>
-                <p class="text-sm stat-title p-1">Tgl pekerjaan: {{this.tglpekerjaan}}</p>
+                <p class="font-semibold">{{ this.namasubkategorijasa }}</p>
+                <p class="text-sm stat-title p-1">Tgl pemesanan: {{ this.tglpemesanan }}</p>
+                <p class="text-sm stat-title p-1">Tgl pekerjaan: {{ this.tglpekerjaan }}</p>
             </div>
             <div>
                 <p class="font-semibold">{{this.namapelanggan}}</p>
             </div>
             <div class="grid grid-cols-2 items-center justify-between gap-4">
-                <p class="font-bold">{{this.totalbiaya}}</p>
-                <form id="kerjakan-form" action="kerjakan" method="POST">
-                    <input type="hidden" name="idtrpemesanan" value="{{this.idtrpemesanan}}">
+                <p class="font-bold">{{ this.totalbiaya }}</p>
+                <form id="kerjakan-form" action="/pekerjaan/kerjakan" method="POST">
+                    <input type="" name="idtrpemesanan" value="{{ this.idtrpemesanan }}">
                     <button type="submit" class="btn btn-warning">Kerjakan Pesanan</button>
                 </form>
             </div>
@@ -72,9 +72,9 @@
 
 <script>
     // ----------------- DYNAMICALLY RENDER SUBCATEGORIES -----------------
-    const pekerja_kategori_dict = {{{ pekerja_kategori_dict_json }}};
-    const selectedKategori = "{{selectedKategori}}"; 
-    const selectedSubkategori = "{{selectedSubkategori}}";
+    const pekerja_kategori_dict = {{{ pekerjaKategoriDictJson }}};
+    const selectedKategori = "{{ selectedKategori }}"; 
+    const selectedSubkategori = "{{ selectedSubkategori }}";
 
     const kategoriSelect = document.getElementById("kategori");
     const subkategoriSelect = document.getElementById("subkategori");
@@ -97,8 +97,8 @@
             const kategori = pekerja_kategori_dict.find((k) => k.kid === selectedKategori);
 
             // Populate the subkategori options
-            if (kategori && kategori.subcategories) {
-                for (const [subname, subid] of Object.entries(kategori.subcategories)) {
+            if (kategori && kategori.subkategori) {
+                for (const [subname, subid] of Object.entries(kategori.subkategori)) {
                     const option = document.createElement("option");
                     option.value = subid;
                     option.textContent = subname;

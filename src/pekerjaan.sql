@@ -1,6 +1,6 @@
 
 -- get_pekerja_category
-CREATE OR REPLACE FUNCTION get_pekerja_category(pekerjaId UUID)
+CREATE OR REPLACE FUNCTION get_pekerja_category(pekerjaId_param UUID)
 RETURNS TABLE (
     kId UUID,      -- Category ID
     kName VARCHAR,  -- Category Name
@@ -20,7 +20,7 @@ BEGIN
     WHERE k."Id" IN (
         SELECT "KategoriJasaId" 
         FROM "PEKERJA_KATEGORI_JASA" 
-        WHERE "PekerjaId" = pekerjaId
+        WHERE "PekerjaId" = pekerjaId_param
     );
 END;
 $$ LANGUAGE plpgsql;
@@ -28,7 +28,7 @@ $$ LANGUAGE plpgsql;
 
 -- filter_pemesanan
 CREATE OR REPLACE FUNCTION filter_pemesanan(
-    pekerjaId UUID, 
+    pekerjaId_param UUID, 
     kid_param UUID DEFAULT NULL, 
     sid_param UUID DEFAULT NULL
 )
@@ -114,7 +114,7 @@ BEGIN
         LEFT JOIN "STATUS_PESANAN" sp ON ts."IdStatus" = sp."Id"
         WHERE tj."IdKategoriJasa" IN (
             SELECT pk.sid
-            FROM get_pekerja_category(pekerjaId) pk
+            FROM get_pekerja_category(pekerjaId_param) pk
             WHERE pk.kid = kid_param
         )
         AND sp."Status" = 'Mencari Pekerja Terdekat'
@@ -156,7 +156,7 @@ BEGIN
         LEFT JOIN "STATUS_PESANAN" sp ON ts."IdStatus" = sp."Id"
         WHERE tj."IdKategoriJasa" IN (
             SELECT pk.sid
-            FROM get_pekerja_category(pekerjaId) pk
+            FROM get_pekerja_category(pekerjaId_param) pk
         )
         AND sp."Status" = 'Mencari Pekerja Terdekat'
         AND NOT EXISTS (
@@ -177,15 +177,15 @@ $$ LANGUAGE plpgsql;
 
 -- update_pesanan_dikerjakan
 CREATE OR REPLACE FUNCTION update_pesanan_dikerjakan(
-    IdTrPemesanan UUID,
-    pekerjaId UUID
+    idTrPemesanan_param UUID,
+    pekerjaId_param UUID
 )
 RETURNS VOID AS $$
 BEGIN
     -- Update the TR_PEMESANAN_STATUS table
     UPDATE "TR_PEMESANAN_JASA" tps
-    SET "IdPekerja" = pekerjaId
-    WHERE tps."Id" = IdTrPemesanan;
+    SET "IdPekerja" = pekerjaId_param
+    WHERE tps."Id" = idTrPemesanan_param;
 
     -- Insert a new record into the TR_PEMESANAN_STATUS table
     INSERT INTO "TR_PEMESANAN_STATUS" (
@@ -194,8 +194,8 @@ BEGIN
         "TglWaktu"
     )
     VALUES (
-        IdTrPemesanan, 
-        '57fc8243-eb71-47a5-b74d-81fba6a94f82',  -- 'Menunggu Pekerja Berangkat' status ID
+        idTrPemesanan_param, 
+        '57fc8243-eb71-47a5-b74d-81fba6a94f82',
         NOW()
     );
 END;
