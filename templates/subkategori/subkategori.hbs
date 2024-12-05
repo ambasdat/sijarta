@@ -1,15 +1,15 @@
 <main class="card shadow-xl max-w-screen-xl mx-auto my-24 bg-neutral text-neutral-content p-6 space-y-8">
     <!-- Subcategory and Category name -->
     <section class="flex items-center justify-between">
-        <h2 class="text-2xl font-bold mb-4">Daily Cleaning</h2>
-        <h3 class="text-xl font-semibold">Home Cleaning</h3>
+        <h2 class="text-2xl font-bold mb-4">{{desc.Sub}}</h2>
+        <h3 class="text-xl font-semibold">{{desc.Kat}}</h3>
     </section>
 
     <!-- Description with border -->
     <section>
         <h3 class="text-xl font-semibold mb-2">Deskripsi</h3>
         <div class="text-center border border-gray-300 p-4 rounded">
-            <p class="text-sm mb-4">Membersihkan hunian secara umum seperti menyapu, mengepel, mengelap</p>
+            <p class="text-sm mb-4">{{desc.Desc}}</p>
         </div>
     </section>
 
@@ -20,19 +20,25 @@
                 <tr>
                     <th class="border border-gray-300">Service Session</th>
                     <th class="border border-gray-300">Price</th>
+                    {{#if isPelanggan}}
                     <th class="border border-gray-300">Action</th>
+                    {{/if}}
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td class="border border-gray-300">2 Hours</td>
                     <td class="border border-gray-300">Rp 150,000</td>
+                    {{#if isPelanggan}}
                     <td class="border border-gray-300"><button class="btn btn-primary" onclick="document.getElementById('orderModal').showModal()">Pesan</button></td>
+                    {{/if}}
                 </tr>
                 <tr>
                     <td class="border border-gray-300">4 Hours</td>
                     <td class="border border-gray-300">Rp 250,000</td>
+                    {{#if isPelanggan}}
                     <td class="border border-gray-300"><button class="btn btn-primary" onclick="document.getElementById('orderModal').showModal()">Pesan</button></td>
+                    {{/if}}
                 </tr>
             </tbody>
         </table>
@@ -147,6 +153,10 @@
             </div>
         </div>
     </section>
+
+    <section class="flex justify-center">
+        <button class="btn btn-primary">Gabung</button>
+  </section>
 
     <!-- Testimony -->
     <section>
