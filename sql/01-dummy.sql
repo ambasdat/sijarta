@@ -94,31 +94,31 @@ VALUES
   (
     'f864622f-e148-4d45-8253-e31fe71754bd', 
     'GoPay', '1234567890', 'NPWP123456', 
-    'http://example.com/foto1.jpg', 
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8oa_Ry-VkvI6BaxO7JTRMbCjUNW88GeUZJQ&s', 
     4.5, 15
   ), 
   (
     '196b292e-d564-4508-94ce-f049e07e8688', 
     'OVO', '0987654321', 'NPWP654321', 
-    'http://example.com/foto2.jpg', 
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgABrPnPoMy3TPsdJ6ME_zrzQ4F8rXrOpiiw&s', 
     4.8, 22
   ), 
   (
     'feb41656-f881-46c4-9e0f-370e6473ebfa', 
     'Virtual Account BCA', '1122334455', 'NPWP998877', 
-    'http://example.com/foto3.jpg', 
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVsYw1PibCT0vRTU00sCzMl8EvEmLEwJs1jw&s', 
     4.2, 10
   ), 
   (
     '3b930fcd-bda9-4c36-90b7-c02525984abe', 
     'Virtual Account BNI', '5566778899', 'NPWP445566', 
-    'http://example.com/foto4.jpg', 
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0GEi8cFQDZ839O6WKomzwhrvVi-14owZ2sA&s', 
     4.9, 30
   ), 
   (
     'a050fd67-53a0-4659-b7ef-f510566a0f7e', 
     'Virtual Account Mandiri', '6677889900', 'NPWP223344', 
-    'http://example.com/foto5.jpg', 
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJcHUgyQjd7q7f1rRwwM1BS-LjoUfH8qln1Q&s', 
     4.7, 18
   );
 
