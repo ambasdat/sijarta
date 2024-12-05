@@ -1,5 +1,6 @@
 import express from "express";
 import client from "./db";
+import { allowRoles } from "./auth";
 
 const app = express.Router();
 
@@ -12,7 +13,11 @@ app.get("/:userId", async (req, res) => {
   );
 
   if (pekerja.rowCount != null && pekerja.rowCount > 0) {
-    return res.render("profile/pekerja", { pekerja: pekerja.rows[0] });
+    const p = pekerja.rows[0];
+    return res.render("profile/pekerja", {
+      pekerja: p,
+      isSelf: req.userId && p.Id === req.userId,
+    });
   }
 
   const pelanggan = await client.query(
@@ -21,14 +26,22 @@ app.get("/:userId", async (req, res) => {
   );
 
   if (pelanggan.rowCount != null && pelanggan.rowCount > 0) {
-    return res.render("profile/pengguna", { pelanggan: pelanggan.rows[0] });
+    const p = pelanggan.rows[0];
+    return res.render("profile/pengguna", {
+      pelanggan: p,
+      isSelf: req.userId && p.Id === req.userId,
+    });
   }
 
   return res.render("404");
 })
 
-app.post("/pekerja/:pekerjaId", (req, res) => {
+app.post("/pekerja/:pekerjaId", allowRoles(['pekerja']), (req, res) => {
   const pekerjaId = req.params.pekerjaId;
+
+  if (req.userId != pekerjaId) {
+    return res.redirect("/home");
+  }
 
   client.query(
     `SELECT update_profile_pekerja(
@@ -62,6 +75,10 @@ app.post("/pekerja/:pekerjaId", (req, res) => {
 
 app.post("/pengguna/:penggunaId", (req, res) => {
   const penggunaId = req.params.penggunaId;
+
+  if (req.userId != penggunaId) {
+    return res.redirect("/home");
+  }
 
   client.query(
     `SELECT update_profile_pelanggan(

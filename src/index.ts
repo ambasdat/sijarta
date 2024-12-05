@@ -70,10 +70,7 @@ app.use("/profile", profile);
 app.use("/pemesanan", pemesanan);
 app.use("/subkategori", subkategori);
 
-app.get("/", (_req, res) => {
-  const isLoggedIn = false; // ubah dengan logic
-  res.redirect(isLoggedIn ? "/home" : "/auth")
-});
+app.get("/", (_req, res) => res.redirect("/home"));
 
 // -------------------- [ SERVER STARTUP   ] --------------------
 (async () => {

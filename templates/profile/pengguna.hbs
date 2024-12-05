@@ -12,6 +12,7 @@
       <p><strong>Saldo MyPay:</strong> Rp{{ pelanggan.SaldoMyPay }}</p>
     </div>
 
+    {{#if isSelf}}
     <div class="card-actions justify-end mt-4">
       <button
         class="btn btn-primary"
@@ -110,5 +111,6 @@
         </form>
       </div>
     </dialog>
+    {{/if}}
   </div>
 </main>
