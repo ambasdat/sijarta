@@ -19,12 +19,22 @@ app.get("/:id", async (req, res) => {
   try {
     const idsub = req.params.id;
     const desc = await client.query(`SELECT * FROM getDesc($1);`, [idsub]);
+    const pekerja = await client.query(`SELECT * FROM getPekerja($1);`, [desc.rows[0].KatID]);
+    const sesi = await client.query(`SELECT * FROM getSession($1);`, [idsub]);
+    const testimoni = await client.query(`SELECT * FROM getTestimoni($1);`, [idsub]);
     desc.rows[0].Sub = titleCase(desc.rows[0].Sub);
     desc.rows[0].Kat = titleCase(desc.rows[0].Kat);
-    const sesi = await client.query(`SELECT * FROM getSession($1);`, [idsub]);
-    console.log(sesi.rows);
     const isPelanggan = req.userType === "pengguna";
-    res.render("subkategori/subkategori.hbs", {desc: desc.rows[0], sesi: sesi.rows, isPelanggan: isPelanggan});
+    const isGuest = req.userType === "guest";
+    var isWorkerAtKategori = false;
+    pekerja.rows.forEach((row) => {
+      const oid = row.Id as string || "";
+      if (oid === req.userId) {
+        isWorkerAtKategori = true;
+      }
+    });
+    const canJoin = !(isGuest || isPelanggan || isWorkerAtKategori);
+    res.render("subkategori/subkategori.hbs", {desc: desc.rows[0], sesi: sesi.rows, pekerja: pekerja.rows, testimoni: testimoni.rows, isPelanggan: isPelanggan, canJoin: canJoin});
 }
   catch (error) {
     console.error("Error fetching testimonies:", error);

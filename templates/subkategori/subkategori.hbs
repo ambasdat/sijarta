@@ -80,103 +80,39 @@
     <h3 class="text-xl font-semibold mb-2">Pekerja</h3>
     <section class="overflow-x-auto">
         <div class="flex flex-nowrap gap-4">
-            <div class="card bg-base-100 shadow-md min-w-52">
-                <div class="card-body">
-                    <h2 class="card-title">John Doe</h2>
-                    <a href="/profile/pekerja/john-doe" class="link link-primary">View Profile</a>
+            {{#each pekerja}}
+                <div class="card bg-base-100 shadow-md min-w-52 flex items-center justify-center">
+                    <div class="card-body">
+                        <h2 class="card-title mx-auto text-sm">{{this.Nama}}</h2>
+                        <a href="/profile/{{this.Id}}"><img src="{{this.LinkFoto}}" class="mx-auto h-32 w-32 rounded-full" /></a>
+                    </div>
                 </div>
-            </div>
-            <div class="card bg-base-100 shadow-md min-w-52">
-                <div class="card-body">
-                    <h2 class="card-title">Jane Smith</h2>
-                    <a href="/profile/pekerja/jane-smith" class="link link-primary">View Profile</a>
-                </div>
-            </div>
-            <div class="card bg-base-100 shadow-md min-w-52">
-                <div class="card-body">
-                    <h2 class="card-title">John Smith</h2>
-                    <a href="/profile/pekerja/john-smith" class="link link-primary">View Profile</a>
-                </div>
-            </div>
-            <div class="card bg-base-100 shadow-md min-w-52">
-                <div class="card-body">
-                    <h2 class="card-title">Jane Johnson</h2>
-                    <a href="/profile/pekerja/jane-johnson" class="link link-primary">View Profile</a>
-                </div>
-            </div>
-            <div class="card bg-base-100 shadow-md min-w-52">
-                <div class="card-body">
-                    <h2 class="card-title">John Johnson</h2>
-                    <a href="/profile/pekerja/john-johnson" class="link link-primary">View Profile</a>
-                </div>
-            </div>
-            <div class="card bg-base-100 shadow-md min-w-52">
-                <div class="card-body">
-                    <h2 class="card-title">Jane Doe</h2>
-                    <a href="/profile/pekerja/jane-doe" class="link link-primary">View Profile</a>
-                </div>
-            </div>
-            <div class="card bg-base-100 shadow-md min-w-52">
-                <div class="card-body">
-                    <h2 class="card-title">John James</h2>
-                    <a href="/profile/pekerja/john-james" class="link link-primary">View Profile</a>
-                </div>
-            </div>
-            <div class="card bg-base-100 shadow-md min-w-52">
-                <div class="card-body">
-                    <h2 class="card-title">Jane Thompson</h2>
-                    <a href="/profile/pekerja/jane-thompson" class="link link-primary">View Profile</a>
-                </div>
-            </div>
-            <div class="card bg-base-100 shadow-md min-w-52">
-                <div class="card-body">
-                    <h2 class="card-title">John Thompson</h2>
-                    <a href="/profile/pekerja/john-thompson" class="link link-primary">View Profile</a>
-                </div>
-            </div>
-            <div class="card bg-base-100 shadow-md min-w-52">
-                <div class="card-body">
-                    <h2 class="card-title">John Michael</h2>
-                    <a href="/profile/pekerja/john-michael" class="link link-primary">View Profile</a>
-                </div>
-            </div>
-            <div class="card bg-base-100 shadow-md min-w-52">
-                <div class="card-body">
-                    <h2 class="card-title">Jane Michael</h2>
-                    <a href="/profile/pekerja/jane-michael" class="link link-primary">View Profile</a>
-                </div>
-            </div>
+            {{/each}}
         </div>
     </section>
 
+    {{#if canJoin}}
     <section class="flex justify-center">
         <button class="btn btn-primary">Gabung</button>
-  </section>
+    </section>
+    {{/if}}
 
     <!-- Testimony -->
     <section>
         <h3 class="text-xl font-semibold mb-2">Testimonies</h3>
         <div class="space-y-4">
-            <div class="p-4 bg-base-100 rounded shadow flex justify-between">
-                <div>
-                    <p><strong>Username:</strong> user123 | <strong>Date:</strong> 2024-11-16</p>
-                    <p class="py-5">Excellent service, highly recommend!</p>
-                    <p><strong>Rating:</strong> 5/5</p>
+            {{#each testimoni}}
+                <div class="p-4 bg-base-100 rounded shadow flex justify-between">
+                    <div>
+                        <p><strong>Username:</strong> {{this.NamaPelanggan}} | <strong>Date:</strong> {{this.Tgl}}</p>
+                        <p class="py-5">{{this.Teks}}</p>
+                        <p><strong>Rating:</strong> {{this.Rating}}/5</p>
+                    </div>
+                    <div>
+                        <p><strong>Worker:</strong> {{this.NamaPekerja}}</p>
+                    </div>
                 </div>
-                <div>
-                    <p><strong>Worker:</strong> John Doe</p>
-                </div>
-            </div>
-            <div class="p-4 bg-base-100 rounded shadow flex justify-between">
-                <div>
-                    <p><strong>Username:</strong> happycustomer | <strong>Date:</strong> 2024-11-10</p>
-                    <p class="py-5">Very professional and thorough.</p>
-                    <p><strong>Rating:</strong> 4/5</p>
-                </div>
-                <div>
-                    <p><strong>Worker:</strong> Jane Smith</p>
-                </div>
-            </div>
+            {{/each}}
         </div>
     </section>
 </main>
