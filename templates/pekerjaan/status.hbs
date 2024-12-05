@@ -8,7 +8,8 @@
 
         <div class="divider"></div>
         
-        <div class="card-body form-control grid grid-cols-[2fr_1fr_1fr] items-end gap-4 w-full">
+        <!-- Search Form -->
+        <form action="/pekerjaan/status" method="GET" class="card-body form-control grid grid-cols-[2fr_1fr_1fr] items-end gap-4 w-full">
 
             <!-- Search Bar -->
             <label for="searchBar" class="form-control">
@@ -16,54 +17,94 @@
                     <span class="label-text">Search</span>
                 </div>
                 <label class="input input-primary flex items-center gap-2">
-                    <input id="searchBar" type="text" class="grow" placeholder="Search by name, date, etc. (e.g. Daily Cleaning)" />
+                    <input
+                        id="searchBar"
+                        name="searchQuery"
+                        type="text"
+                        class="grow"
+                        placeholder="Search by name, date, etc. (e.g. Daily Cleaning)" />
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 16 16"
                         fill="currentColor"
                         class="h-4 w-4 opacity-70">
                         <path
-                        fill-rule="evenodd"
-                        d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                        clip-rule="evenodd" />
+                            fill-rule="evenodd"
+                            d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                            clip-rule="evenodd" />
                     </svg>
                 </label>
             </label>
-
 
             <!-- Dropdown for "Status" -->
             <label for="status" class="form-control">
                 <div class="label">
                     <span class="label-text">Status</span>
                 </div>
-
-                <select id="status" name="status" class="select select-secondary w-full max-w-xs" required>
+                <select
+                    id="status"
+                    name="status"
+                    class="select select-secondary w-full max-w-xs"
+                    required>
                     <option value="-" disabled selected>Pilih Status</option>
                     <option value="0">Semua Status</option>
-                    <option value="1">Pekerja Tiba Di Lokasi</option>
-                    <option value="2">Menunggu Pekerja Berangkat</option>
-                    <option value="3">Pelayanan Jasa Sedang Dilakukan</option>
-                    <option value="4">Pesanan Dibatalkan</option>
-                    <option value="5">Pesanan Selesai</option>
+                    <option value="57fc8243-eb71-47a5-b74d-81fba6a94f82">Menunggu Pekerja Berangkat</option>
+                    <option value="996980f3-cc47-4edb-a8cc-10ec02939479">Pekerja Tiba di Lokasi</option>
+                    <option value="1fe77476-1194-4de7-b7f9-72c8cdd3ef68">Pelayanan Jasa Sedang dilakukan</option>
+                    <option value="3d436422-152e-4b22-b978-49012b58e1f8">Pesanan Selesai</option>
+                    <option value="d9521320-0b6e-4bf7-971f-b3cb7edec92f">Pesanan Dibatalkan</option>
                 </select>
             </label>
-        
+
             <!-- Search Button -->
-            <button id="searchButton" class="btn btn-warning">Search</button>
-        </div>
+            <button type="submit" class="btn btn-warning">Search</button>
+        </form>
 
         <div class="divider divider-warning px-5">Result</div>
 
         <!-- Jobs Section -->
         <div id="jobsContainer" class="grid gap-4 p-5">
             <!-- Dummy data rows will appear here -->
+            {{#each statusResult}}
+                <div class="card shadow-xl bg-base-100 p-4 rounded shadow-md grid grid-cols-3 items-center gap-1">
+                    <div>
+                        <p class="font-semibold">{{ this.namasubkategorijasa }}</p>
+                        <p class="text-sm stat-title p-1">Tgl pemesanan: {{ this.tglpemesanan }}</p>
+                        <p class="text-sm stat-title p-1">Tgl pekerjaan: {{ this.tglpekerjaan }}</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold">{{ this.namapelanggan }}</p>
+                    </div>
+                    <div class="grid grid-cols-2 items-center justify-between gap-4">
+                        <p class="font-bold">{{ this.totalbiaya }}</p>
+                        <div class="flex flex-col">
+                            <p class="font-semibold text-center">{{ this.status }}</p>
+                            <form action="status/update-status" method="POST" class="text-center">
+                                <input type="hidden" name="idtrpemesanan" value="{{ this.idtrpemesanan }}">
+                                <button type="submit" class="btn btn-warning">Update Status</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
         </div>
-
     </div>
 </main>
 
 <script>
-    // Dummy data
+    const message = "{{ message }}";
+    setTimeout(function() {
+        window.history.replaceState(null, null, window.location.pathname);
+    }, 0);
+    
+    if (message) {
+        setTimeout(() => {
+        alert(message);
+        }, 0);
+
+    }
+</script>
+// Dummy data
     const jobs = {{{jobs}}};
 
     // Render jobs dynamically
@@ -122,4 +163,3 @@
 
         renderJobs(filteredJobs);
     });
-</script>

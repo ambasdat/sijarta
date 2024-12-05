@@ -59,7 +59,7 @@
             <div class="grid grid-cols-2 items-center justify-between gap-4">
                 <p class="font-bold">{{ this.totalbiaya }}</p>
                 <form id="kerjakan-form" action="/pekerjaan/kerjakan" method="POST">
-                    <input type="" name="idtrpemesanan" value="{{ this.idtrpemesanan }}">
+                    <input type="hidden" name="idtrpemesanan" value="{{ this.idtrpemesanan }}">
                     <button type="submit" class="btn btn-warning">Kerjakan Pesanan</button>
                 </form>
             </div>
@@ -71,6 +71,18 @@
 </main>
 
 <script>
+    const message = "{{ message }}";
+    setTimeout(function() {
+        window.history.replaceState(null, null, window.location.pathname);
+    }, 0);
+    
+    if (message) {
+        setTimeout(() => {
+        alert(message);
+        }, 0);
+
+    }
+    
     // ----------------- DYNAMICALLY RENDER SUBCATEGORIES -----------------
     const pekerja_kategori_dict = {{{ pekerjaKategoriDictJson }}};
     const selectedKategori = "{{ selectedKategori }}"; 
