@@ -36,7 +36,9 @@ CREATE OR REPLACE FUNCTION getSession(p_id UUID)
             FROM 
                 "SESI_LAYANAN" AS SL
             WHERE
-                SL."SubkategoriId" = p_id;
+                SL."SubkategoriId" = p_id
+            ORDER BY
+                SL."Sesi";
         END;
     $$
     LANGUAGE plpgsql;

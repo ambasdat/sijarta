@@ -21,8 +21,10 @@ app.get("/:id", async (req, res) => {
     const desc = await client.query(`SELECT * FROM getDesc($1);`, [idsub]);
     desc.rows[0].Sub = titleCase(desc.rows[0].Sub);
     desc.rows[0].Kat = titleCase(desc.rows[0].Kat);
+    const sesi = await client.query(`SELECT * FROM getSession($1);`, [idsub]);
+    console.log(sesi.rows);
     const isPelanggan = req.userType === "pengguna";
-    res.render("subkategori/subkategori.hbs", {desc: desc.rows[0], isPelanggan: isPelanggan});
+    res.render("subkategori/subkategori.hbs", {desc: desc.rows[0], sesi: sesi.rows, isPelanggan: isPelanggan});
 }
   catch (error) {
     console.error("Error fetching testimonies:", error);

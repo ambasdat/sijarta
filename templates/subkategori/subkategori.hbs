@@ -26,20 +26,15 @@
                 </tr>
             </thead>
             <tbody>
+                {{#each sesi}}
                 <tr>
-                    <td class="border border-gray-300">2 Hours</td>
-                    <td class="border border-gray-300">Rp 150,000</td>
+                    <td class="border border-gray-300">{{this.Sesi}} Jam</td>
+                    <td class="border border-gray-300">Rp {{this.Harga}}</td>
                     {{#if isPelanggan}}
                     <td class="border border-gray-300"><button class="btn btn-primary" onclick="document.getElementById('orderModal').showModal()">Pesan</button></td>
                     {{/if}}
                 </tr>
-                <tr>
-                    <td class="border border-gray-300">4 Hours</td>
-                    <td class="border border-gray-300">Rp 250,000</td>
-                    {{#if isPelanggan}}
-                    <td class="border border-gray-300"><button class="btn btn-primary" onclick="document.getElementById('orderModal').showModal()">Pesan</button></td>
-                    {{/if}}
-                </tr>
+                {{/each}}
             </tbody>
         </table>
     </section>
