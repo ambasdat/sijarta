@@ -1,12 +1,12 @@
 import express from "express";
 import client from "./db";
+import { allowRoles } from "./auth";
 
 const app = express.Router();
 
-app.get("/", async (req, res) => {
+app.get("/", allowRoles(['pekerja', 'pengguna']), async (req, res) => {
   try {
-    const userId = '64302ea1-212d-414c-a2db-1fad0b3c3b6e';
-
+    const userId = req.userId;
 
     const { rows: userDetailsResult } = await client.query(
       "SELECT * FROM get_user_details($1)",
@@ -29,11 +29,10 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.get("/transaction", async (req, res) => {
-  const message = req.query.message || "";
-  console.log(req.userId)
+app.get("/transaction", allowRoles(['pekerja', 'pengguna']), async (req, res) => {
   try{
-    const userId = '64302ea1-212d-414c-a2db-1fad0b3c3b6e';
+    const userId = req.userId;
+    const message = req.query.message || "";
 
     const { rows: userDetailsResult} = await client.query(
       "SELECT * FROM get_user_details($1)", 
@@ -62,12 +61,13 @@ app.get("/transaction", async (req, res) => {
   }
 });
 
-app.post("/transaction/topup", async (req, res) => {
-  const userId = '64302ea1-212d-414c-a2db-1fad0b3c3b6e';
-  const topup_amount = req.body.topup_amount;
+app.post("/transaction/topup", allowRoles(['pekerja', 'pengguna']), async (req, res) => {
   let message = ""
-
+  
   try{
+    const userId = req.userId;
+    const topup_amount = req.body.topup_amount;
+
     await client.query(
       'SELECT handle_topup($1, $2)',
       [userId, topup_amount]
@@ -79,13 +79,15 @@ app.post("/transaction/topup", async (req, res) => {
   res.redirect(`/mypay/transaction?message=${message}`);
 });
 
-app.post("/transaction/pay", async (req, res) => {
-  const userId = '64302ea1-212d-414c-a2db-1fad0b3c3b6e';
-  const { serviceOrder: serviceOrder } = req.body;
-  const [idTrPemesanan, totalAmount] = serviceOrder.split(',');
-
+app.post("/transaction/pay", allowRoles(['pengguna']), async (req, res) => {
   let message = "";
+  
   try{
+    const userId = req.userId;
+
+    const { serviceOrder: serviceOrder } = req.body;
+    const [idTrPemesanan, totalAmount] = serviceOrder.split(',');
+
     await client.query(
       'SELECT handle_payment($1, $2, $3)',
       [userId, idTrPemesanan, totalAmount]
@@ -97,13 +99,14 @@ app.post("/transaction/pay", async (req, res) => {
   res.redirect(`/mypay/transaction?message=${message}`);
 });
 
-app.post("/transaction/transfer", async (req, res) => {
-  const userId = '64302ea1-212d-414c-a2db-1fad0b3c3b6e';
-  const nohp = req.body.nohp;
-  const tf_amount = req.body.tf_amount;
+app.post("/transaction/transfer", allowRoles(['pekerja', 'pengguna']), async (req, res) => {
   let message = ""
-
+  
   try{
+    const userId = req.userId;
+    const nohp = req.body.nohp;
+    const tf_amount = req.body.tf_amount;
+
     await client.query(
       'SELECT handle_transfer($1, $2, $3)',
       [userId, nohp, tf_amount]
@@ -116,12 +119,14 @@ app.post("/transaction/transfer", async (req, res) => {
   res.redirect(`/mypay/transaction?message=${message}`);
 });
 
-app.post("/transaction/withdraw", async (req, res) => {
-  const userId = '64302ea1-212d-414c-a2db-1fad0b3c3b6e';
-  const { wd_amount: wdAmount } = req.body;
-
+app.post("/transaction/withdraw", allowRoles(['pekerja', 'pengguna']), async (req, res) => {
   let message = "";
+  
   try{
+    const userId = req.userId;
+
+    const { wd_amount: wdAmount } = req.body;
+
     await client.query(
       'SELECT handle_withdraw($1, $2)',
       [userId, wdAmount]
@@ -151,5 +156,3 @@ function processNameParts(fullName: string) {
 
   return { firstName, lastName };
 }
-
-
