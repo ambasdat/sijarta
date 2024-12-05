@@ -1,4 +1,6 @@
-import { Client } from 'pg';
+import { Client, types } from 'pg';
+
+types.setTypeParser(1082, (val) => val);
 
 const client = new Client({
   user: process.env.DB_USER!,
