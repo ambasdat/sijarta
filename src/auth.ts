@@ -3,10 +3,10 @@ import client from "./db";
 
 type Role = 'pengguna' | 'pekerja' | 'guest'
 
-export function allowRoles(roles: Role[]): RequestHandler {
+export function allowRoles(roles: Role[], redirectTo?: string): RequestHandler {
   return (req, res, next) => {
     if (!roles.includes(req.userType)) {
-      return res.redirect('/auth');
+      return res.redirect(redirectTo || '/auth');
     }
 
     next();
@@ -15,15 +15,15 @@ export function allowRoles(roles: Role[]): RequestHandler {
 
 const app = express.Router();
 
-app.get("/", (_, res) => {
+app.get("/", allowRoles(['guest'], '/home'), (_, res) => {
   res.render("auth/main");
 });
 
-app.get("/login", (_, res) => {
+app.get("/login", allowRoles(['guest'], '/home'), (_, res) => {
   res.render("auth/login");
 });
 
-app.post("/login", async (req, res) => {
+app.post("/login", allowRoles(['guest'], '/home'), async (req, res) => {
   try {
     const query = await client.query(
       'SELECT login($1::VARCHAR, $2::VARCHAR)',
@@ -40,15 +40,15 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/register", (_, res) => {
+app.get("/register", allowRoles(['guest'], "/home"), (_, res) => {
   res.render("auth/register/main");
 });
 
-app.get("/register/pekerja", (_, res) => {
+app.get("/register/pekerja", allowRoles(['guest'], "/home"), (_, res) => {
   res.render("auth/register/pekerja");
 });
 
-app.post("/register/pekerja", async (req, res) => {
+app.post("/register/pekerja", allowRoles(['guest'], "/home"), async (req, res) => {
   try {
     await client.query(
       `SELECT insert_pekerja(
@@ -86,11 +86,11 @@ app.post("/register/pekerja", async (req, res) => {
   }
 })
 
-app.get("/register/pengguna", (_, res) => {
+app.get("/register/pengguna", allowRoles(['guest'], "/home"), (_, res) => {
   res.render("auth/register/pengguna");
 });
 
-app.post("/register/pengguna", async (req, res) => {
+app.post("/register/pengguna", allowRoles(['guest'], "/home"), async (req, res) => {
   try {
     await client.query(
       `SELECT insert_pelanggan(
