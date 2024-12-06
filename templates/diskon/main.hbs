@@ -50,7 +50,7 @@
                     </select>
                     <button
                       class="btn btn-primary"
-                      onclick="openSuccessModal('{{this.Kode}}')"
+                      onclick="buyVoucher('{{this.Kode}}', {{user.Id}})"
                     >
                       Beli
                     </button>
@@ -61,6 +61,7 @@
                     </div>
                   </div>
                 </dialog>
+
 
                 <!-- Second Modal (Success Confirmation) -->
                 <dialog
@@ -122,5 +123,39 @@
     
     // Open the success modal
     document.getElementById('successModal_' + voucherCode).showModal();
+  }
+
+  async function buyVoucher(voucherCode, userId) {
+    const paymentMethod = document.getElementById(`paymentMethod_${voucherCode}`).value;
+
+    try {
+      const response = await fetch("/diskon/buy-voucher", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: userId,
+          voucherCode: voucherCode,
+          paymentMethod: paymentMethod,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        // Close the payment method modal
+        document.getElementById(`modal_${voucherCode}`).close();
+        
+        // Open the success modal
+        document.getElementById(`successModal_${voucherCode}`).showModal();
+      } else {
+        // Handle error responses
+        alert(result.error || "Failed to process the voucher.");
+      }
+    } catch (error) {
+      console.error("Error buying voucher:", error);
+      alert("An unexpected error occurred.");
+    }
   }
 </script>
