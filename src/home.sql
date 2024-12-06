@@ -20,25 +20,3 @@ CREATE OR REPLACE FUNCTION getAllForHome(sub VARCHAR, kat VARCHAR)
     END;
     $$
     LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION isPelanggan(p_id UUID)
-    RETURNS BOOLEAN AS
-    $$
-    BEGIN
-        RETURN EXISTS (
-            SELECT 1 FROM "PELANGGAN" WHERE "Id" = p_id
-        );
-    END;
-    $$
-    LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION isPekerja(p_id UUID)
-    RETURNS BOOLEAN AS
-    $$
-    BEGIN
-        RETURN EXISTS (
-            SELECT 1 FROM "PEKERJA" WHERE "Id" = p_id
-        );
-    END;
-    $$
-    LANGUAGE plpgsql;

@@ -1,0 +1,133 @@
+<main class="card shadow-xl max-w-screen-xl mx-auto my-24 bg-neutral text-neutral-content p-6 space-y-8">
+    <!-- Subcategory and Category name -->
+    <section class="flex items-center justify-between">
+        <h2 class="text-2xl font-bold mb-4">{{desc.Sub}}</h2>
+        <h3 class="text-xl font-semibold">{{desc.Kat}}</h3>
+    </section>
+
+    <!-- Description with border -->
+    <section>
+        <h3 class="text-xl font-semibold mb-2">Deskripsi</h3>
+        <div class="text-center border border-gray-300 p-4 rounded">
+            <p class="text-sm mb-4">{{desc.Desc}}</p>
+        </div>
+    </section>
+
+    <!-- Service session options -->
+    <section>
+        <table class="table w-full border border-gray-300">
+            <thead>
+                <tr>
+                    <th class="border border-gray-300">Service Session</th>
+                    <th class="border border-gray-300">Price</th>
+                    {{#if isPelanggan}}
+                    <th class="border border-gray-300">Action</th>
+                    {{/if}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#each sesi}}
+                <tr>
+                    <td class="border border-gray-300">{{this.Sesi}} Jam</td>
+                    <td class="border border-gray-300">Rp {{this.Harga}}</td>
+                    {{#if isPelanggan}}
+                    <td class="border border-gray-300"><button class="btn btn-primary" onclick="document.getElementById('orderModal').showModal()">Pesan</button></td>
+                    {{/if}}
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Order Modal -->
+    <dialog id="orderModal" class="modal">
+        <form method="dialog" class="modal-box" onsubmit="return validateForm()">
+            <h3 class="text-xl font-semibold mb-4 text-center">Order Service</h3>
+            <div class="form-control mb-4">
+                <label for="orderDate" class="label">
+                    <span class="label-text">Order Date</span>
+                </label>
+                <input type="date" id="orderDate" class="input input-primary" required>
+            </div>
+            <div class="form-control mb-4">
+                <label for="discountCode" class="label">
+                    <span class="label-text">Discount Code</span>
+                </label>
+                <input type="text" id="discountCode" class="input input-primary">
+            </div>
+            <div class="form-control mb-4">
+                <label for="paymentMethod" class="label">
+                    <span class="label-text">Payment Method</span>
+                </label>
+                <select id="paymentMethod" class="select select-primary" required>
+                    <option value="" disabled selected>Select a method</option>
+                    <option value="credit_card">Credit Card</option>
+                    <option value="bank_transfer">Bank Transfer</option>
+                    <option value="cash">Cash</option>
+                </select>
+            </div>
+            <div class="form-control mb-4">
+                <p><strong>Total Payment:</strong> Rp 150,000</p>
+            </div>
+            <div class="modal-action">
+                <button class="btn btn-primary">Order</button>
+                <button class="btn" onclick="document.getElementById('orderModal').close()">Cancel</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- List of Worker -->
+    <h3 class="text-xl font-semibold mb-2">Pekerja</h3>
+    <section class="overflow-x-auto">
+        <div class="flex flex-nowrap gap-4">
+            {{#each pekerja}}
+                <div class="card bg-base-100 shadow-md min-w-52 flex items-center justify-center">
+                    <div class="card-body">
+                        <h2 class="card-title mx-auto text-sm">{{this.Nama}}</h2>
+                        <a href="/profile/{{this.Id}}"><img src="{{this.LinkFoto}}" class="mx-auto h-32 w-32 rounded-full" /></a>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </section>
+
+    {{#if canJoin}}
+    <section class="flex justify-center">
+        <button class="btn btn-primary">Gabung</button>
+    </section>
+    {{/if}}
+
+    <!-- Testimony -->
+    <section>
+        <h3 class="text-xl font-semibold mb-2">Testimonies</h3>
+        <div class="space-y-4">
+            {{#each testimoni}}
+                <div class="p-4 bg-base-100 rounded shadow flex justify-between">
+                    <div>
+                        <p><strong>Username:</strong> {{this.NamaPelanggan}} | <strong>Date:</strong> {{this.Tgl}}</p>
+                        <p class="py-5">{{this.Teks}}</p>
+                        <p><strong>Rating:</strong> {{this.Rating}}/5</p>
+                    </div>
+                    <div>
+                        <p><strong>Worker:</strong> {{this.NamaPekerja}}</p>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </section>
+</main>
+
+<script>
+    function validateForm() {
+        let orderDate = document.getElementById('orderDate').value;
+        let discountCode = document.getElementById('discountCode').value;
+        let paymentMethod = document.getElementById('paymentMethod').value;
+
+        if (orderDate === '' || paymentMethod === '') {
+            return false;
+        }
+
+        window.location.href = '/pemesanan';
+        return true;
+    }
+</script>

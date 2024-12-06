@@ -6,8 +6,10 @@
 CREATE OR REPLACE FUNCTION check_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
-  IF EXISTS (SELECT 1 FROM "USER" WHERE "NoHP" = NEW."NoHP") THEN
-    RAISE EXCEPTION 'No HP already used';
+  IF (OLD."NoHP" <> NEW."NoHP") THEN
+    IF EXISTS (SELECT 1 FROM "USER" WHERE "NoHP" = NEW."NoHP") THEN
+      RAISE EXCEPTION 'No HP already used';
+    END IF;
   END IF;
 
   RETURN NEW;
@@ -21,8 +23,10 @@ FOR EACH ROW EXECUTE FUNCTION check_new_user();
 CREATE OR REPLACE FUNCTION check_new_pekerja()
 RETURNS TRIGGER AS $$
 BEGIN
-  IF EXISTS (SELECT 1 FROM "PEKERJA" WHERE "NamaBank" = NEW."NamaBank" AND "NomorRekening" = NEW."NomorRekening") THEN
-    RAISE EXCEPTION 'Bank information already used';
+  IF (OLD."NamaBank" <> NEW."NamaBank" OR OLD."NomorRekening" <> NEW."NomorRekening") THEN
+    IF EXISTS (SELECT 1 FROM "PEKERJA" WHERE "NamaBank" = NEW."NamaBank" AND "NomorRekening" = NEW."NomorRekening") THEN
+      RAISE EXCEPTION 'Bank information already used';
+    END IF;
   END IF;
 
   RETURN NEW;

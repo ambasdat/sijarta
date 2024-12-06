@@ -50,6 +50,23 @@ app.use(async (req, res, next) => {
   res.locals.layout = userType;
   req.userType = userType;
 
+  switch (req.userType) {
+    case 'guest': {
+      res.clearCookie('userid');
+      break;
+    }
+    case 'pekerja': {
+      const query = await client.query('SELECT * FROM "PEKERJA" NATURAL JOIN "USER" WHERE "Id" = $1', [userId]);
+      res.locals.user = query.rows[0];
+      break;
+    }
+    case 'pengguna': {
+      const query = await client.query('SELECT * FROM "PELANGGAN" NATURAL JOIN "USER" WHERE "Id" = $1', [userId]);
+      res.locals.user = query.rows[0];
+      break;
+    }
+  }
+
   if (req.userType === 'guest') {
     res.clearCookie('userid');
   } else {
