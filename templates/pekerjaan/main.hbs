@@ -8,133 +8,128 @@
 
       <div class="divider"></div>
 
-      <div class="card-body form-control grid grid-cols-3 items-end gap-4 w-full">
+        <form action="/pekerjaan/" method="GET" class="card-body form-control grid grid-cols-3 items-end gap-4 w-full">
 
-          <!-- Dropdown for "Kategori" -->
-          <label for="kategori" class="form-control">
-              <div class="label">
-                  <span class="label-text">Kategori</span>
-              </div>
+            <!-- Dropdown for "Kategori" -->
+            <label for="kategori" class="form-control">
+                <div class="label">
+                    <span class="label-text">Kategori</span>
+                </div>
 
-              <select id="kategori" name="kategori" class="select select-primary w-full max-w-xs" required>
-                <option value="-" disabled selected>Pilih Kategori</option>
+                <select id="kategori" name="kategori" class="select select-primary w-full max-w-xs" required>
+                <option value="" disabled selected>Pilih Kategori</option>
+                <option value="0" {{#if (eq "0" ../selectedKategori)}}selected{{/if}}>Semua</option>
+                {{#each pekerjaKategoriDict}}
+                    <option value="{{ this.kid }}" {{#if (eq this.kid ../selectedKategori)}}selected{{/if}}>{{ this.kname }}</option>
+                {{/each}}
+                </select>
+            </label>
+
+            <!-- Dropdown for "Sub Kategori" -->
+            <label for="subkategori" class="form-control">
+                <div class="label">
+                    <span class="label-text">Sub Kategori</span>
+                </div>
+
+                <select id="subkategori" name="subkategori" class="select select-secondary w-full max-w-xs" required disabled>
+                <option value="" disabled selected>Pilih Sub Kategori</option>
                 <option value="0">Semua</option>
-                <option value="1">Home Cleaning</option>
-                <option value="2">Deep Cleaning</option>
-                <option value="3">Service AC</option>
-                <option value="4">Massage</option>
-                <option value="5">Hair Care</option>
-              </select>
-          </label>
-
-          <!-- Dropdown for "Sub Kategori" -->
-          <label for="subkategori" class="form-control">
-              <div class="label">
-                  <span class="label-text">Sub Kategori</span>
-              </div>
-
-              <select id="subkategori" name="subkategori" class="select select-secondary w-full max-w-xs" required disabled>
-                <option value="-" disabled selected>Pilih Sub Kategori</option>
-                <option value="0">Semua</option>
-              </select>
-          </label>
-      
-          <!-- Search Button -->
-          <button id="searchButton" class="btn btn-warning">Search</button>
-
-      </div>
+                </select>
+            </label>
+        
+            <!-- Search Button -->
+            <button type="submit" id="searchButton" class="btn btn-warning">Search</button>
+        </form>
 
       <div class="divider divider-warning px-5">Result</div>
 
       <!-- Orders Section -->
       <div id="ordersContainer" class="grid gap-4 p-5">
+          {{#each orderResult}}
           <!-- Dummy data rows will appear here -->
+          <div class="card shadow-xl bg-base-100 p-4 rounded shadow-md grid grid-cols-3 items-center gap-1">
+            <div>
+                <p class="font-semibold">{{ this.namasubkategorijasa }}</p>
+                <p class="text-sm stat-title p-1">Tgl pemesanan: {{ this.tglpemesanan }}</p>
+                <p class="text-sm stat-title p-1">Tgl pekerjaan: {{ this.tglpekerjaan }}</p>
+            </div>
+            <div>
+                <p class="font-semibold">{{this.namapelanggan}}</p>
+            </div>
+            <div class="grid grid-cols-2 items-center justify-between gap-4">
+                <p class="font-bold">{{ this.totalbiaya }}</p>
+                <form id="kerjakan-form" action="/pekerjaan/kerjakan" method="POST">
+                    <input type="hidden" name="idtrpemesanan" value="{{ this.idtrpemesanan }}">
+                    <button type="submit" class="btn btn-warning">Kerjakan Pesanan</button>
+                </form>
+            </div>
+          </div>
+          {{/each}}
       </div>
 
   </div>
 </main>
 
 <script>
-  // Dummy data
-  const orders = {{{jobs}}};
-  
-  const kategoriToSubkategori = {
-    1: ["Daily Cleaning", "Setrika", "Kombo Cleaning"],
-    2: ["Cuci Sofa", "Cuci Karpet", "Cuci Tirai"],
-    3: [],
-    4: ["Massage Therapy"],
-    5: [],
-  };
-  
-  const kategoriSelect = document.getElementById("kategori");
-  const subkategoriSelect = document.getElementById("subkategori");
-  const ordersContainer = document.getElementById("ordersContainer");
-  
-  // Populate subkategori options based on kategori selection
-  kategoriSelect.addEventListener("change", function () {
-    const selectedKategori = kategoriSelect.value;
-  
-    // Clear previous options
-    subkategoriSelect.innerHTML =`
-      <option value="-" disabled selected>Pilih Sub Kategori</option>
-      <option value="0">Semua</option>
-    `  
-    if (selectedKategori && selectedKategori !== "0") {
-      const subkategoris = kategoriToSubkategori[selectedKategori] || [];
-      subkategoris.forEach((subkategori) => {
-        const option = document.createElement("option");
-        option.value = subkategori.toLowerCase().replace(/\s+/g, "_");
-        option.textContent = subkategori;
-        subkategoriSelect.appendChild(option);
-      });
-      subkategoriSelect.disabled = false;
-    } else {
-      subkategoriSelect.disabled = true;
-    }
-  });
-  
-  // Render orders dynamically
-  function renderOrders(data) {
-    ordersContainer.innerHTML = ""; // Clear previous results
-    data.forEach((order) => {
-      ordersContainer.innerHTML +=`
-      <div class="card shadow-xl bg-base-100 p-4 rounded shadow-md grid grid-cols-3 items-center gap-1">
-          <div>
-              <p class="font-semibold">${order.subkategori}</p>
-              <p class="text-sm stat-title p-1">Tgl pemesanan: ${order.tanggalPemesanan}</p>
-              <p class="text-sm stat-title p-1">Tgl pekerjaan: ${order.tanggalPekerjaan}</p>
-          </div>
-          <div>
-              <p class="font-semibold">${order.namaPelanggan}</p>
-          </div>
-          <div class="grid grid-cols-2 items-center justify-between gap-4">
-              <p class="font-bold">${order.totalBiaya}</p>
-              <button class="btn btn-warning">Kerjakan Pesanan</button>
-          </div>
-      </div>
-      `
-    });
-  }
-  
-  // Initial render
-  renderOrders(orders);
-  
-  // Search functionality
-  document.getElementById("searchButton").addEventListener("click", () => {
-    const selectedKategori = kategoriSelect.value;
-    const selectedSubkategori = subkategoriSelect.value;
-
-    console.log(selectedKategori, selectedSubkategori)
+    const message = "{{ message }}";
+    setTimeout(function() {
+        window.history.replaceState(null, null, window.location.pathname);
+    }, 0);
     
-    const filteredOrders = orders.filter((order) => {
-      const matchesKategori = selectedKategori === "0" || selectedKategori === "-" || kategoriToSubkategori[selectedKategori]?.includes(order.subkategori);
-      const matchesSubkategori = selectedSubkategori === "0" || selectedSubkategori === "-" || order.subkategori
-        .toLowerCase()
-        .replace(/\s+/g, "_") === selectedSubkategori;
-  
-      return matchesKategori && matchesSubkategori;
+    if (message) {
+        setTimeout(() => {
+        alert(message);
+        }, 0);
+
+    }
+    
+    // ----------------- DYNAMICALLY RENDER SUBCATEGORIES -----------------
+    const pekerja_kategori_dict = {{{ pekerjaKategoriDictJson }}};
+    const selectedKategori = "{{ selectedKategori }}"; 
+    const selectedSubkategori = "{{ selectedSubkategori }}";
+
+    const kategoriSelect = document.getElementById("kategori");
+    const subkategoriSelect = document.getElementById("subkategori");
+
+    // Update the Sub Kategori options based on the selected Kategori
+    kategoriSelect.addEventListener("change", (e) => {
+        const selectedKategori = e.target.value;
+
+        // Reset the subkategori options
+        subkategoriSelect.innerHTML = `
+            <option value="" disabled selected>Pilih Sub Kategori</option>
+            <option value="0">Semua</option>
+        `;
+
+        // Enable subkategori dropdown only if a valid kategori is selected
+        if (selectedKategori && selectedKategori !== "0") {
+            subkategoriSelect.disabled = false;
+
+            // Find the selected kategori object
+            const kategori = pekerja_kategori_dict.find((k) => k.kid === selectedKategori);
+
+            // Populate the subkategori options
+            if (kategori && kategori.subkategori) {
+                for (const [subname, subid] of Object.entries(kategori.subkategori)) {
+                    const option = document.createElement("option");
+                    option.value = subid;
+                    option.textContent = subname;
+
+                    // Pre-select the subkategori if it matches the selectedSubkategori
+                    if (subid === selectedSubkategori) {
+                        option.selected = true;
+                    }
+
+                    subkategoriSelect.appendChild(option);
+                }
+            }
+        } else {
+            // Disable subkategori if "Semua" is selected
+            subkategoriSelect.disabled = true;
+        }
     });
-  
-    renderOrders(filteredOrders);
-  });
+
+    // Trigger the change event once to populate the subkategori options correctly on load
+    kategoriSelect.dispatchEvent(new Event("change"));
 </script>
+
