@@ -18,29 +18,29 @@
         <tbody>
           {{#each vouchers}}
             <tr>
-              <td class="font-medium">{{this.Kode}}</td>
-              <td>Rp {{this.Potongan}}</td>
-              <td>Rp {{this.MinTrPemesanan}}</td>
-              <td>{{this.JmlHariBerlaku}} hari</td>
-              <td>{{this.KuotaPenggunaan}}x</td>
-              <td>Rp {{this.Harga}}</td>
+              <td class="font-medium">{{this.kode}}</td>
+              <td>Rp {{this.potongan}}</td>
+              <td>Rp {{this.minTrPemesanan}}</td>
+              <td>{{this.jmlHariBerlaku}} hari</td>
+              <td>{{this.kuotaPenggunaan}}x</td>
+              <td>Rp {{this.harga}}</td>
               <td>
                 <button
                   class="btn btn-primary btn-sm"
-                  onclick="document.getElementById('modal_{{this.Kode}}').showModal()"
+                  onclick="document.getElementById('modal_{{this.kode}}').showModal()"
                 >
                   Beli
                 </button>
 
                 <!-- First Modal (Select Payment Method) -->
                 <dialog 
-                  id="modal_{{this.Kode}}" 
+                  id="modal_{{this.kode}}" 
                   class="modal modal-bottom sm:modal-middle" 
                 >
                   <div class="modal-box text-center">
                     <h3 class="font-bold text-2xl mb-4">Beli Voucher</h3>
                     <label for="paymentMethod" class="block text-left font-medium mb-4">Metode Pembayaran</label>
-                    <select id="paymentMethod_{{this.Kode}}" class="select select-bordered w-full mb-4">
+                    <select id="paymentMethod_{{this.kode}}" class="select select-bordered w-full mb-4">
                       <option value="MyPay">MyPay</option>
                       <option value="GoPay">GoPay</option>
                       <option value="OVO">OVO</option>
@@ -50,7 +50,7 @@
                     </select>
                     <button
                       class="btn btn-primary"
-                      onclick="openSuccessModal('{{this.Kode}}')"
+                      onclick="buyVoucher('{{ this.kode }}')"
                     >
                       Beli
                     </button>
@@ -62,18 +62,19 @@
                   </div>
                 </dialog>
 
+
                 <!-- Second Modal (Success Confirmation) -->
                 <dialog
-                  id="successModal_{{this.Kode}}"
+                  id="successModal_{{this.kode}}"
                   class="modal modal-bottom sm:modal-middle"
                 >
                   <div class="modal-box text-center">
                     <h3 class="font-bold text-2xl mb-4">SUKSES</h3>
                     <p>
                       Voucher ini akan berlaku hingga tanggal 
-                      {{this.JmlHariBerlaku}} 
+                      {{this.jmlHariBerlaku}} 
                       dengan kuota penggunaan sebanyak 
-                      {{this.KuotaPenggunaan}} 
+                      {{this.kuotaPenggunaan}} 
                       kali.
                     </p>
                     <div class="modal-action justify-center">
@@ -116,11 +117,50 @@
 </main>
 
 <script>
+  function prt(x) {
+    console.log(x);
+  }
+
   function openSuccessModal(voucherCode) {
     // Hide the payment method modal
     document.getElementById('modal_' + voucherCode).close();
     
     // Open the success modal
     document.getElementById('successModal_' + voucherCode).showModal();
+  }
+
+  async function buyVoucher(voucherCode) {
+    const paymentMethod = document.getElementById(`paymentMethod_${voucherCode}`).value;
+    const userId = '{{ user.Id }}';
+
+    try {
+      const response = await fetch("/diskon/buy-voucher", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: userId,
+          voucherCode: voucherCode,
+          paymentMethod: paymentMethod,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        // Close the payment method modal
+        document.getElementById(`modal_${voucherCode}`).close();
+        
+        // Open the success modal
+        document.getElementById(`successModal_${voucherCode}`).showModal();
+      } else {
+        // Handle error responses
+        alert(result.error || "Failed to process the voucher.");
+      }
+    } catch (error) {
+      console.error("Error buying voucher:", error);
+      alert("An unexpected error occurred.");
+    }
   }
 </script>
