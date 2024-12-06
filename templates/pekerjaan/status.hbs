@@ -47,7 +47,7 @@
                     class="select select-secondary w-full max-w-xs"
                     required>
                     <option value="-" disabled selected>Pilih Status</option>
-                    <option value="0">Semua Status</option>
+                    <option value="">Semua Status</option>
                     <option value="57fc8243-eb71-47a5-b74d-81fba6a94f82">Menunggu Pekerja Berangkat</option>
                     <option value="996980f3-cc47-4edb-a8cc-10ec02939479">Pekerja Tiba di Lokasi</option>
                     <option value="1fe77476-1194-4de7-b7f9-72c8cdd3ef68">Pelayanan Jasa Sedang dilakukan</option>
@@ -79,10 +79,19 @@
                         <p class="font-bold">{{ this.totalbiaya }}</p>
                         <div class="flex flex-col">
                             <p class="font-semibold text-center">{{ this.status }}</p>
-                            <form action="status/update-status" method="POST" class="text-center">
-                                <input type="hidden" name="idtrpemesanan" value="{{ this.idtrpemesanan }}">
-                                <button type="submit" class="btn btn-warning">Update Status</button>
-                            </form>
+                            {{#if (eq "3d436422-152e-4b22-b978-49012b58e1f8" this.idstatus)}}
+                                <!-- Nothing is rendered if the condition matches -->
+                            {{else}}
+                                {{#if (eq "d9521320-0b6e-4bf7-971f-b3cb7edec92f" this.idstatus)}}
+                                    <!-- Nothing is rendered if the condition matches -->
+                                {{else}}
+                                    <form action="status/update-status" method="POST" class="text-center">
+                                        <input type="hidden" name="idstatus" value="{{ this.idstatus }}">
+                                        <input type="hidden" name="idtrpemesanan" value="{{ this.idtrpemesanan }}">
+                                        <button type="submit" class="btn btn-warning">Update Status</button>
+                                    </form>
+                                {{/if}}
+                            {{/if}}
                         </div>
                     </div>
                 </div>
@@ -104,62 +113,3 @@
 
     }
 </script>
-// Dummy data
-    const jobs = {{{jobs}}};
-
-    // Render jobs dynamically
-    function renderJobs(data) {
-        jobsContainer.innerHTML = ""; // Clear previous results
-        data.forEach((job) => {
-            jobsContainer.innerHTML += `
-            <div class="card shadow-xl bg-base-100 p-4 rounded shadow-md grid grid-cols-3 items-center gap-1">
-                <div>
-                    <p class="font-semibold">${job.subkategori}</p>
-                    <p class="text-sm stat-title p-1">Tgl pemesanan: ${job.tanggalPemesanan}</p>
-                    <p class="text-sm stat-title p-1">Tgl pekerjaan: ${job.tanggalPekerjaan}</p>
-                </div>
-                <div>
-                    <p class="font-semibold">${job.namaPelanggan}</p>
-                </div>
-                <div class="grid grid-cols-2 items-center justify-between gap-4">
-                    <p class="font-bold">${job.totalBiaya}</p>
-                    <div class="flex flex-col">
-                        <p class="font-semibold text-center">${job.statusPesanan}</p>
-                        <button class="btn btn-warning">Update Status</button>
-                    </div>
-                </div>
-            </div>
-            `;
-        });
-    }
-
-    // Initial render (display all jobs initially)
-    renderJobs(jobs);
-
-    // Status code mapping
-    const statusMapping = {
-        1: "Pekerja Tiba Di Lokasi",
-        2: "Menunggu Pekerja Berangkat",
-        3: "Pelayanan Jasa Sedang Dilakukan",
-        4: "Pesanan Dibatalkan",
-        5: "Pesanan Selesai"
-    };
-
-    // Search functionality
-    document.getElementById("searchButton").addEventListener("click", () => {
-        const statusSelect = document.getElementById("status");
-        const selectedStatus = statusSelect.value;
-
-        // If nothing is selected or "Semua Status" is selected, show all jobs
-        const filteredJobs = jobs.filter((job) => {
-            // Show all jobs if no selection or "Semua Status" is selected
-            if (selectedStatus === "0" || selectedStatus === "-") {
-                return true;
-            }
-
-            // Otherwise, filter by selected status
-            return job.statusPesanan === statusMapping[selectedStatus];
-        });
-
-        renderJobs(filteredJobs);
-    });

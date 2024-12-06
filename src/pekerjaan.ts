@@ -47,7 +47,7 @@ app.post("/kerjakan", async (req, res) => {
     const { idtrpemesanan: idTrPemesanan } = req.body;
 
     await client.query(
-      "SELECT update_pesanan_dikerjakan($1, $2)",
+      "SELECT handle_kerjakan_pesanan($1, $2)",
       [idTrPemesanan, pekerjaId]
     );
     res.redirect("/pekerjaan?message=Success");
@@ -67,6 +67,7 @@ app.get("/status", async (req, res) => {
       "SELECT * FROM filter_status($1, $2, $3)",
       [pekerjaId, searchQuery, status]
     );
+
     res.render("pekerjaan/status", {
       message: req.query.message || "",
       statusResult
@@ -80,6 +81,29 @@ app.get("/status", async (req, res) => {
 app.post("/status/update-status", async (req, res) => {
   try {
     const pekerjaId = 'f864622f-e148-4d45-8253-e31fe71754bd';
+    const { idtrpemesanan: idTrPemesanan, idstatus: idStatus } = req.body;
+
+    let nextIdStatus = ""
+    switch (idStatus) {
+      case "57fc8243-eb71-47a5-b74d-81fba6a94f82":
+        nextIdStatus = "996980f3-cc47-4edb-a8cc-10ec02939479";
+        break;
+      case "996980f3-cc47-4edb-a8cc-10ec02939479":
+        nextIdStatus = "1fe77476-1194-4de7-b7f9-72c8cdd3ef68";
+        break;
+      case "1fe77476-1194-4de7-b7f9-72c8cdd3ef68":
+        nextIdStatus = "3d436422-152e-4b22-b978-49012b58e1f8";
+        break
+      case "":
+        console.log("DATA DUMMY ERROR")
+        nextIdStatus = "996980f3-cc47-4edb-a8cc-10ec02939479";
+        break;
+    }
+    
+    await client.query(
+      'SELECT handle_update_status($1, $2)', 
+      [idTrPemesanan, nextIdStatus]
+    );
 
     res.redirect("/pekerjaan/status?message=Success");
   } catch (error) {
