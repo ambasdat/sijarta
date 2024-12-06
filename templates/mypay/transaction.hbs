@@ -35,7 +35,9 @@
         <select class="select select-bordered w-full max-w-xs bg-base-100" id="transactionType">
           <option disabled selected>-- Kategori Transaksi --</option>
           <option value="topup">TopUp Mypay</option>
-          <option id="paymentOption" value="payment">Payment</option>
+          {{#if isPengguna}}
+            <option id="paymentOption" value="payment">Payment</option>
+          {{/if}}
           <option value="transfer">Transfer</option>
           <option value="withdrawal">Withdrawal</option>
         </select>
@@ -60,14 +62,6 @@
     }, 0);
 
   }
-  
-  if ({{ isPekerja }}) {
-    // Hide opsi "Pembayaran" jika role user Pekerja
-    const paymentOption = document.getElementById('paymentOption');
-    if (paymentOption) {
-      paymentOption.style.display = 'none'; // Hide opsi
-    }
-  }
 
   document.getElementById("transactionType").addEventListener("change", function(event) {
     const formContainer = document.getElementById("dynamicFormContainer");
@@ -81,11 +75,13 @@
       case "topup":
         loadTopUpForm();
         break;
-  
-      case "payment":
-        loadPaymentForm();
-        break;
-  
+      
+      {{#if isPengguna}}
+        case "payment":
+          loadPaymentForm();
+          break;
+      {{/if}}
+
       case "transfer":
         loadTransferForm();
         break;
@@ -115,38 +111,6 @@
       </label>
 
       <button type="submit" class="btn btn-outline">TopUp</button>
-    </form>
-    `;
-  }
-  
-  // Fungsi untuk load PaymentForm
-  function loadPaymentForm() {
-    const formContainer = document.getElementById("dynamicFormContainer");
-    formContainer.innerHTML = `
-    <form class="card-body form-control flex gap-2" action="transaction/pay" method="POST">
-      <h1 class="stat-value">Payment</h1>
-      
-      <label class="form-control">
-        <div class="label">
-          <span class="label-text">Pesanan Jasa</span>
-        </div>
-        <select name="serviceOrder" class="select select-secondary w-full" id="serviceSelect" onchange="updatePrice()" required>
-          <option disabled selected value="">Pilih Pesanan Jasa</option>
-          {{#each userOrder}}
-          <option value="{{ this.idtrpemesanan }},{{ this.totalbiaya }}">{{ this.namasubkategorijasa }}</option>
-          {{/each}}
-        </select>
-      </label>
-
-      <label class="form-control">
-        <div class="label">
-          <span class="label-text">Nominal Tagihan</span>
-        </div>
-
-        <h2 class="stat-value text-md" id="priceDisplay">-</h2>
-      </label>
-
-      <button type="submit" class="btn btn-outline">Pay</button>
     </form>
     `;
   }
@@ -216,12 +180,46 @@
     </form>
     `;
   }
+  
+  {{#if isPengguna}}
+    // Fungsi untuk load PaymentForm
+    function loadPaymentForm() {
+      const formContainer = document.getElementById("dynamicFormContainer");
+      formContainer.innerHTML = `
+      <form class="card-body form-control flex gap-2" action="transaction/pay" method="POST">
+        <h1 class="stat-value">Payment</h1>
+        
+        <label class="form-control">
+          <div class="label">
+            <span class="label-text">Pesanan Jasa</span>
+          </div>
+          <select name="serviceOrder" class="select select-secondary w-full" id="serviceSelect" onchange="updatePrice()" required>
+            <option disabled selected value="">Pilih Pesanan Jasa</option>
+            {{#each userOrder}}
+            <option value="{{ this.idtrpemesanan }},{{ this.totalbiaya }}">{{ this.namasubkategorijasa }}</option>
+            {{/each}}
+          </select>
+        </label>
 
-  // Fungsi update price untuk Payment
-  window.updatePrice = function () {
-    const serviceSelect = document.getElementById("serviceSelect");
-    const priceDisplay = document.getElementById("priceDisplay");
-    const selectedValue = serviceSelect.value.split(',')[1];
-    priceDisplay.textContent = selectedValue ? `Rp. ${parseInt(selectedValue).toLocaleString()}` : "-";
-  };
+        <label class="form-control">
+          <div class="label">
+            <span class="label-text">Nominal Tagihan</span>
+          </div>
+
+          <h2 class="stat-value text-md" id="priceDisplay">-</h2>
+        </label>
+
+        <button type="submit" class="btn btn-outline">Pay</button>
+      </form>
+      `;
+    }
+
+    // Fungsi update price untuk Payment
+    window.updatePrice = function () {
+      const serviceSelect = document.getElementById("serviceSelect");
+      const priceDisplay = document.getElementById("priceDisplay");
+      const selectedValue = serviceSelect.value.split(',')[1];
+      priceDisplay.textContent = selectedValue ? `Rp. ${parseInt(selectedValue).toLocaleString()}` : "-";
+    };
+  {{/if}}
 </script>
