@@ -8,18 +8,11 @@
         <div class="label">
           <span class="label-text">Sub Kategori</span>
         </div>
-        <select
-          id="subkategori"
-          name="subkategori"
-          class="select select-primary w-full max-w-xs"
-          required
-        >
-          <option value="-" disabled selected>Pilih Sub Kategori</option>
-          <option value="1">Daily Cleaning</option>
-          <option value="2">Deep Cleaning</option>
-          <option value="3">Service AC</option>
-          <option value="4">Massage</option>
-          <option value="5">Hair Care</option>
+        <select id="subkategori" name="subkategori" class="select select-primary w-full max-w-xs">
+          <option value="" disabled selected>Pilih Sub Kategori</option>
+          {{#each sub}}
+            <option value="{{this.NamaSubkategori}}">{{this.display}}</option>
+          {{/each}}
         </select>
       </label>
 
@@ -28,19 +21,11 @@
         <div class="label">
           <span class="label-text">Status</span>
         </div>
-        <select
-          id="status"
-          name="status"
-          class="select select-secondary w-full max-w-xs"
-          required
-        >
-          <option value="-" disabled selected>Pilih Status</option>
-          <option value="1">Menunggu Pembayaran</option>
-          <option value="2">Mencari Pekerja Terdekat</option>
-          <option value="3">Pekerja Tiba Di Lokasi</option>
-          <option value="4">Pelayanan Jasa Sedang Dilakukan</option>
-          <option value="5">Pesanan Dibatalkan</option>
-          <option value="6">Pesanan Selesai</option>
+        <select id="status" name="status" class="select select-secondary w-full max-w-xs">
+          <option value="" disabled selected>Pilih Status</option>
+          {{#each status}}
+            <option value="{{this.Status}}">{{this.Status}}</option>
+          {{/each}}
         </select>
       </label>
 
@@ -51,34 +36,49 @@
 
   <!-- List of cards -->
   <div class="grid grid-cols-1 gap-4 w-full my-6">
-    <div class="card shadow-xl bg-base-100 p-4 rounded">
-      <div class="grid grid-cols-2 items-center gap-4">
-        <div>
-          <p class="font-semibold">Daily Cleaning</p>
-          <p class="text-sm stat-title p-1">Sesi Layanan: 2 Jam</p>
-          <p class="text-sm stat-title p-1">Harga: Rp 150,000</p>
-          <p class="text-sm stat-title p-1">Pekerja: Tia</p>
-          <p class="text-sm stat-title p-1">Status: Menunggu Pembayaran</p>
-        </div>
-        <div class="flex justify-end">
-          <button class="btn btn-error text min-w-56">Batalkan</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card shadow-xl bg-base-100 p-4 rounded">
-      <div class="grid grid-cols-2 items-center gap-4">
-        <div>
-          <p class="font-semibold">Deep Cleaning</p>
-          <p class="text-sm stat-title p-1">Sesi Layanan: 4 Jam</p>
-          <p class="text-sm stat-title p-1">Harga: Rp 300,000</p>
-          <p class="text-sm stat-title p-1">Pekerja: Eko</p>
-          <p class="text-sm stat-title p-1">Status: Pesanan Selesai</p>
-        </div>
-        <div class="flex justify-end">
-          <a class="btn btn-success min-w-56" href="/testimoni/518a9050-cd17-4a7e-af31-418e5a7d290d">Buat Testimoni</a>
+    {{#each data}}
+      <div class="card shadow-xl bg-base-100 p-4 rounded">
+        <div class="grid grid-cols-2 items-center gap-4">
+          <div>
+            <p class="font-semibold">{{this.NamaSubkategori}}</p>
+            <p class="text-sm stat-title p-1">Sesi Layanan: {{this.Sesi}} Jam</p>
+            <p class="text-sm stat-title p-1">Harga: Rp {{this.TotalBiaya}}</p>
+            <p class="text-sm stat-title p-1">Pekerja: {{this.Nama}}</p>
+            <p class="text-sm stat-title p-1">Status: {{this.Status}}</p>
+          </div>
+          {{#if canBatal}}
+            <div class="flex justify-end">
+              <button class="btn btn-error text min-w-56">Batalkan</button>
+            </div>
+          {{/if}}
+          {{#if canTestimoni}}
+            <div class="flex justify-end">
+              <a class="btn btn-success min-w-56" href="/testimoni/{{this.Id}}">Buat Testimoni</a>
+            </div>
+          {{/if}}
         </div>
       </div>
-    </div>
+    {{/each}}
   </div>
+
+  <script>
+    document.getElementById("searchButton").addEventListener("click", () => {
+        const subkategoriValue = document.getElementById("subkategori").value;
+        const statusValue = document.getElementById("status").value;
+
+        if (subkategoriValue === "" && statusValue === "") {
+            window.location.href = "/pemesanan/nyoba";
+            return;
+        }
+
+        const params = new URLSearchParams();
+        params.set("k", subkategoriValue);
+        params.set("s", statusValue);
+
+        const queryString = params.toString();
+        const url = `/pemesanan/nyoba/?${queryString}`;
+
+        window.location.href = url;
+    });
+  </script>
 </main>
