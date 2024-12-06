@@ -4,9 +4,9 @@ import { allowRoles } from "./auth";
 
 const app = express.Router();
 
-app.get("/", async (req, res) => {
+app.get("/", allowRoles(['pekerja']), async (req, res) => {
   try {
-    const pekerjaId = '196b292e-d564-4508-94ce-f049e07e8688';
+    const pekerjaId = req.userId;
     var kategori = req.query.kategori || null; // Get kategori dari query, null jika tidak ada
     var subkategori = req.query.subkategori || null; // Get subkategori dari query, null jika tidak ada
     const selectedKategori = kategori
@@ -41,9 +41,9 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.post("/kerjakan", async (req, res) => {
+app.post("/kerjakan", allowRoles(['pekerja']), async (req, res) => {
   try {
-    const pekerjaId = 'f864622f-e148-4d45-8253-e31fe71754bd';
+    const pekerjaId = req.userId;
     const { idtrpemesanan: idTrPemesanan } = req.body;
 
     await client.query(
@@ -57,9 +57,9 @@ app.post("/kerjakan", async (req, res) => {
   }
 });
 
-app.get("/status", async (req, res) => {
+app.get("/status", allowRoles(['pekerja']), async (req, res) => {
   try{
-    const pekerjaId = 'f864622f-e148-4d45-8253-e31fe71754bd';
+    const pekerjaId = req.userId;
     const searchQuery = req.query.searchQuery || '';
     const status = req.query.status || null;
 
@@ -78,9 +78,9 @@ app.get("/status", async (req, res) => {
   }
 });
 
-app.post("/status/update-status", async (req, res) => {
+app.post("/status/update-status", allowRoles(['pekerja']), async (req, res) => {
   try {
-    const pekerjaId = 'f864622f-e148-4d45-8253-e31fe71754bd';
+    const pekerjaId = req.userId;
     const { idtrpemesanan: idTrPemesanan, idstatus: idStatus } = req.body;
 
     let nextIdStatus = ""
