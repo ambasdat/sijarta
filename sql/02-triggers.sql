@@ -172,7 +172,7 @@ BEGIN
     -- Retrieve the transaction category ID for "menerima honor transaksi jasa"
     SELECT "Id" INTO v_kategori_tr
     FROM "KATEGORI_TR_MYPAY"
-    WHERE "Nama" = 'menerima honor transaksi jasa';
+    WHERE "Nama" = 'menerima honOR transaksi jasa';
 
     -- Insert the transaction into TR_MYPAY
     INSERT INTO "TR_MYPAY" ("Id", "UserId", "Tgl", "Nominal", "KategoriId")
