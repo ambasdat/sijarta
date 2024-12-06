@@ -20,9 +20,9 @@
             <tr>
               <td class="font-medium">{{this.kode}}</td>
               <td>Rp {{this.potongan}}</td>
-              <td>Rp {{this.minTrPemesanan}}</td>
-              <td>{{this.jmlHariBerlaku}} hari</td>
-              <td>{{this.kuotaPenggunaan}}x</td>
+              <td>Rp {{this.mintrpemesanan}}</td>
+              <td>{{this.jmlhariberlaku}} hari</td>
+              <td>{{this.kuotapenggunaan}}x</td>
               <td>Rp {{this.harga}}</td>
               <td>
                 <button
@@ -72,9 +72,9 @@
                     <h3 class="font-bold text-2xl mb-4">SUKSES</h3>
                     <p>
                       Voucher ini akan berlaku hingga tanggal 
-                      {{this.jmlHariBerlaku}} 
+                      {{this.tglHabis}}  
                       dengan kuota penggunaan sebanyak 
-                      {{this.kuotaPenggunaan}} 
+                      {{this.kuotapenggunaan}} 
                       kali.
                     </p>
                     <div class="modal-action justify-center">
@@ -106,8 +106,8 @@
         <tbody>
           {{#each promos}}
             <tr>
-              <td class="font-medium">{{this.Kode}}</td>
-              <td>{{this.TglAkhirBerlaku}}</td>
+              <td class="font-medium">{{this.kode}}</td>
+              <td>{{this.tglakhirberlaku}}</td>
             </tr>
           {{/each}}
         </tbody>
@@ -163,4 +163,24 @@
       alert("An unexpected error occurred.");
     }
   }
+
+  function calculateDate(startDate, daysToAdd) {
+    const [day, month, year] = startDate.split('/').map(num => parseInt(num));
+    const date = new Date(year, month - 1, day);
+    date.setDate(date.getDate() + daysToAdd);
+
+    const newDay = String(date.getDate()).padStart(2, '0');
+    const newMonth = String(date.getMonth() + 1).padStart(2, '0');
+    const newYear = date.getFullYear();
+
+    return `${newDay}/${newMonth}/${newYear}`;
+  }
+
+  // Call the function and display the calculated date
+  const startDate = "{{this.tglakhirberlaku}}"; 
+  const daysToAdd = parseInt("{{this.tglakhirberlaku}}"); 
+  const calculatedDate = calculateDate(startDate, daysToAdd);
+
+  // Update the content of the span with the calculated date
+  document.getElementById('calculatedDate').textContent = calculatedDate;
 </script>
