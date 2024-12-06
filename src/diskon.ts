@@ -12,18 +12,7 @@ app.get("/", async (req, res): Promise<void> => {
     `;
     const promosResult = await client.query(promosQuery);
 
-    const vouchersQuery = `
-      SELECT 
-        V."Kode",
-        D."Potongan",
-        D."MinTrPemesanan",
-        V."JmlHariBerlaku",
-        V."KuotaPenggunaan",
-        V."Harga"
-      FROM "VOUCHER" V
-      JOIN "DISKON" D ON V."Kode" = D."Kode"
-    `;
-    const vouchersResult = await client.query(vouchersQuery);
+    const vouchersResult = await client.query(`SELECT * FROM get_all_voucher_details();`);
 
     const promos = promosResult.rows;
     const vouchers = vouchersResult.rows;

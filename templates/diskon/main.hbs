@@ -18,29 +18,29 @@
         <tbody>
           {{#each vouchers}}
             <tr>
-              <td class="font-medium">{{this.Kode}}</td>
-              <td>Rp {{this.Potongan}}</td>
-              <td>Rp {{this.MinTrPemesanan}}</td>
-              <td>{{this.JmlHariBerlaku}} hari</td>
-              <td>{{this.KuotaPenggunaan}}x</td>
-              <td>Rp {{this.Harga}}</td>
+              <td class="font-medium">{{this.kode}}</td>
+              <td>Rp {{this.potongan}}</td>
+              <td>Rp {{this.minTrPemesanan}}</td>
+              <td>{{this.jmlHariBerlaku}} hari</td>
+              <td>{{this.kuotaPenggunaan}}x</td>
+              <td>Rp {{this.harga}}</td>
               <td>
                 <button
                   class="btn btn-primary btn-sm"
-                  onclick="document.getElementById('modal_{{this.Kode}}').showModal()"
+                  onclick="document.getElementById('modal_{{this.kode}}').showModal()"
                 >
                   Beli
                 </button>
 
                 <!-- First Modal (Select Payment Method) -->
                 <dialog 
-                  id="modal_{{this.Kode}}" 
+                  id="modal_{{this.kode}}" 
                   class="modal modal-bottom sm:modal-middle" 
                 >
                   <div class="modal-box text-center">
                     <h3 class="font-bold text-2xl mb-4">Beli Voucher</h3>
                     <label for="paymentMethod" class="block text-left font-medium mb-4">Metode Pembayaran</label>
-                    <select id="paymentMethod_{{this.Kode}}" class="select select-bordered w-full mb-4">
+                    <select id="paymentMethod_{{this.kode}}" class="select select-bordered w-full mb-4">
                       <option value="MyPay">MyPay</option>
                       <option value="GoPay">GoPay</option>
                       <option value="OVO">OVO</option>
@@ -50,7 +50,7 @@
                     </select>
                     <button
                       class="btn btn-primary"
-                      onclick="buyVoucher('{{ this.Kode }}')"
+                      onclick="buyVoucher('{{ this.kode }}')"
                     >
                       Beli
                     </button>
@@ -65,16 +65,16 @@
 
                 <!-- Second Modal (Success Confirmation) -->
                 <dialog
-                  id="successModal_{{this.Kode}}"
+                  id="successModal_{{this.kode}}"
                   class="modal modal-bottom sm:modal-middle"
                 >
                   <div class="modal-box text-center">
                     <h3 class="font-bold text-2xl mb-4">SUKSES</h3>
                     <p>
                       Voucher ini akan berlaku hingga tanggal 
-                      {{this.JmlHariBerlaku}} 
+                      {{this.jmlHariBerlaku}} 
                       dengan kuota penggunaan sebanyak 
-                      {{this.KuotaPenggunaan}} 
+                      {{this.kuotaPenggunaan}} 
                       kali.
                     </p>
                     <div class="modal-action justify-center">
