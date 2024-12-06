@@ -6,9 +6,9 @@
 
       <div class="stat">
         <div class="stat-title">Account balance</div>
-        <div class="stat-value">Rp. 89.900,400</div>
+        <div class="stat-value">Rp. {{ userDetails.SaldoMyPay }}</div>
         <div class="stat-title pt-5">
-          <strong>08123456789</strong>
+          <strong>{{ userDetails.NoHP }}</strong>
         </div>
       </div>
 
@@ -29,44 +29,28 @@
 
     <ul class="menu menu-lg rounded-box">
       <li>
+        {{#if transactionHistory.length}}
         <ul>
+          {{#each transactionHistory}}
           <li>
             <div
               class="bg-base-100 shadow-xl my-1 grid grid-cols-[2fr_1fr_1fr] items-center gap-4 p-4"
             >
-              <h2 class="card-title">Rp. 100.000,00</h2>
-              <p class="text-left text-xs">12/08/2024 14:35:45</p>
-              <div class="badge badge-outline">TopUp Mypay</div>
+              <h2 class="card-title">Rp. {{ Nominal }}</h2>
+              <p class="text-left text-xs">{{ Tgl }}</p>
+              <div class="badge badge-outline">{{ Nama }}</div>
             </div>
           </li>
-          <li>
-            <div
-              class="bg-base-100 shadow-xl my-1 grid grid-cols-[2fr_1fr_1fr] items-center gap-4 p-4"
-            >
-              <h2 class="card-title">Rp. 100.000,00</h2>
-              <p class="text-left text-xs">12/08/2024 14:35:45</p>
-              <div class="badge badge-primary badge-outline">Payment</div>
-            </div>
-          </li>
-          <li>
-            <div
-              class="bg-base-100 shadow-xl my-1 grid grid-cols-[2fr_1fr_1fr] items-center gap-4 p-4"
-            >
-              <h2 class="card-title">Rp. 100.000,00</h2>
-              <p class="text-left text-xs">12/08/2024 14:35:45</p>
-              <div class="badge badge-secondary badge-outline">Transfer</div>
-            </div>
-          </li>
-          <li>
-            <div
-              class="bg-base-100 shadow-xl my-1 grid grid-cols-[2fr_1fr_1fr] items-center gap-4 p-4"
-            >
-              <h2 class="card-title">Rp. 100.000,00</h2>
-              <p class="text-left text-xs">12/08/2024 14:35:45</p>
-              <div class="badge badge-accent badge-outline">Withrdrawal</div>
-            </div>
-          </li>
-        </ul>
+          {{/each}}
+        {{else}}
+        <li>
+          <div
+            class="bg-base-100 shadow-xl my-1 flex items-center justify-center gap-4 p-4 text-center"
+          >
+            <h2 class="card-title">Tidak ada transaksi yang tercatat</h2>
+          </div>
+        </li>
+        {{/if}}
       </li>
     </ul>
   </div>
