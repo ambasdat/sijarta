@@ -50,7 +50,7 @@
                     </select>
                     <button
                       class="btn btn-primary"
-                      onclick="buyVoucher('{{this.Kode}}', {{user.Id}})"
+                      onclick="buyVoucher('{{ this.Kode }}')"
                     >
                       Beli
                     </button>
@@ -117,6 +117,10 @@
 </main>
 
 <script>
+  function prt(x) {
+    console.log(x);
+  }
+
   function openSuccessModal(voucherCode) {
     // Hide the payment method modal
     document.getElementById('modal_' + voucherCode).close();
@@ -125,8 +129,9 @@
     document.getElementById('successModal_' + voucherCode).showModal();
   }
 
-  async function buyVoucher(voucherCode, userId) {
+  async function buyVoucher(voucherCode) {
     const paymentMethod = document.getElementById(`paymentMethod_${voucherCode}`).value;
+    const userId = '{{ user.Id }}';
 
     try {
       const response = await fetch("/diskon/buy-voucher", {

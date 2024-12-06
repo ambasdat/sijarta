@@ -28,7 +28,7 @@ app.get("/", async (req, res): Promise<void> => {
     const promos = promosResult.rows;
     const vouchers = vouchersResult.rows;
 
-    res.render("diskon/main", { promos, vouchers });
+    res.render("diskon/main", { promos, vouchers});
   } catch (error) {
     console.error("Error fetching promos and vouchers:", error);
     res.status(500).send("An error occurred while fetching discounts.");
@@ -36,10 +36,10 @@ app.get("/", async (req, res): Promise<void> => {
 });
 
 app.post("/buy-voucher", async (req, res): Promise<void> => {
+  
   try {
     const { userId, voucherCode, paymentMethod } = req.body;
-
-    // Query the voucher price
+    
     const voucherQuery = `
       SELECT "Harga" FROM "VOUCHER" WHERE "Kode" = $1
     `;
@@ -53,15 +53,13 @@ app.post("/buy-voucher", async (req, res): Promise<void> => {
     const voucherPrice = voucherResult.rows[0].Harga;
 
     if (paymentMethod === "MyPay") {
-      // Query user's balance
       const userQuery = `
-        SELECT "SaldoMyPay" FROM "USER" WHERE "Id" = $1
+        SELECT "SaldoMyPay" FROM "USER" WHERE "Id" = $1::UUID
       `;
       const userResult = await client.query(userQuery, [userId]);
 
       if (userResult.rowCount === 0) {
-        res.status(404).json({ error: "User not found." });
-        return;
+        res.status(404).json({ error: "User not found. UserId = " + userId});
       }
 
       const userBalance = userResult.rows[0].SaldoMyPay;
@@ -71,16 +69,14 @@ app.post("/buy-voucher", async (req, res): Promise<void> => {
         return;
       }
 
-      // Deduct the voucher price from user's balance
       const updateBalanceQuery = `
         UPDATE "USER"
         SET "SaldoMyPay" = "SaldoMyPay" - $1
-        WHERE "Id" = $2
+        WHERE "Id" = $2::UUID
       `;
       await client.query(updateBalanceQuery, [voucherPrice, userId]);
     }
 
-    // If payment method is not MyPay or MyPay is successful, return success
     res.status(200).json({ success: true, message: "Voucher purchased successfully." });
   } catch (error) {
     console.error("Error buying voucher:", error);
