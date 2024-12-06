@@ -13,7 +13,6 @@
     <nav class="navbar bg-neutral text-neutral-content shadow-md sticky top-0 z-50">
       <div class="flex-1">
         <a href="/" class="btn btn-ghost normal-case text-xl font-bold">SIJARTA</a>
-        <p>Selamat datang pekerja, Okarun</p>
       </div>
       <div class="flex-none">
         <ul class="menu menu-horizontal px-1 space-x-2">
@@ -21,12 +20,30 @@
           <li><a href="/pekerjaan">Kelola Pekerjaan Saya</a></li>
           <li><a href="/pekerjaan/status">Kelola Status Pekerjaan</a></li>
           <li><a href="/mypay">MyPay</a></li>
-          <li><a href="/profile/pekerja/asdf">Profile</a></li>
         </ul>
       </div>
-      <form method="POST" action="/auth/logout" class="m-0">
-        <button class="btn btn-error btn-sm">Logout</button>
-      </form>
+      <div class="dropdown dropdown-end">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+          <div class="w-10 rounded-full">
+            <img alt="Profile Picture" src="{{ user.LinkFoto }}" />
+          </div>
+        </div>
+        <div
+          tabindex="0"
+          class="dropdown-content card card-compact bg-neutral z-[1] w-64 p-2 shadow"
+        >
+          <div class="card-body shadow">
+            <p><strong>Role:</strong> Pekerja</p>
+            <p><strong>Nama:</strong> {{ user.Nama }}</p>
+            <div class="card-actions">
+              <a class="btn btn-sm" href="/profile/{{ user.Id }}">Profile</a>
+              <form method="POST" action="/auth/logout" class="m-0">
+                <button class="btn btn-error btn-sm">Logout</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </nav>
     {{{body}}}
   </body>
