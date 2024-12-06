@@ -39,8 +39,8 @@
                 <select id="category" name="category" class="select select-secondary w-full max-w-xs" required>
                     <option value="" disabled selected>Pilih Kategori</option>
                     <option value="">Semua Kategori</option>
-                    {{#each data}}
-                    <option value="{{this.Kat}}">{{this.Kat}}</option>
+                    {{#each NamaKategori}}
+                    <option value="{{this.NamaKategori}}">{{this.NamaKategori}}</option>
                     {{/each}}
                 </select>
             </label>
@@ -60,9 +60,9 @@
                     {{#each this.Sub}}
                     <div class="card bg-base-100 p-2 rounded shadow-sm border">
                         {{#if ../../guest}}
-                            <a href="/auth" class="block font-medium">{{this}}</a>
+                            <a href="/auth" class="block font-medium">{{this.Sub}}</a>
                         {{else}}
-                            <a href="/subkategori/pengguna" class="block font-medium">{{this}}</a>
+                            <a href="/subkategori/{{this.Id}}" class="block font-medium">{{this.Sub}}</a>
                         {{/if}}
                     </div>
                     {{/each}}

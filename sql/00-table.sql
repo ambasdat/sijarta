@@ -157,8 +157,8 @@ CREATE TABLE "TR_PEMBELIAN_VOUCHER" (
 CREATE TABLE "TR_PEMESANAN_JASA" (
   "Id" UUID DEFAULT GEN_RANDOM_UUID(), 
   "TglPemesanan" DATE NOT NULL, 
-  "TglPekerjaan" DATE NOT NULL, 
-  "WaktuPekerjaan" TIMESTAMP NOT NULL, 
+  "TglPekerjaan" DATE, 
+  "WaktuPekerjaan" TIMESTAMP, 
   "TotalBiaya" DECIMAL CHECK ("TotalBiaya" >= 0) NOT NULL, 
   "IdPelanggan" UUID, 
   "IdPekerja" UUID, 

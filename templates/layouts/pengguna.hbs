@@ -13,7 +13,6 @@
     <nav class="navbar bg-neutral text-neutral-content shadow-md sticky top-0 z-50">
       <div class="flex-1">
         <a href="/" class="btn btn-ghost normal-case text-xl font-bold">SIJARTA</a>
-        <p>Selamat datang pengguna, Okarun</p>
       </div>
       <div class="flex-none">
         <ul class="menu menu-horizontal px-1 space-x-2">
@@ -21,12 +20,31 @@
           <li><a href="/pemesanan">Kelola Pesanan Saya</a></li>
           <li><a href="/diskon">Diskon</a></li>
           <li><a href="/mypay">MyPay</a></li>
-          <li><a href="/profile/pengguna/asdf">Profile</a></li>
         </ul>
       </div>
-      <form method="POST" action="/auth/logout" class="m-0">
-        <button class="btn btn-error btn-sm">Logout</button>
-      </form>
+      <div class="dropdown dropdown-end">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <div
+          tabindex="0"
+          class="dropdown-content card card-compact bg-neutral z-[1] w-64 p-2"
+        >
+          <div class="card-body">
+            <p><strong>Role:</strong> Pengguna</p>
+            <p><strong>Nama:</strong> {{ user.Nama }}</p>
+            <div class="card-actions">
+              <a class="btn btn-sm" href="/profile/{{ user.Id }}">Profile</a>
+              <form method="POST" action="/auth/logout" class="m-0">
+                <button class="btn btn-error btn-sm">Logout</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </nav>
     {{{body}}}
   </body>
