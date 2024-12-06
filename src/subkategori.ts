@@ -35,7 +35,7 @@ app.get("/:id", async (req, res) => {
     });
     const canJoin = !(isGuest || isPelanggan || isWorkerAtKategori);
     res.render("subkategori/subkategori.hbs", {desc: desc.rows[0], sesi: sesi.rows, pekerja: pekerja.rows, testimoni: testimoni.rows, isPelanggan: isPelanggan, canJoin: canJoin});
-}
+  }
   catch (error) {
     console.error("Error fetching testimonies:", error);
     res.status(500).send("An error occurred while fetching testimonies.");
