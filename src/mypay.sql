@@ -1,3 +1,39 @@
+-- _____________________ UTILITY FUNCTIONS _____________________
+
+-- insert_new_tr_mypay
+CREATE OR REPLACE FUNCTION insert_new_tr_mypay(userId_param UUID, nominal_param DECIMAL, kategoriId_param UUID)
+RETURNS VOID AS $$
+BEGIN
+    -- Insert a new row into the transactions table
+    INSERT INTO "TR_MYPAY" ("UserId", "Tgl", "Nominal", "KategoriId")
+    VALUES (userId_param, CURRENT_DATE, nominal_param, kategoriId_param);
+END;
+$$ LANGUAGE plpgsql;
+
+-- check_noHp_exists
+CREATE OR REPLACE FUNCTION check_noHp_exists(noHp_param VARCHAR)
+RETURNS UUID AS $$
+DECLARE
+    user_id UUID;
+BEGIN
+    SELECT "Id" 
+    INTO user_id
+    FROM "USER"
+    WHERE "NoHP" = noHp_param;
+
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'NoHP not found';
+    END IF;
+
+    RETURN user_id;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+-- _____________________ MAJOR FUNCTIONS _____________________
+
 -- get_user_details
 CREATE OR REPLACE FUNCTION get_user_details(userId UUID)
 RETURNS TABLE(
@@ -259,39 +295,7 @@ $$ LANGUAGE plpgsql;
 
 
 
-
-
-
--- _____________________ UTILITY FUNCTIONS _____________________
-
--- insert_new_tr_mypay
-CREATE OR REPLACE FUNCTION insert_new_tr_mypay(userId_param UUID, nominal_param DECIMAL, kategoriId_param UUID)
-RETURNS VOID AS $$
-BEGIN
-    -- Insert a new row into the transactions table
-    INSERT INTO "TR_MYPAY" ("UserId", "Tgl", "Nominal", "KategoriId")
-    VALUES (userId_param, CURRENT_DATE, nominal_param, kategoriId_param);
-END;
-$$ LANGUAGE plpgsql;
-
--- check_noHp_exists
-CREATE OR REPLACE FUNCTION check_noHp_exists(noHp_param VARCHAR)
-RETURNS UUID AS $$
-DECLARE
-    user_id UUID;
-BEGIN
-    SELECT "Id" 
-    INTO user_id
-    FROM "USER"
-    WHERE "NoHP" = noHp_param;
-
-    IF NOT FOUND THEN
-        RAISE EXCEPTION 'NoHP not found';
-    END IF;
-
-    RETURN user_id;
-END;
-$$ LANGUAGE plpgsql;
+-- _____________________ MISC _____________________
 
 -- select tj."Id", ts."IdStatus", sp."Status"
 -- from "TR_PEMESANAN_JASA" tj
