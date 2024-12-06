@@ -21,15 +21,32 @@
     </div>
 
     <dialog id="updateModal" class="modal">
-      <div class="modal-box" method="POST" onsubmit="console.log('update!')">
+      <div class="modal-box">
         <form method="dialog">
           <button
             class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
           >✕</button>
         </form>
 
-        <form method="POST" action="/profile/pengguna/{{ pelanggan.Id }}">
+        <form method="POST">
           <h3 class="text-xl font-bold">Update Data</h3>
+
+          {{#if isError}}
+          <div role="alert" class="alert alert-error rounded-lg">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 shrink-0 stroke-current"
+              fill="none"
+              viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>{{error}}</span>
+          </div>
+          {{/if}}
 
           <label class="form-control">
             <div class="label">
@@ -110,7 +127,18 @@
           </div>
         </form>
       </div>
+      <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+      </form>
     </dialog>
     {{/if}}
   </div>
 </main>
+
+{{#if isError}}
+  <script defer>
+    window.addEventListener('DOMContentLoaded', () => {
+      updateModal.showModal();
+    });
+  </script>
+{{/if}}
