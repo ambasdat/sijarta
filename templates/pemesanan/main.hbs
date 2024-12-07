@@ -67,7 +67,7 @@
         const statusValue = document.getElementById("status").value;
 
         if (subkategoriValue === "" && statusValue === "") {
-            window.location.href = "/pemesanan/nyoba";
+            window.location.href = "/pemesanan";
             return;
         }
 
@@ -76,7 +76,7 @@
         params.set("s", statusValue);
 
         const queryString = params.toString();
-        const url = `/pemesanan/nyoba/?${queryString}`;
+        const url = `/pemesanan/?${queryString}`;
 
         window.location.href = url;
     });

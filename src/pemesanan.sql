@@ -26,7 +26,7 @@ CREATE OR REPLACE FUNCTION getPemesanan(p_uid UUID, p_sub VARCHAR, p_status VARC
                 FROM
                     "TR_PEMESANAN_JASA" AS TPJ
                     JOIN "SUBKATEGORI_JASA" AS SJ ON TPJ."IdKategoriJasa" = SJ."Id"
-                    JOIN "USER" AS U ON TPJ."IdPekerja" = U."Id"
+                    LEFT JOIN "USER" AS U ON TPJ."IdPekerja" = U."Id"
                     JOIN "TR_PEMESANAN_STATUS" AS TPS ON TPJ."Id" = TPS."IdTrPemesanan"
                     JOIN "STATUS_PESANAN" AS SP ON TPS."IdStatus" = SP."Id"
                 WHERE

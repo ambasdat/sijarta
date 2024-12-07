@@ -31,50 +31,13 @@
                     <td class="border border-gray-300">{{this.Sesi}} Jam</td>
                     <td class="border border-gray-300">Rp {{this.Harga}}</td>
                     {{#if isPelanggan}}
-                    <td class="border border-gray-300"><button class="btn btn-primary" onclick="document.getElementById('orderModal').showModal()">Pesan</button></td>
+                        <td class="border border-gray-300"><button class="btn btn-primary" onclick="window.location.href = '/subkategori/{{../desc.SubId}}/{{this.Sesi}}'">Pesan</button></td>
                     {{/if}}
                 </tr>
                 {{/each}}
             </tbody>
         </table>
     </section>
-
-    <!-- Order Modal -->
-    <dialog id="orderModal" class="modal">
-        <form method="dialog" class="modal-box" onsubmit="return validateForm()">
-            <h3 class="text-xl font-semibold mb-4 text-center">Order Service</h3>
-            <div class="form-control mb-4">
-                <label for="orderDate" class="label">
-                    <span class="label-text">Order Date</span>
-                </label>
-                <input type="date" id="orderDate" class="input input-primary" required>
-            </div>
-            <div class="form-control mb-4">
-                <label for="discountCode" class="label">
-                    <span class="label-text">Discount Code</span>
-                </label>
-                <input type="text" id="discountCode" class="input input-primary">
-            </div>
-            <div class="form-control mb-4">
-                <label for="paymentMethod" class="label">
-                    <span class="label-text">Payment Method</span>
-                </label>
-                <select id="paymentMethod" class="select select-primary" required>
-                    <option value="" disabled selected>Select a method</option>
-                    <option value="credit_card">Credit Card</option>
-                    <option value="bank_transfer">Bank Transfer</option>
-                    <option value="cash">Cash</option>
-                </select>
-            </div>
-            <div class="form-control mb-4">
-                <p><strong>Total Payment:</strong> Rp 150,000</p>
-            </div>
-            <div class="modal-action">
-                <button class="btn btn-primary">Order</button>
-                <button class="btn" onclick="document.getElementById('orderModal').close()">Cancel</button>
-            </div>
-        </form>
-    </dialog>
 
     <!-- List of Worker -->
     <h3 class="text-xl font-semibold mb-2">Pekerja</h3>
@@ -116,18 +79,3 @@
         </div>
     </section>
 </main>
-
-<script>
-    function validateForm() {
-        let orderDate = document.getElementById('orderDate').value;
-        let discountCode = document.getElementById('discountCode').value;
-        let paymentMethod = document.getElementById('paymentMethod').value;
-
-        if (orderDate === '' || paymentMethod === '') {
-            return false;
-        }
-
-        window.location.href = '/pemesanan';
-        return true;
-    }
-</script>

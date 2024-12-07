@@ -1,5 +1,6 @@
 import express from "express";
 import client from "./db";
+import { allowRoles } from "./auth";
 
 const app = express.Router();
 
@@ -39,6 +40,63 @@ app.get("/:id", async (req, res) => {
   catch (error) {
     console.error("Error fetching testimonies:", error);
     res.status(500).send("An error occurred while fetching testimonies.");
+  }
+});
+
+app.get("/:id/:sesi", allowRoles(['pengguna']), async (req, res) => {
+  try {
+    const kode = req.query.d as string || "";
+    const userId = req.userId;
+    const idsub = req.params.id;
+    const sesi = req.params.sesi;
+    const hargaQuery = await client.query(`SELECT * FROM getHargaSesi($1, $2);`, [idsub, sesi]);
+    const diskonQuery = await client.query(`SELECT getDiskon($1 ,$2, $3);`, [userId, kode, hargaQuery.rows[0].gethargasesi]);
+    const metodeBayar = await client.query(`SELECT * FROM "METODE_BAYAR";`);
+    const harga = hargaQuery.rows[0].gethargasesi - diskonQuery.rows[0].getdiskon;
+    res.render("subkategori/pesan.hbs", {harga: harga, idsub: idsub, sesi: sesi, metodeBayar: metodeBayar.rows, kode: kode, errDiskon: req.query.d != undefined && diskonQuery.rows[0].getdiskon == 0});
+  } 
+  catch (error) {
+    console.error("Error processing request:", error);
+    res.status(500).send("An error occurred while processing the request.");
+  }
+});
+
+app.post("/:id/:sesi", allowRoles(['pengguna']), async (req, res) => {
+  try {
+    const userId = req.userId;
+    const tanggal = req.body.tanggal;
+    const harga = req.body.harga;
+    const idsub = req.params.id;
+    const sesi = req.params.sesi;
+    const diskonQuery = await client.query(`SELECT getDiskon($1 ,$2, $3);`, [userId, req.body.diskon, harga]);
+    const kode = diskonQuery.rows[0].getdiskon == 0 ? "" : req.body.diskon;
+    const metode = req.body.bayar;
+    await client.query(
+      `SELECT insertTransaksi(
+        $1,
+        $2,
+        $3,
+        $4,
+        $5,
+        $6,
+        $7
+      );`,
+      [
+        tanggal,
+        harga,
+        userId,
+        idsub,
+        sesi,
+        kode,
+        metode
+      ]
+    );
+    await client.query(`SELECT updateVoucher($1, $2)`, [userId, kode]);
+    res.redirect("/pemesanan");
+  } 
+  catch (error) {
+    console.error("Error processing request:", error);
+    res.status(500).send("An error occurred while processing the request.");
   }
 });
 
