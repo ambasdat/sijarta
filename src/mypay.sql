@@ -38,14 +38,14 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION get_user_details(userId UUID)
 RETURNS TABLE(
     "Nama" VARCHAR,
-    "SaldoMyPay" VARCHAR,
+    "SaldoMyPay" NUMERIC,
     "NoHP" VARCHAR
 ) AS $$
 BEGIN
     RETURN QUERY
     SELECT 
         u."Nama", 
-        REPLACE(TO_CHAR(u."SaldoMyPay", 'FM9,999,999,999'), ',', '.')::VARCHAR AS "SaldoMyPay", 
+        u."SaldoMyPay",
         u."NoHP"
     FROM "USER" u
     WHERE u."Id" = userId;
@@ -58,14 +58,14 @@ $$ LANGUAGE plpgsql;
 -- get_user_transactions
 CREATE OR REPLACE FUNCTION get_user_transactions(userId UUID)
 RETURNS TABLE (
-    "Nominal" VARCHAR,
+    "Nominal" NUMERIC,
     "Tgl" DATE,
     "Nama" VARCHAR
 ) AS $$
 BEGIN
     RETURN QUERY
     SELECT 
-        REPLACE(TO_CHAR(t."Nominal", 'FM9,999,999,999'), ',', '.')::VARCHAR AS "Nominal", 
+        t."Nominal",
         t."Tgl", 
         k."Nama"
     FROM "TR_MYPAY" t
