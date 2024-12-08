@@ -13,10 +13,12 @@ import { createInterface } from "readline/promises"
 
   console.log();
 
-  const answer = await rl.question("[!] WARNING: This will delete all data on the database. Continue [y/N]? ");
+  if (!process.argv.includes("--yes")) {
+    const answer = await rl.question("[!] WARNING: This will delete all data on the database. Continue [y/N]? ");
 
-  if (!/[yY]/g.test(answer)) {
-    process.exit();
+    if (!/[yY]/g.test(answer)) {
+      process.exit();
+    }
   }
 
   console.log();

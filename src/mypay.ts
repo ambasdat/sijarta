@@ -38,7 +38,7 @@ app.get("/", allowRoles(['pekerja', 'pengguna']), async (req, res) => {
       userDetails,
       transactionHistory,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error fetching data:", error);
     res.status(500).send("Internal Server Error");
   }
@@ -87,7 +87,7 @@ app.get("/transaction", allowRoles(['pekerja', 'pengguna']), async (req, res) =>
       userOrder,
       currentDate: `${(new Date()).getDate()} ${(new Date()).toLocaleString('en-US', { month: 'long' })} ${(new Date()).getFullYear()}`,
     });
-  } catch(error) {
+  } catch(error: any) {
     console.error("Error fetching data:", error);
     res.status(500).send("Internal Server Error");
   }
@@ -105,7 +105,7 @@ app.post("/transaction/topup", allowRoles(['pekerja', 'pengguna']), async (req, 
       [userId, topup_amount]
     );
     message = "Success";
-  } catch (error) {
+  } catch (error: any) {
     message = encodeURIComponent(error.message || 'Internal Server Error');
   }
   res.redirect(`/mypay/transaction?message=${message}`);
@@ -123,7 +123,7 @@ app.post("/transaction/pay", allowRoles(['pengguna']), async (req, res) => {
       [userId, idTrPemesanan]
     );
     message = "Success";
-  } catch (error) {
+  } catch (error: any) {
     message = encodeURIComponent(error.message || 'Internal Server Error');
   }
   res.redirect(`/mypay/transaction?message=${message}`);
@@ -142,7 +142,7 @@ app.post("/transaction/transfer", allowRoles(['pekerja', 'pengguna']), async (re
       [userId, nohp, tf_amount]
     );
     message = "Success";
-  } catch (error) {
+  } catch (error: any) {
     message = encodeURIComponent(error.message || 'Internal Server Error');
   }
 
@@ -162,7 +162,7 @@ app.post("/transaction/withdraw", allowRoles(['pekerja', 'pengguna']), async (re
       [userId, wdAmount]
     );
     message = "Success";
-  } catch (error) {
+  } catch (error: any) {
     message = encodeURIComponent(error.message || 'Internal Server Error');
   }
   res.redirect(`/mypay/transaction?message=${message}`);
