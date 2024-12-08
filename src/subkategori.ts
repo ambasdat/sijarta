@@ -41,7 +41,6 @@ app.get("/:id", async (req, res) => {
     sesi.rows.forEach((row) => {
       row.Harga = hargaToRupiah(row.Harga);
     });
-    console.log(sesi.rows);
     const canJoin = !(isGuest || isPelanggan || isWorkerAtKategori);
     res.render("subkategori/subkategori.hbs", {desc: desc.rows[0], sesi: sesi.rows, pekerja: pekerja.rows, testimoni: testimoni.rows, isPelanggan: isPelanggan, canJoin: canJoin});
   }
