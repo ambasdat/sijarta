@@ -49,7 +49,7 @@ app.get("/transaction", allowRoles(['pekerja', 'pengguna']), async (req, res) =>
     );
     
     res.render("mypay/transaction",{
-      isPekerja: req.userType !== "pengguna",
+      isPengguna: req.userType === "pengguna",
       message,
       userDetails,
       userOrder,
