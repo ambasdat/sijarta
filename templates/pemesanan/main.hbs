@@ -1,6 +1,22 @@
-<main
-  class="card shadow-xl max-w-screen-xl mx-auto mt-24 bg-neutral text-neutral-content p-6 space-y-8"
->
+<main class="card shadow-xl max-w-screen-xl mx-auto mt-24 bg-neutral text-neutral-content p-6 space-y-8">
+
+  {{#if isMes}}
+    <div role="alert" class="alert alert-success rounded-lg">
+      <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 shrink-0 stroke-current"
+          fill="none"
+          viewBox="0 0 24 24">
+          <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>Pesanan berhasil dibatalkan</span>
+    </div>
+  {{/if}}
+
   <div class="flex justify-center">
     <div class="grid grid-cols-3 items-end gap-4 w-full max-w-2xl">
       <!-- Dropdown for "Sub Kategori" -->
@@ -46,12 +62,24 @@
             <p class="text-sm stat-title p-1">Pekerja: {{this.Nama}}</p>
             <p class="text-sm stat-title p-1">Status: {{this.Status}}</p>
           </div>
-          {{#if canBatal}}
+          {{#if this.canBatal}}
             <div class="flex justify-end">
-              <button class="btn btn-error text min-w-56">Batalkan</button>
+              <button class="btn btn-error text min-w-56" onclick="document.getElementById('confirmCancelModal_{{this.Id}}').showModal()">Batalkan</button>
             </div>
+            <dialog id="confirmCancelModal_{{this.Id}}" class="modal">
+              <div class="modal-box">
+                <h3 class="font-bold text-lg">Konfirmasi Pembatalan</h3>
+                <p>Apakah Anda yakin ingin membatalkan pesanan ini?</p>
+                <div class="modal-action">
+                  <button class="btn" onclick="document.getElementById('confirmCancelModal_{{this.Id}}').close()">Tidak</button>
+                  <form action="/pemesanan/batal/{{this.Id}}" method="POST">
+                    <button type="submit" class="btn btn-error">Ya, Batalkan</button>
+                  </form>
+                </div>
+              </div>
+            </dialog>
           {{/if}}
-          {{#if canTestimoni}}
+          {{#if this.canTestimoni}}
             <div class="flex justify-end">
               <a class="btn btn-success min-w-56" href="/testimoni/{{this.Id}}">Buat Testimoni</a>
             </div>

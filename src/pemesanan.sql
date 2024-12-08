@@ -1,5 +1,6 @@
 DROP FUNCTION IF EXISTS getPemesanan(p_uid UUID, p_sub VARCHAR, p_status VARCHAR);
 DROP FUNCTION IF EXISTS existTestimoni(p_id UUID);
+DROP FUNCTION IF EXISTS batalPesan(p_id UUID);
 
 CREATE OR REPLACE FUNCTION getPemesanan(p_uid UUID, p_sub VARCHAR, p_status VARCHAR)
     RETURNS TABLE(
@@ -63,6 +64,34 @@ CREATE OR REPLACE FUNCTION existTestimoni(p_id UUID)
                 WHERE
                     T."IdTrPemesanan" = p_id
             );
+        END;
+    $$
+    LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION batalPesan(p_id UUID)
+    RETURNS VOID AS 
+    $$
+        DECLARE
+            id_status UUID;
+        BEGIN
+            IF NOT EXISTS (SELECT 1 FROM "TR_PEMESANAN_JASA" WHERE "Id" = p_id) 
+                THEN
+                RAISE EXCEPTION 'Pemesanan tidak ditemukan';
+            END IF;
+
+            IF NOT EXISTS (SELECT 1 FROM "TR_PEMESANAN_STATUS" WHERE "Id" = p_id) 
+                THEN
+                RAISE EXCEPTION 'Pemesanan tidak ditemukan';
+            END IF;
+
+            IF EXISTS (SELECT 1 FROM "TR_PEMESANAN_STATUS" WHERE "Id" = p_id AND ("Status" != 'Menunggu Pembayaran' AND "Status" != 'Mencari Pekerja Terdekat'))
+                THEN
+                RAISE EXCEPTION 'Pemesanan sudah tidak bisa dibatalkan';
+            END IF;
+
+            SELECT "Id" INTO id_status FROM "STATUS_PESANAN" WHERE "Status" = 'Pesanan dibatalkan';
+            INSERT INTO "TR_PEMESANAN_STATUS" ("IdTrPemesanan", "IdStatus", "TglWaktu")
+            VALUES (p_id, id_status, NOW());
         END;
     $$
     LANGUAGE plpgsql;

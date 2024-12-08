@@ -10,6 +10,7 @@ function titleCase(str: string): string {
 
 app.get("/", allowRoles(["pengguna"]) , async (req, res) => {
   try {
+    const berhasilBatal = req.cookies.berhasil == undefined ? false : req.cookies.berhasil == "true";
     const userId = req.userId;
     const k = req.query.k as string || "";
     const s = req.query.s as string || "";
@@ -30,7 +31,8 @@ app.get("/", allowRoles(["pengguna"]) , async (req, res) => {
       row.display = titleCase(row.NamaSubkategori);
     });
 
-    res.render("pemesanan/main", {data: data.rows, sub: sub.rows, status: status.rows});
+    res.clearCookie("berhasil");
+    res.render("pemesanan/main", {data: data.rows, sub: sub.rows, status: status.rows, isMes: berhasilBatal});
   }
   catch (error) {
     console.error(error);
@@ -40,7 +42,8 @@ app.get("/", allowRoles(["pengguna"]) , async (req, res) => {
 
 app.get("/nyoba", async (req, res) => {
   try {
-    const userId = 'de19a8b8-df16-426e-86d4-28e6fa75d95c';
+    const berhasilBatal = req.cookies.berhasil == undefined ? false : req.cookies.berhasil == "true";
+    const userId = '81ebf7b7-1ee3-4da4-b04c-4d1202460288';
     const k = req.query.k as string || "";
     const s = req.query.s as string || "";
     const data = await client.query(`SELECT * FROM getPemesanan($1, $2, $3);`, [userId, k, s]);
@@ -60,7 +63,21 @@ app.get("/nyoba", async (req, res) => {
       row.display = titleCase(row.NamaSubkategori);
     });
 
-    res.render("pemesanan/main", {data: data.rows, sub: sub.rows, status: status.rows});
+    res.clearCookie("berhasil");
+    res.render("pemesanan/main", {data: data.rows, sub: sub.rows, status: status.rows, isMes: berhasilBatal});
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).send("An error occurred while fetching data.");
+  }
+});
+
+app.post("/batal/:id", allowRoles(["pengguna"]), async (req, res) => {
+  try {
+    const id = req.params.id;
+    await client.query(`SELECT batalPesan($1);`, [id]);
+    res.cookie("berhasil", true);
+    res.redirect("/pemesanan");
   }
   catch (error) {
     console.error(error);
