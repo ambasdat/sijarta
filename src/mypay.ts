@@ -48,30 +48,40 @@ app.get("/transaction", allowRoles(['pekerja', 'pengguna']), async (req, res) =>
   try{
     const userId = req.userId;
     const message = req.query.message || "";
+    const isPengguna = req.userType === "pengguna";
 
     const { rows: userDetailsRaw} = await client.query(
       "SELECT * FROM get_user_details($1)", 
       [userId]
     );
 
+    // USER DETAILS DATA
     let userDetails = {
       ...userDetailsRaw[0],
       ...processNameParts(userDetailsRaw[0].Nama),
     };
-
-    // Format SaldoMyPay in userDetails
     userDetails = {
       ...userDetails,
-      SaldoMyPay: formatCurrency(Number(userDetails.SaldoMyPay)), // Format SaldoMyPay field
+      SaldoMyPay: formatCurrency(Number(userDetails.SaldoMyPay)),
     };
 
-    const { rows: userOrder } = await client.query(
-      "SELECT * FROM get_user_order($1)",
-      [userId]
-    );
-    
+    // USER ORDERS DATA
+    let userOrder;  // Initialize userOrder here
+    if (isPengguna) {
+      const { rows: userOrderResult } = await client.query(
+        "SELECT * FROM get_user_order($1)",
+        [userId]
+      );
+      userOrder = userOrderResult.map(order => ({
+        ...order,
+        totalbiaya: formatCurrency(Number(order.totalbiaya))
+      }));
+    } else {
+      userOrder = null;
+    }
+
     res.render("mypay/transaction",{
-      isPengguna: req.userType === "pengguna",
+      isPengguna,
       message,
       userDetails,
       userOrder,
@@ -106,13 +116,11 @@ app.post("/transaction/pay", allowRoles(['pengguna']), async (req, res) => {
   
   try{
     const userId = req.userId;
-
-    const { serviceOrder: serviceOrder } = req.body;
-    const [idTrPemesanan, totalAmount] = serviceOrder.split(',');
+    const { serviceOrder: idTrPemesanan } = req.body;
 
     await client.query(
-      'SELECT handle_payment($1, $2, $3)',
-      [userId, idTrPemesanan, totalAmount]
+      'SELECT handle_payment($1, $2)',
+      [userId, idTrPemesanan]
     );
     message = "Success";
   } catch (error) {

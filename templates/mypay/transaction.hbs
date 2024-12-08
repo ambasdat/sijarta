@@ -168,7 +168,7 @@
           <option>Virtual Account Mandiri</option>
         </select>
       </label>
-
+      
       <label class="form-control">
         <div class="label">
           <span class="label-text">No Rekening</span>
@@ -189,7 +189,7 @@
   }
   
   {{#if isPengguna}}
-    // Fungsi untuk load PaymentForm
+    // Function to load the payment form
     function loadPaymentForm() {
       const formContainer = document.getElementById("dynamicFormContainer");
       formContainer.innerHTML = `
@@ -203,11 +203,13 @@
           <select name="serviceOrder" class="select select-secondary w-full" id="serviceSelect" onchange="updatePrice()" required>
             <option disabled selected value="">Pilih Pesanan Jasa</option>
             {{#each userOrder}}
-            <option value="{{ this.idtrpemesanan }},{{ this.totalbiaya }}">{{ this.namasubkategorijasa }}</option>
+              <option value="{{ this.idtrpemesanan }}" data-totalbiaya="{{ this.totalbiaya }}">
+                🧹 {{ this.namasubkategorijasa }},  Sesi: {{ this.sesi }}  |  📅 {{ this.tglpemesanan }}  |  💰 Rp {{ this.totalbiaya }}
+              </option>
             {{/each}}
           </select>
         </label>
-
+        
         <label class="form-control">
           <div class="label">
             <span class="label-text">Nominal Tagihan</span>
@@ -221,16 +223,18 @@
       `;
     }
 
-    // Fungsi update price untuk Payment
+
+    // Function to update price for Payment
     window.updatePrice = function () {
       const serviceSelect = document.getElementById("serviceSelect");
       const priceDisplay = document.getElementById("priceDisplay");
-      const selectedValue = serviceSelect.value.split(',')[1];
-    
-      if (selectedValue) {
-        // Parse the selected value to an integer and format it with dots
-        const formattedValue = parseInt(selectedValue).toLocaleString("id-ID").replace(/,/g, ".");
-        priceDisplay.textContent = `Rp ${formattedValue}`;
+      
+      // Get the selected option and its data-totalbiaya attribute
+      const selectedOption = serviceSelect.options[serviceSelect.selectedIndex];
+      const totalBiaya = selectedOption.getAttribute('data-totalbiaya');
+
+      if (totalBiaya) {
+        priceDisplay.textContent = `Rp ${totalBiaya}`;
       } else {
         priceDisplay.textContent = "-";
       }

@@ -138,7 +138,7 @@ VALUES
   ), 
   (
     '466a7907-9252-470c-9a87-7501491a2def', 
-    'menerima honOR transaksi jasa'
+    'menerima honor transaksi jasa'
   ), 
   (
     'a5940249-15dd-47b0-bfe7-f042da5e8954', 
