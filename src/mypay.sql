@@ -106,7 +106,7 @@ BEGIN
     LEFT JOIN "TR_PEMESANAN_STATUS" ts ON tj."Id" = ts."IdTrPemesanan"
     LEFT JOIN "SUBKATEGORI_JASA" sub ON tj."IdKategoriJasa" = sub."Id"
     LEFT JOIN "STATUS_PESANAN" sp ON ts."IdStatus" = sp."Id"
-    WHERE tj."IdPelanggan" = '64302ea1-212d-414c-a2db-1fad0b3c3b6e'
+    WHERE tj."IdPelanggan" = pelangganId_param
     AND sp."Id" = 'a7634d70-d6d8-42cf-90e3-dd069bf54e33'
     AND NOT EXISTS (
         SELECT 1
