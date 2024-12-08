@@ -18,7 +18,7 @@
 
                 <select id="kategori" name="kategori" class="select select-primary w-full max-w-xs" required>
                 <option value="" disabled selected>Pilih Kategori</option>
-                <option value="0" {{#if (eq "0" ../selectedKategori)}}selected{{/if}}>Semua</option>
+                <option value="">Semua</option>
                 {{#each pekerjaKategoriDict}}
                     <option value="{{ this.kid }}" {{#if (eq this.kid ../selectedKategori)}}selected{{/if}}>{{ this.kname }}</option>
                 {{/each}}
@@ -33,7 +33,7 @@
 
                 <select id="subkategori" name="subkategori" class="select select-secondary w-full max-w-xs" required disabled>
                 <option value="" disabled selected>Pilih Sub Kategori</option>
-                <option value="0">Semua</option>
+                <option value="">Semua</option>
                 </select>
             </label>
         
@@ -98,7 +98,7 @@
         // Reset the subkategori options
         subkategoriSelect.innerHTML = `
             <option value="" disabled selected>Pilih Sub Kategori</option>
-            <option value="0">Semua</option>
+            <option value="">Semua</option>
         `;
 
         // Enable subkategori dropdown only if a valid kategori is selected

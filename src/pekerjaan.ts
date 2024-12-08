@@ -7,13 +7,12 @@ const app = express.Router();
 app.get("/", allowRoles(['pekerja']), async (req, res) => {
   try {
     const pekerjaId = req.userId;
-    var kategori = req.query.kategori || null; // Get kategori dari query, null jika tidak ada
-    var subkategori = req.query.subkategori || null; // Get subkategori dari query, null jika tidak ada
+    const kategori = req.query.kategori || null; // Get kategori dari query, null jika tidak ada
+    const subkategori = req.query.subkategori || null; // Get subkategori dari query, null jika tidak ada
     const selectedKategori = kategori
     const selectedSubkategori = subkategori
-    // If kategori = '0' set to semua
-    if (kategori === '0'){kategori = null};
-    if (subkategori === '0'){subkategori = null};
+    console.log(kategori);
+    console.log(subkategori);
 
     const { rows: pekerjaKategori } = await client.query(
       "SELECT * FROM get_pekerja_category($1)",
@@ -34,11 +33,11 @@ app.get("/", allowRoles(['pekerja']), async (req, res) => {
 
     res.render("pekerjaan/main", {
       message: req.query.message || "",
+      selectedKategori,
+      selectedSubkategori,
       pekerjaKategoriDict,
       pekerjaKategoriDictJson: JSON.stringify(pekerjaKategoriDict),
       orderResult,
-      selectedKategori,
-      selectedSubkategori,
     });
   } catch(error) {
     console.error("Error fetching data:", error);
@@ -66,12 +65,12 @@ app.post("/kerjakan", allowRoles(['pekerja']), async (req, res) => {
 app.get("/status", allowRoles(['pekerja']), async (req, res) => {
   try{
     const pekerjaId = req.userId;
-    const searchQuery = req.query.searchQuery || '';
-    const status = req.query.status || null;
+    const searchKeyword = req.query.searchKeyword || '';
+    const searchStatus = req.query.searchStatus || null;
 
     const { rows: statusResultRaw } = await client.query(
       "SELECT * FROM filter_status($1, $2, $3)",
-      [pekerjaId, searchQuery, status]
+      [pekerjaId, searchKeyword, searchStatus]
     );
 
     const statusResult = statusResultRaw.map(order => ({
@@ -81,7 +80,9 @@ app.get("/status", allowRoles(['pekerja']), async (req, res) => {
     
     res.render("pekerjaan/status", {
       message: req.query.message || "",
-      statusResult
+      searchKeyword,
+      searchStatus,
+      statusResult,
     });
   } catch (error) {
     console.error("Error fetching data:", error);
