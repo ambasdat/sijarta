@@ -2,17 +2,19 @@
   class="card shadow-xl max-w-screen-xl mx-auto my-24 bg-neutral text-neutral-content"
 >
   <div class="flex w-full flex-col">
-    <div class="stats mx-2 my-2 shadow-xl">
-
-      <div class="stat">
-        <div class="stat-title">Account balance</div>
-        <div class="stat-value">Rp. {{ userDetails.SaldoMyPay }}</div>
-        <div class="stat-title pt-5">
-          <strong>{{ userDetails.NoHP }}</strong>
-        </div>
+    <div class="stats mx-2 my-2 shadow-xl grid grid-cols-[2fr_2fr_1fr]">
+      
+      <div class="stat py-5 items-center">
+        <div class="stat-title">Nomor Telepon</div>
+        <div class="stat-value">{{ userDetails.NoHP }}</div>
       </div>
 
-      <div class="stat place-items-center">
+      <div class="stat py-5 items-center">
+        <div class="stat-title">Account balance</div>
+        <div class="stat-value">Rp. {{ userDetails.SaldoMyPay }}</div>
+      </div>
+
+      <div class="stat place-items-center py-5 items-center">
         <a
           href="/mypay/transaction"
           class="btn btn-outline btn-primary"

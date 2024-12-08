@@ -1,32 +1,39 @@
 <main class="card shadow-xl max-w-screen-xl mx-auto my-24 bg-neutral text-neutral-content">
   <div class="flex w-full flex-col">
-      <div class="stats mx-2 my-2 shadow-xl">
+      <div class="stats mx-2 my-2 shadow-xl grid grid-cols-[2fr_2fr_1fr]">
 
-          <div class="stat">
-            <div class="stat-title">Account balance</div>
-            <div class="stat-value">Rp. {{ userDetails.SaldoMyPay }}</div>
-            <div class="stat-title pt-5">
-              <strong>{{ userDetails.NoHP }}</strong>
+        <div class="stat items-end">
+          <div class="stat-figure text-secondary">
+            <div class="avatar online">
+              <div class="w-16 rounded-full">
+                <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+              </div> 
             </div>
           </div>
-
-          <div class="stat items-end">
-            <div class="stat-figure text-secondary">
-              <div class="avatar online">
-                <div class="w-16 rounded-full">
-                  <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                </div> 
-              </div>
+          <div class="items-end">
+            <div class="stat-value text-wrap">
+              {{ userDetails.firstName }}
             </div>
-            <div class="items-end">
-              <div class="stat-value text-wrap">
-                {{ userDetails.firstName }}
-              </div>
-              <div class="stat-title">{{ userDetails.lastName }}</div>
-            </div>
-            <div class="stat-desc text-secondary text-base">{{ currentDate }}</div>
+            <div class="stat-title">{{ userDetails.lastName }}</div>
           </div>
+          <div class="stat-desc text-secondary text-base">{{ currentDate }}</div>
+        </div>
+        
+        <div class="stat">
+          <div class="stat-title">Account balance</div>
+          <div class="stat-value">Rp. {{ userDetails.SaldoMyPay }}</div>
+          <div class="stat-title pt-5">
+            <strong>{{ userDetails.NoHP }}</strong>
+          </div>
+        </div>
 
+        <div class="stat place-items-center">
+          <a
+            href="/mypay/"
+            class="btn btn-outline btn-primary"
+          >Riwayat Transaksi</a>
+        </div>
+        
       </div>
 
       <div class="divider"></div>
@@ -107,7 +114,7 @@
         <div class="label">
           <span class="label-text">Nominal TopUp</span>
         </div>
-        <input type="number" name="topup_amount" placeholder="e.g. 100000" min="0" class="input input-bordered bg-base-100" required />
+        <input type="number" name="topup_amount" placeholder="e.g. 10000" min="0" class="input input-bordered bg-base-100" required />
       </label>
 
       <button type="submit" class="btn btn-outline">TopUp</button>
