@@ -11,8 +11,6 @@ app.get("/", allowRoles(['pekerja']), async (req, res) => {
     const subkategori = req.query.subkategori || null; // Get subkategori dari query, null jika tidak ada
     const selectedKategori = kategori
     const selectedSubkategori = subkategori
-    console.log(kategori);
-    console.log(subkategori);
 
     const { rows: pekerjaKategori } = await client.query(
       "SELECT * FROM get_pekerja_category($1)",

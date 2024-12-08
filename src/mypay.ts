@@ -24,8 +24,6 @@ app.get("/", allowRoles(['pekerja', 'pengguna']), async (req, res) => {
       SaldoMyPay: formatCurrency(Number(userDetails.SaldoMyPay)), // Format SaldoMyPay field
     };
 
-    console.log(userDetails);
-
     const { rows: transactionHistoryRaw } = await client.query(
       "SELECT * FROM get_user_transactions($1)",
       [userId]
@@ -35,9 +33,6 @@ app.get("/", allowRoles(['pekerja', 'pengguna']), async (req, res) => {
       ...transaction,
       Nominal: formatCurrency(Number(transaction.Nominal)),
     }));
-
-    console.log(transactionHistory);
-
 
     res.render("mypay/main", {
       userDetails,
@@ -54,13 +49,20 @@ app.get("/transaction", allowRoles(['pekerja', 'pengguna']), async (req, res) =>
     const userId = req.userId;
     const message = req.query.message || "";
 
-    const { rows: userDetailsResult} = await client.query(
+    const { rows: userDetailsRaw} = await client.query(
       "SELECT * FROM get_user_details($1)", 
       [userId]
     );
-    const userDetails = {
-      ...userDetailsResult[0],
-      ...processNameParts(userDetailsResult[0].Nama),
+
+    let userDetails = {
+      ...userDetailsRaw[0],
+      ...processNameParts(userDetailsRaw[0].Nama),
+    };
+
+    // Format SaldoMyPay in userDetails
+    userDetails = {
+      ...userDetails,
+      SaldoMyPay: formatCurrency(Number(userDetails.SaldoMyPay)), // Format SaldoMyPay field
     };
 
     const { rows: userOrder } = await client.query(
