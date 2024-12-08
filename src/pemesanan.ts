@@ -8,6 +8,10 @@ function titleCase(str: string): string {
   return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 }
 
+function hargaToRupiah(str: string): string {
+  return str.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + ",00";
+}
+
 app.get("/", allowRoles(["pengguna"]) , async (req, res) => {
   try {
     const berhasilBatal = req.cookies.berhasil == undefined ? false : req.cookies.berhasil == "true";
@@ -20,6 +24,7 @@ app.get("/", allowRoles(["pengguna"]) , async (req, res) => {
 
     data.rows.forEach(async (row) => {
       row.NamaSubkategori = titleCase(row.NamaSubkategori);
+      row.TotalBiaya = hargaToRupiah(row.TotalBiaya);
       row.canBatal = row.Status === 'Menunggu Pembayaran' || row.Status === 'Mencari Pekerja Terdekat';
       row.canTestimoni = row.Status === 'Pesanan selesai';
       if (row.canTestimoni) {
@@ -52,6 +57,7 @@ app.get("/nyoba", async (req, res) => {
 
     data.rows.forEach(async (row) => {
       row.NamaSubkategori = titleCase(row.NamaSubkategori);
+      row.TotalBiaya = hargaToRupiah(row.TotalBiaya);
       row.canBatal = row.Status === 'Menunggu Pembayaran' || row.Status === 'Mencari Pekerja Terdekat';
       row.canTestimoni = row.Status === 'Pesanan selesai';
       if (row.canTestimoni) {

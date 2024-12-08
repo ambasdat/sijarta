@@ -8,6 +8,10 @@ function titleCase(str: string): string {
   return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 }
 
+function hargaToRupiah(str: string): string {
+  return str.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + ",00";
+}
+
 app.get("/pengguna", (req, res) => {
   res.render("subkategori/pengguna.hbs");
 });
@@ -34,6 +38,10 @@ app.get("/:id", async (req, res) => {
         isWorkerAtKategori = true;
       }
     });
+    sesi.rows.forEach((row) => {
+      row.Harga = hargaToRupiah(row.Harga);
+    });
+    console.log(sesi.rows);
     const canJoin = !(isGuest || isPelanggan || isWorkerAtKategori);
     res.render("subkategori/subkategori.hbs", {desc: desc.rows[0], sesi: sesi.rows, pekerja: pekerja.rows, testimoni: testimoni.rows, isPelanggan: isPelanggan, canJoin: canJoin});
   }
@@ -53,7 +61,8 @@ app.get("/:id/:sesi", allowRoles(['pengguna']), async (req, res) => {
     const diskonQuery = await client.query(`SELECT getDiskon($1 ,$2, $3);`, [userId, kode, hargaQuery.rows[0].gethargasesi]);
     const metodeBayar = await client.query(`SELECT * FROM "METODE_BAYAR";`);
     const harga = hargaQuery.rows[0].gethargasesi - diskonQuery.rows[0].getdiskon;
-    res.render("subkategori/pesan.hbs", {harga: harga, idsub: idsub, sesi: sesi, metodeBayar: metodeBayar.rows, kode: kode, errDiskon: req.query.d != undefined && diskonQuery.rows[0].getdiskon == 0});
+    const hargaDisplay = hargaToRupiah(harga.toString());
+    res.render("subkategori/pesan.hbs", {harga: harga, hargaDisplay: hargaDisplay, idsub: idsub, sesi: sesi, metodeBayar: metodeBayar.rows, kode: kode, errDiskon: req.query.d != undefined && diskonQuery.rows[0].getdiskon == 0});
   } 
   catch (error) {
     console.error("Error processing request:", error);

@@ -59,11 +59,7 @@
                 <div class="grid gap-2">
                     {{#each this.Sub}}
                     <div class="card bg-base-100 p-2 rounded shadow-sm border">
-                        {{#if ../../guest}}
-                            <a href="/auth" class="block font-medium">{{this.Sub}}</a>
-                        {{else}}
-                            <a href="/subkategori/{{this.Id}}" class="block font-medium">{{this.Sub}}</a>
-                        {{/if}}
+                        <a href="/subkategori/{{this.Id}}" class="block font-medium">{{this.Sub}}</a>
                     </div>
                     {{/each}}
                 </div>
