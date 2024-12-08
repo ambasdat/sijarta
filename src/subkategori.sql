@@ -206,3 +206,13 @@ CREATE OR REPLACE FUNCTION updateVoucher(p_uid UUID, p_kode VARCHAR)
         END;
     $$
     LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION insertPekerjaKategori(p_id UUID, p_pekerja UUID)
+    RETURNS VOID AS
+    $$
+        BEGIN
+            INSERT INTO "PEKERJA_KATEGORI_JASA" ("PekerjaId", "KategoriJasaId")
+            VALUES (p_pekerja, p_id);
+        END;
+    $$
+    LANGUAGE plpgsql;

@@ -22,6 +22,7 @@ app.get("/pekerja", (req, res) => {
 
 app.get("/:id", async (req, res) => {
   try {
+    const berhasil = req.cookies.berhasil == undefined ? false : req.cookies.berhasil == "true";
     const idsub = req.params.id;
     const desc = await client.query(`SELECT * FROM getDesc($1);`, [idsub]);
     const pekerja = await client.query(`SELECT * FROM getPekerja($1);`, [desc.rows[0].KatID]);
@@ -42,7 +43,9 @@ app.get("/:id", async (req, res) => {
       row.Harga = hargaToRupiah(row.Harga);
     });
     const canJoin = !(isGuest || isPelanggan || isWorkerAtKategori);
-    res.render("subkategori/subkategori.hbs", {desc: desc.rows[0], sesi: sesi.rows, pekerja: pekerja.rows, testimoni: testimoni.rows, isPelanggan: isPelanggan, canJoin: canJoin});
+
+    res.clearCookie("berhasil");
+    res.render("subkategori/subkategori.hbs", {desc: desc.rows[0], sesi: sesi.rows, pekerja: pekerja.rows, testimoni: testimoni.rows, isPelanggan: isPelanggan, canJoin: canJoin, berhasil: berhasil});
   }
   catch (error) {
     console.error("Error fetching testimonies:", error);
@@ -102,6 +105,21 @@ app.post("/:id/:sesi", allowRoles(['pengguna']), async (req, res) => {
     await client.query(`SELECT updateVoucher($1, $2)`, [userId, kode]);
     res.redirect("/pemesanan");
   } 
+  catch (error) {
+    console.error("Error processing request:", error);
+    res.status(500).send("An error occurred while processing the request.");
+  }
+});
+
+app.post("/:subId/:katId/join", allowRoles(["pekerja"]), async (req, res) => {
+  try {
+    const katId = req.params.katId;
+    const subId = req.params.subId;
+    const userId = req.userId;
+    await client.query(`SELECT insertPekerjaKategori($1, $2);`, [katId, userId]);
+    res.cookie("berhasil", true);
+    res.redirect(`/subkategori/${subId}`);
+  }
   catch (error) {
     console.error("Error processing request:", error);
     res.status(500).send("An error occurred while processing the request.");

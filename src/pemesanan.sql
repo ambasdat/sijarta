@@ -79,12 +79,12 @@ CREATE OR REPLACE FUNCTION batalPesan(p_id UUID)
                 RAISE EXCEPTION 'Pemesanan tidak ditemukan';
             END IF;
 
-            IF NOT EXISTS (SELECT 1 FROM "TR_PEMESANAN_STATUS" WHERE "Id" = p_id) 
+            IF NOT EXISTS (SELECT 1 FROM "TR_PEMESANAN_STATUS" WHERE "IdTrPemesanan" = p_id) 
                 THEN
                 RAISE EXCEPTION 'Pemesanan tidak ditemukan';
             END IF;
 
-            IF EXISTS (SELECT 1 FROM "TR_PEMESANAN_STATUS" WHERE "Id" = p_id AND ("Status" != 'Menunggu Pembayaran' AND "Status" != 'Mencari Pekerja Terdekat'))
+            IF EXISTS (SELECT 1 FROM "TR_PEMESANAN_STATUS" AS TPS JOIN "STATUS_PESANAN" AS SP ON TPS."IdStatus" = SP."Id" WHERE TPS."IdTrPemesanan" = p_id AND (SP."Status" != 'Menunggu Pembayaran' AND SP."Status" != 'Mencari Pekerja Terdekat'))
                 THEN
                 RAISE EXCEPTION 'Pemesanan sudah tidak bisa dibatalkan';
             END IF;
