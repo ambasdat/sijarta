@@ -8,16 +8,36 @@ app.get("/", allowRoles(['pekerja', 'pengguna']), async (req, res) => {
   try {
     const userId = req.userId;
 
-    const { rows: userDetailsResult } = await client.query(
+    const { rows: userDetailsRaw } = await client.query(
       "SELECT * FROM get_user_details($1)",
       [userId]
     );
-    const userDetails = userDetailsResult[0];
 
-    const { rows: transactionHistory } = await client.query(
+    let userDetails = {
+      ...userDetailsRaw[0],
+      ...processNameParts(userDetailsRaw[0].Nama),
+    };
+
+    // Format SaldoMyPay in userDetails
+    userDetails = {
+      ...userDetails,
+      SaldoMyPay: formatCurrency(Number(userDetails.SaldoMyPay)), // Format SaldoMyPay field
+    };
+
+    console.log(userDetails);
+
+    const { rows: transactionHistoryRaw } = await client.query(
       "SELECT * FROM get_user_transactions($1)",
       [userId]
     );
+
+    const transactionHistory = transactionHistoryRaw.map(transaction => ({
+      ...transaction,
+      Nominal: formatCurrency(Number(transaction.Nominal)),
+    }));
+
+    console.log(transactionHistory);
+
 
     res.render("mypay/main", {
       userDetails,
@@ -156,3 +176,7 @@ function processNameParts(fullName: string) {
 
   return { firstName, lastName };
 }
+
+const formatCurrency = (amount: number) => {
+  return amount.toLocaleString("id-ID");
+};

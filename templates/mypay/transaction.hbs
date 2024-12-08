@@ -21,7 +21,7 @@
         
         <div class="stat">
           <div class="stat-title">Account balance</div>
-          <div class="stat-value">Rp. {{ userDetails.SaldoMyPay }}</div>
+          <div class="stat-value">Rp {{ userDetails.SaldoMyPay }}</div>
           <div class="stat-title pt-5">
             <strong>{{ userDetails.NoHP }}</strong>
           </div>
@@ -226,7 +226,14 @@
       const serviceSelect = document.getElementById("serviceSelect");
       const priceDisplay = document.getElementById("priceDisplay");
       const selectedValue = serviceSelect.value.split(',')[1];
-      priceDisplay.textContent = selectedValue ? `Rp. ${parseInt(selectedValue).toLocaleString()}` : "-";
+    
+      if (selectedValue) {
+        // Parse the selected value to an integer and format it with dots
+        const formattedValue = parseInt(selectedValue).toLocaleString("id-ID").replace(/,/g, ".");
+        priceDisplay.textContent = `Rp ${formattedValue}`;
+      } else {
+        priceDisplay.textContent = "-";
+      }
     };
   {{/if}}
 </script>
