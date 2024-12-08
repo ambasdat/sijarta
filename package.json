@@ -12,6 +12,7 @@
   "description": "",
   "dependencies": {
     "cookie-parser": "^1.4.7",
+    "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "express": "^4.21.1",
     "express-handlebars": "^8.0.1",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.8",
+    "@types/date-fns": "^2.6.3",
     "@types/express": "^5.0.0",
     "@types/express-handlebars": "^6.0.2",
     "@types/morgan": "^1.9.9",

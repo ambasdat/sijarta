@@ -32,8 +32,7 @@ app.get("/", async (req, res) => {
     const result = await client.query(`SELECT * FROM getAllForHome($1, $2);`, [s, k]);
     const NamaKategori = await client.query(`SELECT "NamaKategori" FROM "KATEGORI_JASA";`);
     const data = parseQueryForHome(result.rows);
-    const isGuest = req.userType === "guest";
-    res.render("home/home.hbs", {data: data, guest: isGuest, NamaKategori: NamaKategori.rows});
+    res.render("home/home.hbs", {data: data, NamaKategori: NamaKategori.rows});
   } 
   catch (error) {
     console.error(error);

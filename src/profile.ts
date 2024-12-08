@@ -78,8 +78,18 @@ app.all("/:userId", async (req, res) => {
 
   if (pekerja.rowCount != null && pekerja.rowCount > 0) {
     const p = pekerja.rows[0];
+
+    const categories = await client.query(
+      `SELECT "NamaKategori"
+       FROM "PEKERJA_KATEGORI_JASA" pkj
+       JOIN "KATEGORI_JASA" kj ON pkj."KategoriJasaId" = kj."Id"
+       WHERE "PekerjaId" = $1;`,
+      [userId]
+    );
+
     return res.render("profile/pekerja", {
       pekerja: p,
+      categories: categories.rows,
       error,
       isError: !!error,
       isSelf: req.userId && p.Id === req.userId,

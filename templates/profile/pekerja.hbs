@@ -25,8 +25,9 @@
         <p><strong>Rating:</strong> {{ pekerja.Rating }}</p>
         <p><strong>Kategori Pekerjaan:</strong></p>
         <ol class="list-decimal ml-4">
-          <li>Kategori Jasa 1</li>
-          <li>Kategori Jasa 2</li>
+          {{#each categories}}
+            <li>{{ this.NamaKategori }}</li>
+          {{/each}}
         </ol>
       </div>
     </div>

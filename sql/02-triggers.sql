@@ -124,7 +124,7 @@ BEGIN
 
   IF v_end_date IS NULL
   THEN
-    RAISE EXCEPTION 'Voucher dengan kode % tidak ditemukan', NEW."IdDiskon";
+    RETURN NEW;
   END IF;
 
   IF CURRENT_DATE > v_end_date

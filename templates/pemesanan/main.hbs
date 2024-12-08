@@ -1,6 +1,22 @@
-<main
-  class="card shadow-xl max-w-screen-xl mx-auto mt-24 bg-neutral text-neutral-content p-6 space-y-8"
->
+<main class="card shadow-xl max-w-screen-xl mx-auto mt-24 bg-neutral text-neutral-content p-6 space-y-8">
+
+  {{#if isMes}}
+    <div role="alert" class="alert alert-success rounded-lg">
+      <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 shrink-0 stroke-current"
+          fill="none"
+          viewBox="0 0 24 24">
+          <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>Pesanan berhasil dibatalkan</span>
+    </div>
+  {{/if}}
+
   <div class="flex justify-center">
     <div class="grid grid-cols-3 items-end gap-4 w-full max-w-2xl">
       <!-- Dropdown for "Sub Kategori" -->
@@ -8,18 +24,11 @@
         <div class="label">
           <span class="label-text">Sub Kategori</span>
         </div>
-        <select
-          id="subkategori"
-          name="subkategori"
-          class="select select-primary w-full max-w-xs"
-          required
-        >
-          <option value="-" disabled selected>Pilih Sub Kategori</option>
-          <option value="1">Daily Cleaning</option>
-          <option value="2">Deep Cleaning</option>
-          <option value="3">Service AC</option>
-          <option value="4">Massage</option>
-          <option value="5">Hair Care</option>
+        <select id="subkategori" name="subkategori" class="select select-primary w-full max-w-xs">
+          <option value="" disabled selected>Pilih Sub Kategori</option>
+          {{#each sub}}
+            <option value="{{this.NamaSubkategori}}">{{this.display}}</option>
+          {{/each}}
         </select>
       </label>
 
@@ -28,19 +37,11 @@
         <div class="label">
           <span class="label-text">Status</span>
         </div>
-        <select
-          id="status"
-          name="status"
-          class="select select-secondary w-full max-w-xs"
-          required
-        >
-          <option value="-" disabled selected>Pilih Status</option>
-          <option value="1">Menunggu Pembayaran</option>
-          <option value="2">Mencari Pekerja Terdekat</option>
-          <option value="3">Pekerja Tiba Di Lokasi</option>
-          <option value="4">Pelayanan Jasa Sedang Dilakukan</option>
-          <option value="5">Pesanan Dibatalkan</option>
-          <option value="6">Pesanan Selesai</option>
+        <select id="status" name="status" class="select select-secondary w-full max-w-xs">
+          <option value="" disabled selected>Pilih Status</option>
+          {{#each status}}
+            <option value="{{this.Status}}">{{this.Status}}</option>
+          {{/each}}
         </select>
       </label>
 
@@ -51,34 +52,61 @@
 
   <!-- List of cards -->
   <div class="grid grid-cols-1 gap-4 w-full my-6">
-    <div class="card shadow-xl bg-base-100 p-4 rounded">
-      <div class="grid grid-cols-2 items-center gap-4">
-        <div>
-          <p class="font-semibold">Daily Cleaning</p>
-          <p class="text-sm stat-title p-1">Sesi Layanan: 2 Jam</p>
-          <p class="text-sm stat-title p-1">Harga: Rp 150,000</p>
-          <p class="text-sm stat-title p-1">Pekerja: Tia</p>
-          <p class="text-sm stat-title p-1">Status: Menunggu Pembayaran</p>
-        </div>
-        <div class="flex justify-end">
-          <button class="btn btn-error text min-w-56">Batalkan</button>
+    {{#each data}}
+      <div class="card shadow-xl bg-base-100 p-4 rounded">
+        <div class="grid grid-cols-2 items-center gap-4">
+          <div>
+            <p class="font-semibold">{{this.NamaSubkategori}}</p>
+            <p class="text-sm stat-title p-1">Sesi Layanan: {{this.Sesi}} Jam</p>
+            <p class="text-sm stat-title p-1">Harga: Rp {{this.TotalBiaya}}</p>
+            <p class="text-sm stat-title p-1">Pekerja: {{this.Nama}}</p>
+            <p class="text-sm stat-title p-1">Status: {{this.Status}}</p>
+          </div>
+          {{#if this.canBatal}}
+            <div class="flex justify-end">
+              <button class="btn btn-error text min-w-56" onclick="document.getElementById('confirmCancelModal_{{this.Id}}').showModal()">Batalkan</button>
+            </div>
+            <dialog id="confirmCancelModal_{{this.Id}}" class="modal">
+              <div class="modal-box">
+                <h3 class="font-bold text-lg">Konfirmasi Pembatalan</h3>
+                <p>Apakah Anda yakin ingin membatalkan pesanan ini?</p>
+                <div class="modal-action">
+                  <button class="btn" onclick="document.getElementById('confirmCancelModal_{{this.Id}}').close()">Tidak</button>
+                  <form action="/pemesanan/batal/{{this.Id}}" method="POST">
+                    <button type="submit" class="btn btn-error">Ya, Batalkan</button>
+                  </form>
+                </div>
+              </div>
+            </dialog>
+          {{/if}}
+          {{#if this.canTestimoni}}
+            <div class="flex justify-end">
+              <a class="btn btn-success min-w-56" href="/testimoni/{{this.Id}}">Buat Testimoni</a>
+            </div>
+          {{/if}}
         </div>
       </div>
-    </div>
-
-    <div class="card shadow-xl bg-base-100 p-4 rounded">
-      <div class="grid grid-cols-2 items-center gap-4">
-        <div>
-          <p class="font-semibold">Deep Cleaning</p>
-          <p class="text-sm stat-title p-1">Sesi Layanan: 4 Jam</p>
-          <p class="text-sm stat-title p-1">Harga: Rp 300,000</p>
-          <p class="text-sm stat-title p-1">Pekerja: Eko</p>
-          <p class="text-sm stat-title p-1">Status: Pesanan Selesai</p>
-        </div>
-        <div class="flex justify-end">
-          <a class="btn btn-success min-w-56" href="/testimoni/518a9050-cd17-4a7e-af31-418e5a7d290d">Buat Testimoni</a>
-        </div>
-      </div>
-    </div>
+    {{/each}}
   </div>
+
+  <script>
+    document.getElementById("searchButton").addEventListener("click", () => {
+        const subkategoriValue = document.getElementById("subkategori").value;
+        const statusValue = document.getElementById("status").value;
+
+        if (subkategoriValue === "" && statusValue === "") {
+            window.location.href = "/pemesanan";
+            return;
+        }
+
+        const params = new URLSearchParams();
+        params.set("k", subkategoriValue);
+        params.set("s", statusValue);
+
+        const queryString = params.toString();
+        const url = `/pemesanan/?${queryString}`;
+
+        window.location.href = url;
+    });
+  </script>
 </main>

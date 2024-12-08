@@ -21,3 +21,19 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION get_promos()
+RETURNS TABLE(
+  Kode VARCHAR, -- Match the data type of the "Kode" column in the table
+  TglAkhirBerlaku DATE
+) AS $$
+BEGIN
+  RETURN QUERY
+  SELECT 
+    P."Kode",
+    P."TglAkhirBerlaku"
+  FROM "PROMO" P
+  JOIN "DISKON" D ON P."Kode" = D."Kode";
+END;
+$$ LANGUAGE plpgsql;
+
+
