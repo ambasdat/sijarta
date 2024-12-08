@@ -76,11 +76,12 @@ app.post("/:id/:sesi", allowRoles(['pengguna']), async (req, res) => {
   try {
     const userId = req.userId;
     const tanggal = req.body.tanggal;
-    const harga = req.body.harga;
     const idsub = req.params.id;
     const sesi = req.params.sesi;
-    const diskonQuery = await client.query(`SELECT getDiskon($1 ,$2, $3);`, [userId, req.body.diskon, harga]);
+    const hargaQuery = await client.query(`SELECT * FROM getHargaSesi($1, $2);`, [idsub, sesi]);
+    const diskonQuery = await client.query(`SELECT getDiskon($1 ,$2, $3);`, [userId, req.body.diskon, hargaQuery.rows[0].gethargasesi]);
     const kode = diskonQuery.rows[0].getdiskon == 0 ? "" : req.body.diskon;
+    const harga = hargaQuery.rows[0].gethargasesi - diskonQuery.rows[0].getdiskon;
     const metode = req.body.bayar;
     await client.query(
       `SELECT insertTransaksi(
@@ -109,6 +110,13 @@ app.post("/:id/:sesi", allowRoles(['pengguna']), async (req, res) => {
     console.error("Error processing request:", error);
     res.status(500).send("An error occurred while processing the request.");
   }
+});
+
+app.get("/:id/:sesi/diskon", (req, res) => {
+  const id = req.params.id;
+  const sesi = req.params.sesi;
+  const kode = req.query.d;
+  res.redirect(`/subkategori/${id}/${sesi}?d=${kode}`);
 });
 
 app.post("/:subId/:katId/join", allowRoles(["pekerja"]), async (req, res) => {
