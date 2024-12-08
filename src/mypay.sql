@@ -39,15 +39,18 @@ CREATE OR REPLACE FUNCTION get_user_details(userId UUID)
 RETURNS TABLE(
     "Nama" VARCHAR,
     "SaldoMyPay" NUMERIC,
-    "NoHP" VARCHAR
+    "NoHP" VARCHAR,
+    "LinkFoto" VARCHAR
 ) AS $$
 BEGIN
     RETURN QUERY
     SELECT 
         u."Nama", 
         u."SaldoMyPay",
-        u."NoHP"
+        u."NoHP",
+        COALESCE(p."LinkFoto", 'https://wallpapers-clan.com/wp-content/uploads/2024/11/just-a-chill-guy-pfp-01.jpg') AS "LinkFoto"
     FROM "USER" u
+    LEFT JOIN "PEKERJA" p ON u."Id" = p."Id"
     WHERE u."Id" = userId;
 END;
 $$ LANGUAGE plpgsql;
