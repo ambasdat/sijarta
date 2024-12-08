@@ -85,7 +85,6 @@ CREATE OR REPLACE FUNCTION get_user_order(
 RETURNS TABLE (
     IdTrPemesanan UUID,
     TglPemesanan DATE,
-    TglPekerjaan DATE,
     TotalBiaya DECIMAL,
     NamaSubkategoriJasa VARCHAR,
     Sesi INT,
@@ -96,7 +95,6 @@ BEGIN
     SELECT
         tj."Id",
         tj."TglPemesanan",
-        tj."TglPekerjaan",
         tj."TotalBiaya",
         sub."NamaSubkategori",
         tj."Sesi",
@@ -156,17 +154,18 @@ $$ LANGUAGE plpgsql;
 -- handle_payment
 CREATE OR REPLACE FUNCTION handle_payment(
     userId_param UUID, 
-    idTrPemesanan_param UUID, 
-    total_amount_param DECIMAL
+    idTrPemesanan_param UUID
 )
 RETURNS VOID AS $$
 DECLARE
     user_balance DECIMAL;
+    total_amount DECIMAL;
 BEGIN
-    -- Validate that the totalAmount is greater than or equal to 0
-    IF total_amount_param < 0 THEN
-        RAISE EXCEPTION 'Amount should be greater than or equal to 0';
-    END IF;
+    -- Retrieve the total amount from the TR_PEMESANAN_JASA table for the given idTrPemesanan
+    SELECT "TotalBiaya"
+    INTO total_amount
+    FROM "TR_PEMESANAN_JASA"
+    WHERE "Id" = idTrPemesanan_param;
 
     -- Check the user's current balance
     SELECT "SaldoMyPay" 
@@ -177,23 +176,23 @@ BEGIN
     -- Ensure the user exists and has a balance
     IF user_balance IS NULL THEN
         RAISE EXCEPTION 'User not found';
-    ELSIF user_balance < total_amount_param THEN
+    ELSIF user_balance < total_amount THEN
         RAISE EXCEPTION 'Insufficient balance';
     END IF;
 
-    -- Update the order status to reflect payment (insert a new row in TR_PEMESANAN_JASA)
+    -- Update the order status to reflect payment (insert a new row in TR_PEMESANAN_STATUS)
     INSERT INTO "TR_PEMESANAN_STATUS" ("IdTrPemesanan", "IdStatus", "TglWaktu")
     VALUES (idTrPemesanan_param, 'e179caba-38d9-4636-ab2e-2032f5284714', NOW());
 
-    -- Reduce the user's balance by the totalAmount
+    -- Reduce the user's balance by the total amount
     UPDATE "USER"
-    SET "SaldoMyPay" = "SaldoMyPay" - total_amount_param
+    SET "SaldoMyPay" = "SaldoMyPay" - total_amount
     WHERE "Id" = userId_param;
 
     -- Log the payment transaction
     PERFORM insert_new_tr_mypay(
         userId_param,
-        total_amount_param,
+        total_amount,
         'bb453dbc-c5eb-4102-83e9-c13d1b14213a'
     );
 
@@ -234,6 +233,11 @@ BEGIN
 
     -- Check if the recipient's NoHP exists
     recipient_id := check_noHp_exists(noHp_param);
+
+    -- Ensure the sender is not transferring to their own account
+    IF userId_param = recipient_id THEN
+        RAISE EXCEPTION 'Cannot transfer funds to your own account';
+    END IF;
 
     -- Deduct the transfer amount from the sender's SaldoMyPay
     UPDATE "USER"
