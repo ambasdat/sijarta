@@ -74,7 +74,8 @@ BEGIN
                 '3d436422-152e-4b22-b978-49012b58e1f8',  -- Pesanan selesai
                 'd9521320-0b6e-4bf7-971f-b3cb7edec92f'   -- Pesanan dibatalkan
             )
-        );
+        )
+        ORDER BY tj."TglPemesanan" ASC;
     ELSIF kid_param IS NOT NULL THEN
         -- Case 2: Filter by `kid` from get_category(pekerjaId)
         RETURN QUERY
@@ -107,7 +108,8 @@ BEGIN
                 '3d436422-152e-4b22-b978-49012b58e1f8',  -- Pesanan selesai
                 'd9521320-0b6e-4bf7-971f-b3cb7edec92f'   -- Pesanan dibatalkan
             )
-        );
+        )
+        ORDER BY tj."TglPemesanan" ASC;
     ELSE
         -- Case 1: Filter using get_category(pekerjaId) without additional conditions
         RETURN QUERY
@@ -139,7 +141,8 @@ BEGIN
                 '3d436422-152e-4b22-b978-49012b58e1f8',  -- Pesanan selesai
                 'd9521320-0b6e-4bf7-971f-b3cb7edec92f'   -- Pesanan dibatalkan
             )
-        );
+        )
+        ORDER BY tj."TglPemesanan" ASC;
     END IF;
 END;
 $$ LANGUAGE plpgsql;
@@ -222,8 +225,8 @@ BEGIN
           AND (
               searchQuery = '' OR
               ( (u."Nama" || ' ' || sub."NamaSubkategori" || ' ' || sp."Status") ILIKE '%' || searchQuery || '%')
-          );
-
+          )
+        ORDER BY tj."TglPekerjaan" DESC;
     ELSE
         RETURN QUERY
         SELECT
@@ -251,7 +254,8 @@ BEGIN
           AND (
               searchQuery = '' OR
               ( (u."Nama" || ' ' || sub."NamaSubkategori" || ' ' || sp."Status") ILIKE '%' || searchQuery || '%')
-          );
+          )
+        ORDER BY tj."TglPekerjaan" DESC;
     END IF;
 END;
 $$ LANGUAGE plpgsql;

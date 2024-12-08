@@ -74,7 +74,8 @@ BEGIN
     FROM "TR_MYPAY" t
     LEFT JOIN "KATEGORI_TR_MYPAY" k 
         ON k."Id" = t."KategoriId"
-    WHERE t."UserId" = userId;
+    WHERE t."UserId" = userId
+    ORDER BY t."Tgl" DESC;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -121,7 +122,8 @@ BEGIN
             'd9521320-0b6e-4bf7-971f-b3cb7edec92f'   -- Pesanan dibatalkan
         )
     )
-    AND tj."IdMetodeBayar" = 'd36a743b-8015-4940-8ef4-0ec549d6b6ef';
+    AND tj."IdMetodeBayar" = 'd36a743b-8015-4940-8ef4-0ec549d6b6ef'
+    ORDER BY tj."TglPemesanan" ASC;
 END;
 $$ LANGUAGE plpgsql;
 
