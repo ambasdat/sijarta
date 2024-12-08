@@ -57,7 +57,7 @@
                 <p class="font-semibold">{{this.namapelanggan}}</p>
             </div>
             <div class="grid grid-cols-2 items-center justify-between gap-4">
-                <p class="font-bold">{{ this.totalbiaya }}</p>
+                <p class="font-bold">Rp {{ this.totalbiaya }}</p>
                 <form id="kerjakan-form" action="/pekerjaan/kerjakan" method="POST">
                     <input type="hidden" name="idtrpemesanan" value="{{ this.idtrpemesanan }}">
                     <button type="submit" class="btn btn-warning">Kerjakan Pesanan</button>

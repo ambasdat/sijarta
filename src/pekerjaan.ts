@@ -22,10 +22,15 @@ app.get("/", allowRoles(['pekerja']), async (req, res) => {
     
     const pekerjaKategoriDict = transformKategoriData(pekerjaKategori);
   
-    const { rows: orderResult } = await client.query(
+    const { rows: orderResultRaw } = await client.query(
       "SELECT * FROM filter_pemesanan($1, $2, $3)",
       [pekerjaId, kategori, subkategori]
     );
+
+    const orderResult = orderResultRaw.map(order => ({
+      ...order,
+      totalbiaya: formatCurrency(Number(order.totalbiaya)),
+    }));
 
     res.render("pekerjaan/main", {
       message: req.query.message || "",
@@ -50,6 +55,7 @@ app.post("/kerjakan", allowRoles(['pekerja']), async (req, res) => {
       "SELECT handle_kerjakan_pesanan($1, $2)",
       [idTrPemesanan, pekerjaId]
     );
+    
     res.redirect("/pekerjaan?message=Success");
   } catch (error) {
     console.error("Error:", error);
@@ -63,11 +69,16 @@ app.get("/status", allowRoles(['pekerja']), async (req, res) => {
     const searchQuery = req.query.searchQuery || '';
     const status = req.query.status || null;
 
-    const { rows: statusResult } = await client.query(
+    const { rows: statusResultRaw } = await client.query(
       "SELECT * FROM filter_status($1, $2, $3)",
       [pekerjaId, searchQuery, status]
     );
 
+    const statusResult = statusResultRaw.map(order => ({
+      ...order,
+      totalbiaya: formatCurrency(Number(order.totalbiaya)),
+    }));
+    
     res.render("pekerjaan/status", {
       message: req.query.message || "",
       statusResult
@@ -96,7 +107,7 @@ app.post("/status/update-status", allowRoles(['pekerja']), async (req, res) => {
         break
       case "":
         console.log("DATA DUMMY ERROR")
-        nextIdStatus = "996980f3-cc47-4edb-a8cc-10ec02939479";
+        // nextIdStatus = "996980f3-cc47-4edb-a8cc-10ec02939479";
         break;
     }
     
@@ -136,4 +147,8 @@ const transformKategoriData = (data: any[]) => {
 
     return result;
   }, []);
+};
+
+const formatCurrency = (amount: number) => {
+  return amount.toLocaleString("id-ID");
 };
