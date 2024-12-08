@@ -19,10 +19,11 @@
                 <label class="input input-primary flex items-center gap-2">
                     <input
                         id="searchBar"
-                        name="searchQuery"
+                        name="searchKeyword"
                         type="text"
                         class="grow"
-                        placeholder="Search by name, date, etc. (e.g. Daily Cleaning)" />
+                        placeholder="Search by name, date, etc. (e.g. Daily Cleaning)",
+                        value="{{searchKeyword}}" />
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 16 16"
@@ -43,16 +44,16 @@
                 </div>
                 <select
                     id="status"
-                    name="status"
+                    name="searchStatus"
                     class="select select-secondary w-full max-w-xs"
                     required>
                     <option value="-" disabled selected>Pilih Status</option>
-                    <option value="">Semua Status</option>
-                    <option value="57fc8243-eb71-47a5-b74d-81fba6a94f82">Menunggu Pekerja Berangkat</option>
-                    <option value="996980f3-cc47-4edb-a8cc-10ec02939479">Pekerja Tiba di Lokasi</option>
-                    <option value="1fe77476-1194-4de7-b7f9-72c8cdd3ef68">Pelayanan Jasa Sedang dilakukan</option>
-                    <option value="3d436422-152e-4b22-b978-49012b58e1f8">Pesanan Selesai</option>
-                    <option value="d9521320-0b6e-4bf7-971f-b3cb7edec92f">Pesanan Dibatalkan</option>
+                    <option value="" >Semua Status</option>
+                    <option value="57fc8243-eb71-47a5-b74d-81fba6a94f82" {{#if (eq searchStatus "57fc8243-eb71-47a5-b74d-81fba6a94f82")}}selected{{/if}}>Menunggu Pekerja Berangkat</option>
+                    <option value="996980f3-cc47-4edb-a8cc-10ec02939479" {{#if (eq searchStatus "996980f3-cc47-4edb-a8cc-10ec02939479")}}selected{{/if}}>Pekerja Tiba di Lokasi</option>
+                    <option value="1fe77476-1194-4de7-b7f9-72c8cdd3ef68" {{#if (eq searchStatus "1fe77476-1194-4de7-b7f9-72c8cdd3ef68")}}selected{{/if}}>Pelayanan Jasa Sedang dilakukan</option>
+                    <option value="3d436422-152e-4b22-b978-49012b58e1f8" {{#if (eq searchStatus "3d436422-152e-4b22-b978-49012b58e1f8")}}selected{{/if}}>Pesanan Selesai</option>
+                    <option value="d9521320-0b6e-4bf7-971f-b3cb7edec92f" {{#if (eq searchStatus "d9521320-0b6e-4bf7-971f-b3cb7edec92f")}}selected{{/if}}>Pesanan Dibatalkan</option>
                 </select>
             </label>
 
@@ -76,7 +77,7 @@
                         <p class="font-semibold">{{ this.namapelanggan }}</p>
                     </div>
                     <div class="grid grid-cols-2 items-center justify-between gap-4">
-                        <p class="font-bold">{{ this.totalbiaya }}</p>
+                        <p class="font-bold">Rp {{ this.totalbiaya }}</p>
                         <div class="flex flex-col">
                             <p class="font-semibold text-center">{{ this.status }}</p>
                             {{#if (eq "3d436422-152e-4b22-b978-49012b58e1f8" this.idstatus)}}
