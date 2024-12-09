@@ -106,7 +106,6 @@ app.post("/status/update-status", allowRoles(['pekerja']), async (req, res) => {
         break
       case "":
         console.log("DATA DUMMY ERROR")
-        // nextIdStatus = "996980f3-cc47-4edb-a8cc-10ec02939479";
         break;
     }
     
