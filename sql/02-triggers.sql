@@ -1,8 +1,6 @@
--- TK2_B_AMBASDAT_Trigger_1.sql
-
--- ASUMSI:
--- check juga untuk UPDATE supaya tidak ada yang bisa update dengan
--- nomor HP yang sudah dipakai
+-- Ketika ada akun baru yang mendaftar, sistem terlebih dahulu mengecek apakah
+-- no HP sudah terdaftar atau belum. Jika no HP sudah terdaftar, keluarkan
+-- pesan error.
 CREATE OR REPLACE FUNCTION check_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -20,6 +18,10 @@ CREATE TRIGGER trg_check_new_user
 BEFORE INSERT OR UPDATE ON "USER"
 FOR EACH ROW EXECUTE FUNCTION check_new_user();
 
+-- Ketika ada user mendaftarkan akun baru sebagai pekerja maka sistem akan
+-- terlebih dahulu memastikan bahwa tidak ada pekerja lain yang memiliki
+-- kombinasi nama bank dan nomor rekening yang sama telah terdaftar, jika
+-- ada maka keluarkan pesan error.
 CREATE OR REPLACE FUNCTION check_new_pekerja()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -37,7 +39,6 @@ CREATE TRIGGER trg_check_new_pekerja
 BEFORE INSERT OR UPDATE ON "PEKERJA"
 FOR EACH ROW EXECUTE FUNCTION check_new_pekerja();
 
--- TK2_B_AMBASDAT_Trigger_2.sql
 
 CREATE OR REPLACE FUNCTION GET_TOTAL_PAYMENT(IDTR UUID)
   RETURNS INTEGER AS
@@ -111,8 +112,10 @@ CREATE OR REPLACE TRIGGER TRIGGER_RETURN_BALANCE
 AFTER INSERT ON "TR_PEMESANAN_STATUS"
 FOR EACH ROW EXECUTE FUNCTION RETURN_BALANCE();
 
--- TK2_B_AMBASDAT_Trigger_3.sql
-
+-- Ketika pengguna ingin menggunakan voucher lakukan pengecekan bahwa voucher
+-- yang digunakan tidak melewati batas jumlah penggunaan atau batasan hari
+-- berlaku. Jika voucher telah melewati batas jumlah penggunaan atau batasan
+-- hari berlaku maka keluarkan pesan error.
 CREATE OR REPLACE FUNCTION validate_voucher_usage()
 RETURNS TRIGGER AS $$
 DECLARE
@@ -146,12 +149,10 @@ CREATE TRIGGER trg_validate_voucher_usage
 BEFORE INSERT OR UPDATE ON "TR_PEMESANAN_JASA"
 FOR EACH ROW EXECUTE FUNCTION validate_voucher_usage();
 
--- TK2_B_AMBASDAT_Trigger_4.sql
-
--- ASUMSI:
--- Pembayaram oleh pengguna dilakukan saat memesan jasa sehingga setelah pesanan selesai,
--- saldo pengguna tidak berkurang hanya saldo pekerja yang bertambah. 
--- asumsi pembayaran sudah diterima sistem namun baru disalurkan oleh sistem ke pekerja saat pesanan selesai
+-- Ketika pekerja selesai mengerjakan pemesanan jasa yang dibuat oleh pengguna,
+-- dan status pemesanan jasa berubah menjadi “Pesanan selesai” maka nominal
+-- transaksi yang dibuat oleh pengguna akan otomatis di transferkan ke saldo
+-- MyPay pekerja dengan kategori “menerima honor transaksi jasa”.
 
 -- Step 1: Create a Stored Procedure to Process the Payment
 CREATE OR REPLACE FUNCTION process_pekerja_payment() 
@@ -193,3 +194,34 @@ CREATE TRIGGER trg_pemesanan_status_update
 AFTER INSERT OR UPDATE ON "TR_PEMESANAN_STATUS"
 FOR EACH ROW
 EXECUTE FUNCTION process_pekerja_payment();
+
+-- Update rating pekerja ketika pekerja tersebut mendapatkan testimoni dari
+-- user mengenai pekerjaan yang dilakukannya
+
+CREATE OR REPLACE FUNCTION update_rating_pekerja ()
+RETURNS TRIGGER AS $$
+DECLARE
+  IdPekerja UUID;
+  AvgRating FLOAT;
+BEGIN
+  SELECT COALESCE("IdPekerja", NULL) INTO IdPekerja
+  FROM "TR_PEMESANAN_JASA"
+  WHERE "Id" = NEW."IdTrPemesanan";
+
+  SELECT COALESCE(AVG("Rating"), 0) INTO AvgRating
+  FROM "TR_PEMESANAN_JASA" tpj
+  JOIN "TESTIMONI" ttm ON ttm."IdTrPemesanan" = tpj."Id"
+  WHERE tpj."IdPekerja" = IdPekerja;
+
+  UPDATE "PEKERJA"
+  SET "Rating" = AvgRating
+  WHERE "Id" = IdPekerja;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_update_rating_pekerja
+AFTER INSERT OR UPDATE ON "TESTIMONI"
+FOR EACH ROW
+EXECUTE FUNCTION update_rating_pekerja();
