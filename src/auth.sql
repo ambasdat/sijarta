@@ -17,8 +17,8 @@ BEGIN
   VALUES (nama, jk, nohp, pwd, tglLahir, alamat, 0)
   RETURNING "Id" INTO id;
 
-  INSERT INTO "PEKERJA" ("Id", "NamaBank", "NomorRekening", "NPWP", "LinkFoto")
-  VALUES (id, namaBank, nomorRekening, npwp, linkFoto);
+  INSERT INTO "PEKERJA" ("Id", "NamaBank", "NomorRekening", "NPWP", "LinkFoto", "Rating", "JmlPesananSelesai")
+  VALUES (id, namaBank, nomorRekening, npwp, linkFoto, 0, 0);
 
   RETURN id;
 END;
