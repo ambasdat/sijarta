@@ -84,6 +84,13 @@
               <a class="btn btn-success min-w-56" href="/testimoni/{{this.Id}}">Buat Testimoni</a>
             </div>
           {{/if}}
+          {{#if this.canDelete}}
+          <form method="POST" action="/testimoni/delete/{{this.Id}}">
+            <div class="flex justify-end">
+              <button type="submit" class="btn btn-error min-w-56">Hapus Testimoni</button>
+            </div>
+          </form>
+          {{/if}}
         </div>
       </div>
     {{/each}}

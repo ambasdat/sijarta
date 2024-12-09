@@ -43,6 +43,7 @@ app.get("/", allowRoles(["pengguna"]) , async (req, res) => {
         const exist = await client.query(`SELECT * FROM existTestimoni($1);`, [row.Id]);
         row.canTestimoni = !exist.rows[0].existtestimoni;
       }
+      row.canDelete = row.Status === 'Pesanan selesai' && !row.canTestimoni;
     });
 
     res.clearCookie("berhasil");

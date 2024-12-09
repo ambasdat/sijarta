@@ -78,7 +78,7 @@ app.post(
         return;
       }
 
-      res.status(200).send("Testimony deleted successfully.");
+      res.redirect("/pemesanan");
     } catch (error) {
       console.error("Error deleting testimony:", error);
       res.status(500).send("An error occurred while deleting the testimony.");
