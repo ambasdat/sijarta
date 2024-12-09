@@ -147,7 +147,7 @@ VALUES
   (
     '6f4ffb85-9e44-49e4-9e6b-87d297d5134d',
     'Pembelian Voucher'
-  )
+  );
 
 INSERT INTO "TR_MYPAY" (
   "Id", "UserId", "Tgl", "Nominal", "KategoriId"
