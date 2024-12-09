@@ -191,7 +191,11 @@ CREATE OR REPLACE FUNCTION insertTransaksi(
                 INSERT INTO "TR_PEMESANAN_JASA" ("Id", "TglPemesanan", "TotalBiaya", "IdPelanggan", "IdKategoriJasa", "Sesi", "IdDiskon", "IdMetodeBayar")
                 VALUES (id, p_tgl, p_harga, p_uid, p_sid, p_sesi, p_diskon, p_metodebayar);
 
-                SELECT "Id" INTO id_status FROM "STATUS_PESANAN" WHERE "Status" = 'Menunggu Pembayaran';
+                IF EXISTS (SELECT 1 FROM "METODE_BAYAR" WHERE "Id" = p_metodebayar AND "Nama" = 'MyPay')
+                    THEN SELECT "Id" INTO id_status FROM "STATUS_PESANAN" WHERE "Status" = 'Menunggu Pembayaran';
+                ELSE
+                    SELECT "Id" INTO id_status FROM "STATUS_PESANAN" WHERE "Status" = 'Mencari Pekerja Terdekat';
+                END IF;
                 INSERT INTO "TR_PEMESANAN_STATUS" ("IdTrPemesanan", "IdStatus", "TglWaktu")
                 VALUES (id, id_status, NOW());
             END;
