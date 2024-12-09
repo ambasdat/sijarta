@@ -357,53 +357,53 @@ INSERT INTO "SUBKATEGORI_JASA" (
 VALUES 
   (
     '260c03b2-48d5-43bc-8246-dfa9215406bf', 
-    'daily cleaning', 'Membersihkan hunian secara umum seperti menyapu, mengepel, mengelap', 
+    'Daily Cleaning', 'Membersihkan hunian secara umum seperti menyapu, mengepel, mengelap', 
     'f9a05cb3-9a27-4983-8b72-333ad042fc2b'
   ), 
   (
     'd5679a65-6ff5-4e1e-aac8-8761f03ec8be', 
-    'pembersihan dapur dan kulkas', 
+    'Pembersihan Dapur dan Kulkas', 
     'Membersihkan area dapur termasuk peralatan dapur dan bagian dalam kulkAS secara menyeluruh', 
     'f9a05cb3-9a27-4983-8b72-333ad042fc2b'
   ), 
   (
     '16f9acb2-7af8-4007-bb68-b53e51338961', 
-    'cuci kasur', 'Pencucian dan penghilangan noda dari permukaan kasur untuk kebersihan optimal', 
+    'Cuci Kasur', 'Pencucian dan penghilangan noda dari permukaan kasur untuk kebersihan optimal', 
     '405f61c8-452a-459f-9b29-9e2041d8bbf4'
   ), 
   (
     '614cf8b2-6273-4c84-88e6-7e910295d457', 
-    'bersih kamar mandi', 'Membersihkan seluruh bagian kamar mandi termasuk lantai, dinding, dan peralatan sanitasi', 
+    'Bersih Kamar Mandi', 'Membersihkan seluruh bagian kamar mandi termasuk lantai, dinding, dan peralatan sanitasi', 
     '405f61c8-452a-459f-9b29-9e2041d8bbf4'
   ), 
   (
     '0beb38a5-89fc-415b-82d7-2693273650be', 
-    'perbaikan pipa bocor', 'Perbaikan pipa yang bocOR atau rusak di dalam maupun di luar rumah', 
+    'Perbaikan Pipa Bocor', 'Perbaikan pipa yang bocOR atau rusak di dalam maupun di luar rumah', 
     '1a80b324-d6ba-4676-8296-08f0a55b2246'
   ), 
   (
     '8643f1ba-2fb0-486a-9d2c-61201073a171', 
-    'pembersihan saluran air', 'Pembersihan dan perbaikan saluran air yang tersumbat atau bermasalah', 
+    'Pembersihan Saluran Air', 'Pembersihan dan perbaikan saluran air yang tersumbat atau bermasalah', 
     '1a80b324-d6ba-4676-8296-08f0a55b2246'
   ), 
   (
     'ce40d185-7224-464f-a538-c39a64403b70', 
-    'pengendalian tikus', 'Mengendalikan populasi tikus dan melakukan pembersihan area yang terkontaminasi', 
+    'Pengendalian Tikus', 'Mengendalikan populasi tikus dan melakukan pembersihan area yang terkontaminasi', 
     'd23e08e4-158d-44f0-94b1-43d5718a201e'
   ), 
   (
     '06221f4d-486a-4aa7-8007-e81c7c0538d4', 
-    'pembasmian kutu', 'Melakukan pembasmian kutu di rumah dan lingkungan sekitar', 
+    'Pembasmian Kutu', 'Melakukan pembasmian kutu di rumah dan lingkungan sekitar', 
     'd23e08e4-158d-44f0-94b1-43d5718a201e'
   ), 
   (
     'ce249da5-507c-4fc5-901d-0d19e1013948', 
-    'instalasi lampu', 'Instalasi dan penggantian lampu serta perlengkapan pencahayaan', 
+    'Instalasi Lampu', 'Instalasi dan penggantian lampu serta perlengkapan pencahayaan', 
     'de6e4316-3738-43e7-a408-b4cfd56edca2'
   ), 
   (
     'b7e6c0ce-085b-4de4-94b9-7329bf28514e', 
-    'perbaikan saklar dan stop kontak', 
+    'Perbaikan Saklar dan Stop Kontak', 
     'Memperbaiki saklar dan stop kontak yang rusak atau tidak berfungsi', 
     'de6e4316-3738-43e7-a408-b4cfd56edca2'
   );
@@ -412,152 +412,152 @@ INSERT INTO "SESI_LAYANAN" ("SubkategoriId", "Sesi", "Harga")
 VALUES 
   (
     '0beb38a5-89fc-415b-82d7-2693273650be', 
-    1, 50000
+    1, 100000
   ), 
   (
     '0beb38a5-89fc-415b-82d7-2693273650be', 
-    2, 75000
+    2, 150000
   ), 
   (
     '0beb38a5-89fc-415b-82d7-2693273650be', 
-    3, 100000
+    3, 200000
   ), 
   (
     '614cf8b2-6273-4c84-88e6-7e910295d457', 
-    1, 60000
+    1, 120000
   ), 
   (
     '614cf8b2-6273-4c84-88e6-7e910295d457', 
-    2, 85000
+    2, 170000
   ), 
   (
     '614cf8b2-6273-4c84-88e6-7e910295d457', 
-    3, 110000
+    3, 220000
   ), 
   (
     '16f9acb2-7af8-4007-bb68-b53e51338961', 
-    1, 45000
+    1, 90000
   ), 
   (
     '16f9acb2-7af8-4007-bb68-b53e51338961', 
-    2, 70000
+    2, 140000
   ), 
   (
     '16f9acb2-7af8-4007-bb68-b53e51338961', 
-    3, 95000
+    3, 190000
   ), 
   (
     'd5679a65-6ff5-4e1e-aac8-8761f03ec8be', 
-    1, 55000
+    1, 110000
   ), 
   (
     'd5679a65-6ff5-4e1e-aac8-8761f03ec8be', 
-    2, 80000
+    2, 160000
   ), 
   (
     'd5679a65-6ff5-4e1e-aac8-8761f03ec8be', 
-    3, 105000
+    3, 210000
   ), 
   (
     '260c03b2-48d5-43bc-8246-dfa9215406bf', 
-    1, 50000
+    1, 100000
   ), 
   (
     '260c03b2-48d5-43bc-8246-dfa9215406bf', 
-    2, 75000
+    2, 150000
   ), 
   (
     '260c03b2-48d5-43bc-8246-dfa9215406bf', 
-    3, 100000
+    3, 200000
   ), 
   (
     'ce40d185-7224-464f-a538-c39a64403b70', 
-    1, 55000
+    1, 110000
   ), 
   (
     'ce40d185-7224-464f-a538-c39a64403b70', 
-    2, 80000
+    2, 160000
   ), 
   (
     'ce40d185-7224-464f-a538-c39a64403b70', 
-    3, 105000
+    3, 210000
   ), 
   (
     '8643f1ba-2fb0-486a-9d2c-61201073a171', 
-    1, 65000
+    1, 130000
   ), 
   (
     '8643f1ba-2fb0-486a-9d2c-61201073a171', 
-    2, 90000
+    2, 180000
   ), 
   (
     '8643f1ba-2fb0-486a-9d2c-61201073a171', 
-    3, 115000
+    3, 230000
   ), 
   (
     '06221f4d-486a-4aa7-8007-e81c7c0538d4', 
-    1, 50000
+    1, 100000
   ), 
   (
     '06221f4d-486a-4aa7-8007-e81c7c0538d4', 
-    2, 75000
+    2, 150000
   ), 
   (
     '06221f4d-486a-4aa7-8007-e81c7c0538d4', 
-    3, 100000
+    3, 200000
   ), 
   (
     'ce249da5-507c-4fc5-901d-0d19e1013948', 
-    1, 55000
+    1, 110000
   ), 
   (
     'ce249da5-507c-4fc5-901d-0d19e1013948', 
-    2, 80000
+    2, 160000
   ), 
   (
     'ce249da5-507c-4fc5-901d-0d19e1013948', 
-    3, 105000
+    3, 210000
   ), 
   (
     'b7e6c0ce-085b-4de4-94b9-7329bf28514e', 
-    1, 65000
+    1, 130000
   ), 
   (
     'b7e6c0ce-085b-4de4-94b9-7329bf28514e', 
-    2, 90000
+    2, 180000
   ), 
   (
     'b7e6c0ce-085b-4de4-94b9-7329bf28514e', 
-    3, 115000
+    3, 320000
   );
 
 INSERT INTO "DISKON" (
   "Kode", "Potongan", "MinTrPemesanan"
 ) 
 VALUES 
-  ('UNTUNG', 20000, 200000), 
-  ('GACOR', 23000, 250000), 
-  ('MANTAP', 22000, 300000), 
-  ('MURAH', 25000, 200000), 
-  ('BERKAH', 35000, 400000), 
-  ('SUKSES', 5000, 90000), 
-  ('HEBAT', 20000, 100000), 
-  ('CEMERLANG', 20000, 350000), 
-  ('ISTIMEWA', 10000, 100000), 
-  ('BERSIH', 2000, 80000), 
-  ('BERES', 20000, 200000), 
-  ('GAJISEP24', 20000, 250000), 
-  ('GAJIOKT24', 20000, 220000), 
-  ('GAJINOV24', 30000, 430000), 
-  ('AKHIRTAHUN24', 20000, 230000), 
-  ('AWALTAHUN25', 30000, 530000), 
-  ('MERDEKA25', 20000, 450000), 
+  ('UNTUNG', 20000, 100000), 
+  ('GACOR', 23000, 150000), 
+  ('MANTAP', 22000, 200000), 
+  ('MURAH', 25000, 100000), 
+  ('BERKAH', 35000, 300000), 
+  ('SUKSES', 5000, 80000), 
+  ('HEBAT', 20000, 90000), 
+  ('CEMERLANG', 20000, 250000), 
+  ('ISTIMEWA', 10000, 90000), 
+  ('BERSIH', 2000, 70000), 
+  ('BERES', 20000, 100000), 
+  ('GAJISEP24', 20000, 150000), 
+  ('GAJIOKT24', 20000, 120000), 
+  ('GAJINOV24', 30000, 330000), 
+  ('AKHIRTAHUN24', 20000, 430000), 
+  ('AWALTAHUN25', 30000, 430000), 
+  ('MERDEKA25', 20000, 350000), 
   (
-    'TANGGALSPESIALMEI', 10000, 160000
+    'TANGGALSPESIALMEI', 10000, 60000
   ), 
-  ('GAJISEP25', 20000, 310000), 
-  ('GAJINOV25', 50000, 640000), 
-  ('AKHIRTAHUN25', 20000, 240000);
+  ('GAJISEP25', 20000, 210000), 
+  ('GAJINOV25', 50000, 540000), 
+  ('AKHIRTAHUN25', 20000, 140000);
 
 INSERT INTO "VOUCHER" (
   "Kode", "JmlHariBerlaku", "KuotaPenggunaan", 
