@@ -90,8 +90,7 @@ CREATE OR REPLACE FUNCTION GET_USER_ID(IDTR UUID)
 
 CREATE OR REPLACE FUNCTION RETURN_BALANCE()
   RETURNS TRIGGER AS
-  $$
-  BEGIN
+  $$ BEGIN
     IF NEW."IdStatus" IN (
       SELECT "Id"
       FROM "STATUS_PESANAN"
@@ -160,13 +159,15 @@ RETURNS TRIGGER AS $$
 DECLARE
   v_total_biaya DECIMAL;
   v_pekerja_id UUID;
+  v_level INT;
+  v_pelanggan_id UUID;
   v_kategori_tr UUID;
 BEGIN
   -- Proceed only if the status is "Pesanan selesai"
   IF NEW."IdStatus" = (SELECT "Id" FROM "STATUS_PESANAN" WHERE "Status" = 'Pesanan selesai') THEN
 
     -- Retrieve TotalBiaya and IdPekerja from TR_PEMESANAN_JASA
-    SELECT tr_j."TotalBiaya", tr_j."IdPekerja" INTO v_total_biaya, v_pekerja_id
+    SELECT tr_j."TotalBiaya", tr_j."IdPekerja", tr_j."IdPelanggan" INTO v_total_biaya, v_pekerja_id, v_pelanggan_id
     FROM "TR_PEMESANAN_JASA" tr_j
     WHERE tr_j."Id" = NEW."IdTrPemesanan";
 
@@ -188,6 +189,23 @@ BEGIN
     UPDATE "PEKERJA"
     SET "JmlPesananSelesai" = "JmlPesananSelesai" + 1
     WHERE "Id" = v_pekerja_id;
+
+    -- Cari jumlah pemesanan yang dilakukan Pelanggan
+    SELECT COUNT(*) INTO v_level
+    FROM "TR_PEMESANAN_JASA" tpj
+    JOIN "TR_PEMESANAN_STATUS" tps ON tpj."Id" = tps."IdTrPemesanan"
+    WHERE
+      "IdPelanggan" = '64302ea1-212d-414c-a2db-1fad0b3c3b6e' AND
+      "IdStatus" = (SELECT "Id" FROM "STATUS_PESANAN" WHERE "Status" = 'Pesanan selesai');
+
+    -- Update level Pelanggan
+    UPDATE "PELANGGAN"
+    SET "Level" = CASE
+      WHEN v_level < 10 THEN 'Basic'
+      WHEN v_level >= 10 AND v_level < 30 THEN 'Silver'
+      WHEN v_level >= 30 THEN 'Gold'
+    END
+    WHERE "Id" = v_pelanggan_id;
 
   END IF;
 
