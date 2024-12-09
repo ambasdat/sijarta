@@ -13,7 +13,23 @@
                     stroke-width="2"
                     d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span>Diskon tidak ditemukan atau sudah tidak berlaku</span>
+                <span>Diskon {{kode}} tidak ditemukan, tidak sesuai syarat, atau sudah tidak berlaku</span>
+            </div>
+        {{/if}}
+        {{#if sucDiskon}}
+            <div role="alert" class="alert alert-success rounded-lg">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 shrink-0 stroke-current"
+                fill="none"
+                viewBox="0 0 24 24">
+                <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Diskon {{kode}} berhasil digunakan</span>
             </div>
         {{/if}}
         <h3 class="text-xl font-semibold mb-4 text-center">Order Service</h3>
@@ -56,6 +72,11 @@
         const sesi = "{{sesi}}";
         document.getElementById("cekDiskon").addEventListener("click", () => {
             const kodeDiskon = document.getElementById("diskon").value;
+
+            if (kodeDiskon === "") {
+                window.location.href = `/subkategori/${idsub}/${sesi}/diskon`;
+                return;
+            }
 
             const params = new URLSearchParams();
             params.set("d", kodeDiskon);

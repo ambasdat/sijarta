@@ -64,7 +64,9 @@ app.get("/:id/:sesi", allowRoles(['pengguna']), async (req, res) => {
     const metodeBayar = await client.query(`SELECT * FROM "METODE_BAYAR";`);
     const harga = hargaQuery.rows[0].gethargasesi - diskonQuery.rows[0].getdiskon;
     const hargaDisplay = hargaToRupiah(harga.toString());
-    res.render("subkategori/pesan.hbs", {harga: harga, hargaDisplay: hargaDisplay, idsub: idsub, sesi: sesi, metodeBayar: metodeBayar.rows, kode: kode, errDiskon: req.query.d != undefined && diskonQuery.rows[0].getdiskon == 0});
+    const errorMessage = req.query.d != undefined && diskonQuery.rows[0].getdiskon == 0;
+    const successMessage = req.query.d != undefined && diskonQuery.rows[0].getdiskon > 0;
+    res.render("subkategori/pesan.hbs", {harga: harga, hargaDisplay: hargaDisplay, idsub: idsub, sesi: sesi, metodeBayar: metodeBayar.rows, kode: kode, errDiskon: errorMessage, sucDiskon: successMessage});
   } 
   catch (error) {
     console.error("Error processing request:", error);
@@ -116,7 +118,12 @@ app.get("/:id/:sesi/diskon", (req, res) => {
   const id = req.params.id;
   const sesi = req.params.sesi;
   const kode = req.query.d;
-  res.redirect(`/subkategori/${id}/${sesi}?d=${kode}`);
+  if (kode) {
+    res.redirect(`/subkategori/${id}/${sesi}?d=${kode}`);
+  }
+  else {
+    res.redirect(`/subkategori/${id}/${sesi}`);
+  }
 });
 
 app.post("/:subId/:katId/join", allowRoles(["pekerja"]), async (req, res) => {
