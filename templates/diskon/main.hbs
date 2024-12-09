@@ -1,7 +1,31 @@
 <main class="max-w-screen-xl mx-auto p-6 space-y-8">
-  {{! Voucher Section }}
+  {{! Bagian Rak Voucher }}
   <section>
-    <h2 class="text-2xl font-bold mb-4">Voucher</h2>
+    <h2 class="text-2xl font-bold mb-4">Voucher Saya</h2>
+    <div class="overflow-x-auto h-[300px]">
+      <table class="table table-zebra">
+        <thead class="sticky top-0 bg-base-200">
+          <tr>
+            <th>Kode</th>
+            <th>Berlaku sampai</th>
+            <th>Sisa penggunaan</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each userVouchers}}
+            <tr>
+              <td class="font-medium">{{this.idvoucher}}</td>
+              <td>{{this.tglakhir}}</td>
+              <td>{{sub this.kuotapenggunaan this.telahdigunakan}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {{! Bagian Toko Voucher }}
+  <section>
+    <h2 class="text-2xl font-bold mb-4">Beli Voucher</h2>
     <div class="overflow-x-auto h-[300px]">
       <table class="table table-zebra">
         <thead class="sticky top-0 bg-base-200">

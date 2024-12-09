@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION get_all_voucher_details()
+CREATE OR REPLACE FUNCTION get_all_voucher_details(IdPelanggan UUID)
 RETURNS TABLE(
   Kode VARCHAR, 
   Potongan DECIMAL,
@@ -17,13 +17,40 @@ BEGIN
     V."KuotaPenggunaan",
     V."Harga"
   FROM "VOUCHER" V
-  JOIN "DISKON" D ON V."Kode" = D."Kode";
+  JOIN "DISKON" D ON V."Kode" = D."Kode"
+  WHERE V."Kode" NOT IN (
+    SELECT T."IdVoucher" FROM "TR_PEMBELIAN_VOUCHER" T
+    WHERE  T."IdVoucher" = V."Kode"
+    AND T."IdPelanggan" = IdPelanggan
+  );
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION get_users_vouchers(IdPelanggan UUID)
+RETURNS TABLE(
+  IdVoucher VARCHAR, 
+  TglAkhir DATE,
+  KuotaPenggunaan INT,
+  TelahDigunakan INT
+) AS $$
+BEGIN
+  RETURN QUERY
+  SELECT 
+    T."IdVoucher",
+    T."TglAkhir",
+    V."KuotaPenggunaan",
+    T."TelahDigunakan"
+  FROM "VOUCHER" V
+  JOIN "TR_PEMBELIAN_VOUCHER" T ON T."IdVoucher" = V."Kode"
+  WHERE T."IdPelanggan" = IdPelanggan
+  AND T."TglAkhir" < CURRENT_DATE; 
+END;
+$$ LANGUAGE plpgsql;
+
+
 CREATE OR REPLACE FUNCTION get_promos()
 RETURNS TABLE(
-  Kode VARCHAR, -- Match the data type of the "Kode" column in the table
+  Kode VARCHAR, 
   TglAkhirBerlaku DATE
 ) AS $$
 BEGIN

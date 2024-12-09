@@ -9,9 +9,13 @@ app.get("/", async (req, res): Promise<void> => {
   try {
     // Fetch promos and vouchers
     const promosResult = await client.query(`SELECT * FROM get_promos();`);
-    const vouchersResult = await client.query(`SELECT * FROM get_all_voucher_details();`);
+    const vouchersResult = await client.query(`SELECT * FROM get_all_voucher_details($1::UUID);`, [req.userId]);
+    const userVouchersResult = await client.query(`SELECT * FROM get_users_vouchers($1::UUID);`,  [req.userId]);
+
+    // console.log(userVouchersResult)
 
     const promos = promosResult.rows;
+    const userVouchers = userVouchersResult.rows;
 
     // Process each voucher to calculate tglHabis
     const vouchers = vouchersResult.rows.map((voucher) => {
@@ -31,7 +35,7 @@ app.get("/", async (req, res): Promise<void> => {
     });
 
     // Pass promos and vouchers (with tglHabis) to the template
-    res.render("diskon/main", { promos, vouchers });
+    res.render("diskon/main", { promos, vouchers, userVouchers });
   } catch (error) {
     console.error("Error fetching promos and vouchers:", error);
     res.status(500).send("An error occurred while fetching discounts.");
