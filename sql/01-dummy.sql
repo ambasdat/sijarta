@@ -143,7 +143,11 @@ VALUES
   (
     'a5940249-15dd-47b0-bfe7-f042da5e8954', 
     'withdrawal MyPay ke rekening bank'
-  );
+  ),
+  (
+    '6f4ffb85-9e44-49e4-9e6b-87d297d5134d',
+    'Pembelian Voucher'
+  )
 
 INSERT INTO "TR_MYPAY" (
   "Id", "UserId", "Tgl", "Nominal", "KategoriId"
