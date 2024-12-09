@@ -207,12 +207,19 @@ EXECUTE FUNCTION process_pekerja_payment();
 CREATE OR REPLACE FUNCTION update_rating_pekerja ()
 RETURNS TRIGGER AS $$
 DECLARE
+  IdTrPemesanan UUID;
   IdPekerja UUID;
   AvgRating FLOAT;
 BEGIN
+  IF (TG_OP = 'DELETE') THEN
+    IdTrPemesanan := OLD."IdTrPemesanan";
+  ELSE
+    IdTrPemesanan := NEW."IdTrPemesanan";
+  END IF;
+
   SELECT COALESCE("IdPekerja", NULL) INTO IdPekerja
   FROM "TR_PEMESANAN_JASA"
-  WHERE "Id" = NEW."IdTrPemesanan";
+  WHERE "Id" = IdTrPemesanan;
 
   SELECT COALESCE(AVG("Rating"), 0) INTO AvgRating
   FROM "TR_PEMESANAN_JASA" tpj
@@ -228,6 +235,6 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_update_rating_pekerja
-AFTER INSERT OR UPDATE ON "TESTIMONI"
+AFTER INSERT OR UPDATE OR DELETE ON "TESTIMONI"
 FOR EACH ROW
 EXECUTE FUNCTION update_rating_pekerja();
