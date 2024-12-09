@@ -183,6 +183,12 @@ BEGIN
     UPDATE "USER"
     SET "SaldoMyPay" = "SaldoMyPay" + v_total_biaya
     WHERE "Id" = v_pekerja_id;
+
+    -- Update Jumlah Pesanan selesai dari Pekerja
+    UPDATE "PEKERJA"
+    SET "JmlPesananSelesai" = "JmlPesananSelesai" + 1
+    WHERE "Id" = v_pekerja_id;
+
   END IF;
 
   RETURN NEW;
