@@ -52,7 +52,7 @@ BEGIN
   VALUES (nama, jk, nohp, pwd, tglLahir, alamat, 0)
   RETURNING "Id" INTO id;
 
-  INSERT INTO "PELANGGAN" ("Id", "Level") VALUES (id, 0);
+  INSERT INTO "PELANGGAN" ("Id", "Level") VALUES (id, 'Basic');
 
   RETURN id;
 END;
