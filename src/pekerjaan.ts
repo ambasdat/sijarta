@@ -114,6 +114,13 @@ app.post("/status/update-status", allowRoles(['pekerja']), async (req, res) => {
       'SELECT handle_update_status($1, $2)', 
       [idTrPemesanan, nextIdStatus]
     );
+    
+    if (nextIdStatus === "3d436422-152e-4b22-b978-49012b58e1f8") {
+      await client.query(
+        'SELECT increment_jml_pesanan_selesai($1)', 
+        [pekerjaId]
+      );
+    }
 
     res.redirect("/pekerjaan/status?message=Success");
   } catch (error) {

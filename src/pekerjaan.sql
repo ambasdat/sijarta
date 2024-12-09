@@ -275,6 +275,21 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
+
+
+CREATE OR REPLACE FUNCTION increment_jml_pesanan_selesai(
+    pekerjaId_param UUID
+)
+RETURNS VOID AS $$
+BEGIN
+    UPDATE "PekerjaTable" -- Replace "PekerjaTable" with your actual table name
+    SET "JmlPesananSelesai" = "JmlPesananSelesai" + 1
+    WHERE "Id" = pekerjaId_param;
+END;
+$$ LANGUAGE plpgsql;
+
+
 -- _____________________ MISC _____________________
 
 -- -- filter_pemesanan
