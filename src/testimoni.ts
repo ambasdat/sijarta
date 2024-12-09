@@ -55,4 +55,36 @@ app.post(
   }
 );
 
+app.post(
+  "/delete/:IdTrPemesanan",
+  async (req: Request<{ IdTrPemesanan: string }>, res: Response): Promise<void> => {
+    try {
+      const { IdTrPemesanan } = req.params;
+
+      // Validate input
+      if (!IdTrPemesanan) {
+        res.status(400).send("IdTrPemesanan is required.");
+        return;
+      }
+
+      // Delete the testimony from the database
+      const result = await client.query(
+        'DELETE FROM "TESTIMONI" WHERE "IdTrPemesanan" = $1',
+        [IdTrPemesanan]
+      );
+
+      if (result.rowCount === 0) {
+        res.status(404).send("No testimony found with the given IdTrPemesanan.");
+        return;
+      }
+
+      res.status(200).send("Testimony deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting testimony:", error);
+      res.status(500).send("An error occurred while deleting the testimony.");
+    }
+  }
+);
+
+
 export default app;

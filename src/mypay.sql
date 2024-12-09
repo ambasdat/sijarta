@@ -175,7 +175,7 @@ BEGIN
     -- Check the user's current balance
     SELECT "SaldoMyPay" 
     INTO user_balance
-    FROM "USER"
+    FROM "USER" 
     WHERE "Id" = userId_param;
 
     -- Ensure the user exists and has a balance
