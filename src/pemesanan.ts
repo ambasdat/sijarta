@@ -5,15 +5,6 @@ import client from "./db";
 const app = express.Router();
 
 /**
- * This function is used to capitalize the first letter in each word of a string
- * @param {string} str - The string to be capitalized
- * @return {string} The capitalized string
- */
-function titleCase(str: string): string {
-  return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
-}
-
-/**
  * This function is used to convert a string representing a number in rupiah into
  * a string with the correct formatting, e.g. "1000" will be converted into "1.000,00"
  * @param {string} str - The string to be converted
@@ -45,7 +36,6 @@ app.get("/", allowRoles(["pengguna"]) , async (req, res) => {
     const status = await client.query(`SELECT "Status" FROM "STATUS_PESANAN"`);
 
     data.rows.forEach(async (row) => {
-      row.NamaSubkategori = titleCase(row.NamaSubkategori);
       row.TotalBiaya = hargaToRupiah(row.TotalBiaya);
       row.canBatal = row.Status === 'Menunggu Pembayaran' || row.Status === 'Mencari Pekerja Terdekat';
       row.canTestimoni = row.Status === 'Pesanan selesai';
@@ -53,10 +43,6 @@ app.get("/", allowRoles(["pengguna"]) , async (req, res) => {
         const exist = await client.query(`SELECT * FROM existTestimoni($1);`, [row.Id]);
         row.canTestimoni = !exist.rows[0].existtestimoni;
       }
-    });
-
-    sub.rows.forEach((row) => {
-      row.display = titleCase(row.NamaSubkategori);
     });
 
     res.clearCookie("berhasil");

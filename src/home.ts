@@ -1,19 +1,7 @@
 import express from "express";
-import { Request, Response, NextFunction } from "express";
-
 import client from "./db";
-import { allowRoles } from "./auth";
 
 const app = express.Router();
-
-/**
- * This function is used to capitalize the first letter in each word of a string
- * @param {string} str - The string to be capitalized
- * @return {string} The capitalized string
- */
-function titleCase(str: string): string {
-  return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
-}
 
 /**
  * This function is used to parse query result for home page
@@ -31,7 +19,7 @@ function parseQueryForHome(query: Array<any>) {
       result.push({Kat: row.Kat, Sub: temp,});
     }
     
-    result[map[row.Kat]].Sub.push({Sub: titleCase(row.Sub), Id: row.Id});
+    result[map[row.Kat]].Sub.push({Sub: row.Sub, Id: row.Id});
   }
 
   return result;
