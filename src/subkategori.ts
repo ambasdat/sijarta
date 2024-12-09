@@ -5,15 +5,6 @@ import { allowRoles } from "./auth";
 const app = express.Router();
 
 /**
- * This function is used to capitalize the first letter in each word of a string
- * @param {string} str - The string to be capitalized
- * @return {string} The capitalized string
- */
-function titleCase(str: string): string {
-  return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
-}
-
-/**
  * This function is used to convert a string representing a number in rupiah into
  * a string with the correct formatting, e.g. "1000" will be converted into "1.000,00"
  * @param {string} str - The string to be converted
@@ -38,9 +29,6 @@ app.get("/:id", async (req, res) => {
     const pekerja = await client.query(`SELECT * FROM getPekerja($1);`, [desc.rows[0].KatID]);
     const sesi = await client.query(`SELECT * FROM getSession($1);`, [idsub]);
     const testimoni = await client.query(`SELECT * FROM getTestimoni($1);`, [idsub]);
-
-    desc.rows[0].Sub = titleCase(desc.rows[0].Sub);
-    desc.rows[0].Kat = titleCase(desc.rows[0].Kat);
 
     const isPelanggan = req.userType === "pengguna";
     const isGuest = req.userType === "guest";
